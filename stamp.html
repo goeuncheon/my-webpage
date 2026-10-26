@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전자 도장 생성기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700;800&family=Noto+Serif+KR:wght@400;700&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --red:#c0281c; --ink:#1f2937; --sub:#6b7280; --line:#d9dce3; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; background:#f3f4f7; color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; }
+  .app { width:100%; max-width:940px; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:28px; box-shadow:0 30px 60px -28px rgba(30,40,70,.3); overflow:hidden; }
+  .panel { padding:44px 40px; }
+  .panel.form { background:#fafbfd; border-right:1px solid #eceef3; }
+  h1 { margin:0 0 6px; font-size:1.9rem; letter-spacing:-.03em; }
+  .hint { margin:0 0 28px; color:var(--sub); font-size:.95rem; }
+  label, .group-title { display:block; font-weight:700; font-size:.95rem; margin:0 0 8px; }
+  .field { margin-bottom:24px; }
+  input[type=text], select { width:100%; font:inherit; font-size:1.05rem; padding:13px 16px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline:3px solid #f0a49d; outline-offset:2px; }
+  .shape { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .shape button { font:inherit; font-weight:500; padding:14px; border:2px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; color:var(--ink); }
+  .shape button[aria-pressed=true] { border-color:var(--red); background:#fdf1f0; color:var(--red); font-weight:700; }
+  .badge { display:block; width:max-content; margin:0 auto 18px; background:#eceef3; color:var(--sub); font-size:.85rem; padding:4px 16px; border-radius:999px; }
+  .preview { width:100%; max-width:320px; aspect-ratio:1; margin:0 auto; display:block; border-radius:18px;
+    background-color:#fff;
+    background-image:linear-gradient(45deg,#e8e9ee 25%,transparent 25%,transparent 75%,#e8e9ee 75%),linear-gradient(45deg,#e8e9ee 25%,transparent 25%,transparent 75%,#e8e9ee 75%);
+    background-size:24px 24px; background-position:0 0,12px 12px; }
+  .note { margin:18px 0 20px; color:var(--sub); font-size:.85rem; text-align:center; }
+  .download { width:100%; font:inherit; font-weight:700; font-size:1.05rem; padding:16px; border:0; border-radius:14px; background:var(--red); color:#fff; cursor:pointer; box-shadow:0 10px 20px -10px rgba(192,40,28,.7); }
+  .download:hover { background:#a8221a; }
+  .download:disabled { background:#d3a5a1; cursor:not-allowed; box-shadow:none; }
+  @media (max-width:760px) {
+    .app { grid-template-columns:1fr; }
+    .panel { padding:32px 24px; }
+    .panel.form { border-right:0; border-bottom:1px solid #eceef3; }
+  }
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="panel form">
+    <h1>전자 도장 생성기</h1>
+    <p class="hint">이름을 입력하면 '인'자가 붙어 자동 생성됩니다.</p>
+
+    <div class="field">
+      <label for="name">이름 (최대 3글자)</label>
+      <input type="text" id="name" maxlength="3" value="홍길동" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="font">글씨체 선택</label>
+      <select id="font">
+        <option value="Nanum Myeongjo|800">나눔명조 (기본)</option>
+        <option value="Nanum Gothic|800">나눔고딕</option>
+        <option value="Noto Serif KR|700">노토 세리프</option>
+        <option value="Nanum Brush Script|400">나눔 붓글씨</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <span class="group-title" id="shape-label">테두리 모양</span>
+      <div class="shape" role="group" aria-labelledby="shape-label">
+        <button type="button" data-shape="circle" aria-pressed="true">원형</button>
+        <button type="button" data-shape="square" aria-pressed="false">사각형</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <span class="badge">미리보기</span>
+    <canvas id="stamp" class="preview" width="600" height="600" aria-label="도장 미리보기"></canvas>
+    <p class="note">ⓘ 투명 배경이 적용되어 문서 위 글자와 겹쳐 사용할 수 있습니다.</p>
+    <button type="button" class="download" id="download">⬇ 투명 PNG 다운로드</button>
+  </section>
+</main>
+
+<script>
+  var canvas = document.getElementById("stamp");
+  var ctx = canvas.getContext("2d");
+  var nameInput = document.getElementById("name");
+  var fontSelect = document.getElementById("font");
+  var downloadBtn = document.getElementById("download");
+  var shape = "circle";
+  var RED = "#c0281c";
+  var S = 600;
+
+  function layout(chars) {
+    // 글자 위치(중심 좌표)를 글자 수에 따라 정함
+    var c = S / 2, d = 118;
+    if (chars.length === 2) return [[c, c - d * 0.9], [c, c + d * 0.9]];
+    if (chars.length === 3) return [[c - d, c - d * 0.9], [c + d, c - d * 0.9], [c, c + d * 0.9]];
+    return [[c - d, c - d * 0.9], [c + d, c - d * 0.9], [c - d, c + d * 0.9], [c + d, c + d * 0.9]];
+  }
+
+  function draw() {
+    var name = nameInput.value.trim().slice(0, 3);
+    var parts = fontSelect.value.split("|");
+    var family = parts[0], weight = parts[1];
+    ctx.clearRect(0, 0, S, S);
+    downloadBtn.disabled = !name;
+    if (!name) return;
+
+    ctx.strokeStyle = RED;
+    ctx.lineWidth = 26;
+    ctx.beginPath();
+    if (shape === "circle") {
+      ctx.arc(S / 2, S / 2, S / 2 - 20, 0, Math.PI * 2);
+    } else {
+      var m = 20, r = 36;
+      ctx.moveTo(m + r, m); ctx.arcTo(S - m, m, S - m, S - m, r); ctx.arcTo(S - m, S - m, m, S - m, r);
+      ctx.arcTo(m, S - m, m, m, r); ctx.arcTo(m, m, S - m, m, r); ctx.closePath();
+    }
+    ctx.stroke();
+
+    var chars = (name + "인").split("");
+    var size = chars.length === 2 ? 190 : 170;
+    ctx.fillStyle = RED;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = weight + " " + size + 'px "' + family + '", serif';
+    layout(chars).forEach(function (p, i) { ctx.fillText(chars[i], p[0], p[1] + 8); });
+  }
+
+  function redraw() {
+    var parts = fontSelect.value.split("|");
+    var spec = parts[1] + ' 100px "' + parts[0] + '"';
+    var text = nameInput.value + "인";
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load(spec, text).then(draw, draw);
+    } else { draw(); }
+  }
+
+  nameInput.addEventListener("input", redraw);
+  fontSelect.addEventListener("change", redraw);
+  document.querySelectorAll(".shape button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      shape = b.dataset.shape;
+      document.querySelectorAll(".shape button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      redraw();
+    });
+  });
+  downloadBtn.addEventListener("click", function () {
+    canvas.toBlob(function (blob) {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = (nameInput.value.trim() || "도장") + "_도장.png";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    }, "image/png");
+  });
+
+  draw();
+  redraw();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+</script>
+</body>
+</html>
