@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 할 일</title>
+<style>
+  :root { --ink:#14232b; --teal:#0f5c63; --line:#c5d0cf; --paper:#f1f4f3; --mark:#f2c94c; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; line-height:1.6; }
+  main { max-width:560px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { margin:0 0 4px; font-size:1.6rem; }
+  .sub { margin:0 0 18px; color:#4a5b61; }
+  .row { display:flex; gap:8px; margin-bottom:12px; }
+  input[type=text], input[type=date] { font:inherit; padding:9px 10px; border:1px solid var(--ink); border-radius:4px; background:#fff; min-width:0; }
+  input[type=text] { flex:1; }
+  button { font:inherit; cursor:pointer; border:1px solid var(--ink); background:#fff; border-radius:4px; padding:8px 12px; }
+  button.primary { background:var(--teal); color:#fff; border-color:var(--teal); }
+  button:focus-visible, input:focus-visible { outline:3px solid var(--mark); outline-offset:1px; }
+  .date-row { align-items:center; }
+  .progress { background:#fff; border:1px solid var(--line); padding:12px 14px; margin:14px 0; border-radius:4px; }
+  .bar { height:10px; background:#dfe7e6; border-radius:5px; overflow:hidden; margin-top:6px; }
+  .bar span { display:block; height:100%; width:0; background:var(--teal); transition:width .25s; }
+  .tabs { display:flex; gap:6px; margin-bottom:10px; }
+  .tabs button[aria-pressed=true] { background:var(--ink); color:#fff; }
+  ul { list-style:none; margin:0; padding:0; }
+  li { display:flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--line); padding:10px 12px; margin-bottom:8px; border-radius:4px; }
+  li.done .text { text-decoration:line-through; color:#7a888c; }
+  li .text { flex:1; word-break:break-word; }
+  li input[type=text] { flex:1; }
+  li button { padding:4px 10px; font-size:.9rem; }
+  .empty { color:#4a5b61; padding:12px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>오늘의 할 일</h1>
+  <p class="sub">할 일을 적고, 끝낸 일을 체크하며 하루의 진행 상황을 확인해요.</p>
+
+  <div class="row date-row">
+    <button id="prev" aria-label="전날">◀</button>
+    <input type="date" id="date">
+    <button id="next" aria-label="다음날">▶</button>
+    <button id="today">오늘</button>
+  </div>
+
+  <div class="row">
+    <input type="text" id="newText" placeholder="할 일을 입력하세요" maxlength="100">
+    <button class="primary" id="add">추가</button>
+  </div>
+
+  <div class="progress" aria-live="polite">
+    <span id="count">0개 중 0개 완료 (0%)</span>
+    <div class="bar"><span id="fill"></span></div>
+  </div>
+
+  <div class="tabs" role="group" aria-label="목록 보기">
+    <button data-filter="all" aria-pressed="true">전체</button>
+    <button data-filter="doing" aria-pressed="false">진행</button>
+    <button data-filter="done" aria-pressed="false">완료</button>
+  </div>
+
+  <ul id="list"></ul>
+</main>
+
+<script>
+  var KEY = "todo-app-v1";
+  var todos = [];
+  try { todos = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { todos = []; }
+  var filter = "all";
+  var dateInput = document.getElementById("date");
+
+  function fmt(d) {
+    var m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + m + "-" + day;
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(todos)); } catch (e) {} }
+  function shift(n) {
+    var d = new Date(dateInput.value + "T00:00:00"); d.setDate(d.getDate() + n);
+    dateInput.value = fmt(d); render();
+  }
+
+  function render() {
+    var day = dateInput.value;
+    var items = todos.filter(function (t) { return t.date === day; });
+    var done = items.filter(function (t) { return t.done; }).length;
+    var pct = items.length ? Math.round(done / items.length * 100) : 0;
+    document.getElementById("count").textContent = items.length + "개 중 " + done + "개 완료 (" + pct + "%)";
+    document.getElementById("fill").style.width = pct + "%";
+
+    var shown = items.filter(function (t) {
+      return filter === "all" || (filter === "done" ? t.done : !t.done);
+    });
+    var list = document.getElementById("list");
+    list.innerHTML = "";
+    if (!shown.length) {
+      var p = document.createElement("li"); p.className = "empty"; p.style.border = "0"; p.style.background = "none";
+      p.textContent = "이 날짜에 표시할 할 일이 없어요. 위에서 추가해 보세요.";
+      list.appendChild(p); return;
+    }
+    shown.forEach(function (t) {
+      var li = document.createElement("li"); if (t.done) li.className = "done";
+      var cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = t.done;
+      cb.setAttribute("aria-label", "완료 체크");
+      cb.onchange = function () { t.done = cb.checked; save(); render(); };
+      var span = document.createElement("span"); span.className = "text"; span.textContent = t.text;
+      span.title = "더블클릭하면 수정할 수 있어요";
+      span.ondblclick = function () { edit(li, span, t); };
+      var ed = document.createElement("button"); ed.textContent = "수정"; ed.onclick = function () { edit(li, span, t); };
+      var del = document.createElement("button"); del.textContent = "삭제";
+      del.onclick = function () { todos = todos.filter(function (x) { return x !== t; }); save(); render(); };
+      li.append(cb, span, ed, del); list.appendChild(li);
+    });
+  }
+
+  function edit(li, span, t) {
+    var input = document.createElement("input"); input.type = "text"; input.value = t.text; input.maxLength = 100;
+    li.replaceChild(input, span); input.focus();
+    var finished = false;
+    function finish(ok) {
+      if (finished) return; finished = true;
+      if (ok && input.value.trim()) t.text = input.value.trim();
+      save(); render();
+    }
+    input.onkeydown = function (e) { if (e.key === "Enter") finish(true); if (e.key === "Escape") finish(false); };
+    input.onblur = function () { finish(true); };
+  }
+
+  function add() {
+    var box = document.getElementById("newText"), v = box.value.trim();
+    if (!v) { box.focus(); return; }
+    todos.push({ text: v, done: false, date: dateInput.value });
+    box.value = ""; save(); render(); box.focus();
+  }
+
+  document.getElementById("add").onclick = add;
+  document.getElementById("newText").onkeydown = function (e) { if (e.key === "Enter") add(); };
+  document.getElementById("prev").onclick = function () { shift(-1); };
+  document.getElementById("next").onclick = function () { shift(1); };
+  document.getElementById("today").onclick = function () { dateInput.value = fmt(new Date()); render(); };
+  dateInput.onchange = render;
+  document.querySelectorAll(".tabs button").forEach(function (b) {
+    b.onclick = function () {
+      filter = b.dataset.filter;
+      document.querySelectorAll(".tabs button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      render();
+    };
+  });
+
+  dateInput.value = fmt(new Date());
+  render();
+</script>
+</body>
+</html>

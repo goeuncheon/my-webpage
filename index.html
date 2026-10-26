@@ -2,550 +2,181 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 시작</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="컴퓨터교육과 문헌정보를 공부하는 천고은의 개인 홈페이지">
+<title>천고은 | 개인 홈페이지</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --black: #111111;
-    --gray-900: #1A1A1A;
-    --gray-600: #5F6368;
-    --gray-400: #9AA0A6;
-    --gray-200: #E8EAED;
-    --gray-100: #F1F3F4;
-    --white: #FFFFFF;
+  :root {
+    --ink:#262640;
+    --sub:#6b6b82;
+    --accent:#5b46c0;
+    --star:#9189aa;
+    --line:#e6e4f2;
+    --sans:"Noto Sans KR","Malgun Gothic",sans-serif;
+    --latin:"Plus Jakarta Sans","Noto Sans KR",sans-serif;
   }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; scroll-padding-top:24px; }
+  body { margin:0; background:#fff; color:var(--ink); font-family:var(--sans); line-height:1.7; }
+  a { color:var(--accent); }
+  a:focus-visible { outline:3px solid var(--accent); outline-offset:3px; border-radius:4px; }
+  .wrap { max-width:940px; margin:0 auto; padding:0 24px; }
 
-  *{ box-sizing: border-box; }
+  /* 헤더 */
+  #site-header .wrap { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px 24px; padding-top:40px; padding-bottom:40px; }
+  .brand { font-family:var(--latin); font-weight:800; font-size:1.1rem; letter-spacing:.08em; color:var(--ink); text-decoration:none; }
+  #main-nav ul { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 26px; }
+  #main-nav a { color:var(--sub); text-decoration:none; font-weight:500; font-size:.95rem; }
+  #main-nav a:hover { color:var(--accent); }
 
-  body{
-    margin:0;
-    min-height:100vh;
-    background: var(--white);
-    color: var(--gray-900);
-    font-family: 'Noto Sans KR', 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
+  /* 히어로 */
+  #hero .hero-card {
+    position:relative; background:#fff; border:1px solid var(--line); border-radius:36px;
+    padding:72px 88px 64px; box-shadow:0 30px 60px -30px rgba(70,60,140,.22);
   }
+  .kicker { font-family:var(--latin); font-weight:800; font-size:.8rem; letter-spacing:.2em; color:var(--accent); margin:0 0 18px; }
+  #hero h1 { font-size:clamp(2.4rem,8vw,4.4rem); font-weight:800; line-height:1.18; letter-spacing:-.04em; margin:0 0 26px; }
+  .lead { max-width:30em; color:var(--sub); font-weight:500; font-size:1.08rem; margin:0 0 26px; }
+  .chips { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px 28px; }
+  .chips li { color:var(--accent); font-weight:700; font-size:.92rem; }
+  .star { position:absolute; top:84px; right:72px; width:92px; height:92px; color:var(--star); }
 
-  .page{
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 96px 24px 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  /* 공통 섹션 */
+  section.block { padding-top:72px; }
+  section.block h2 { font-size:1.6rem; font-weight:800; letter-spacing:-.03em; margin:0 0 6px; }
+  .desc { color:var(--sub); font-weight:500; margin:0 0 22px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:28px; padding:28px 32px; }
+  .card h3 { font-size:1.15rem; font-weight:700; margin:0 0 8px; letter-spacing:-.02em; }
+  .card p { margin:0; color:var(--sub); font-weight:500; }
+  .icon { display:block; font-size:1.5rem; color:var(--accent); margin-bottom:10px; line-height:1; }
+  .meta { display:block; color:var(--accent); font-weight:700; font-size:.88rem; margin:14px 0 4px; }
+  .open-link { font-weight:700; text-decoration:none; }
+  .open-link:hover { text-decoration:underline; }
+  .label { color:var(--accent); font-weight:700; font-size:.88rem; margin:0 0 4px; }
+
+  #site-footer { margin-top:80px; padding:0 0 48px; text-align:center; color:var(--sub); font-size:.9rem; }
+
+  @media (max-width:720px) {
+    #site-header .wrap { padding-top:24px; padding-bottom:24px; }
+    #hero .hero-card { padding:40px 28px 36px; border-radius:28px; }
+    .star { top:28px; right:24px; width:56px; height:56px; }
+    section.block { padding-top:52px; }
+    .card { padding:22px 22px; border-radius:22px; }
+    .grid { grid-template-columns:1fr; }
   }
-
-  /* ---------- 시계 ---------- */
-  .clock-wrap{
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .clock{
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: clamp(64px, 13vw, 128px);
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
-    color: var(--black);
-    margin: 0;
-    text-align: center;
-  }
-
-  .clock .colon{
-    display: inline-block;
-    animation: blink 2s steps(1) infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .clock .colon{ animation: none; }
-  }
-
-  @keyframes blink{
-    0%, 45%{ opacity: 1; }
-    50%, 95%{ opacity: 0.25; }
-    100%{ opacity: 1; }
-  }
-
-  .period{
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    color: var(--gray-400);
-    align-self: center;
-    padding-bottom: 0.4em;
-  }
-
-  .date-row{
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--gray-600);
-    margin: 16px 0 44px;
-    text-align: center;
-    position: relative;
-    padding-top: 20px;
-  }
-
-  .date-row::before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 28px;
-    height: 1px;
-    background: var(--gray-200);
-  }
-
-  /* ---------- 검색바 ---------- */
-  .search-form{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    max-width: 560px;
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 999px;
-    padding: 13px 22px;
-    transition: box-shadow .15s ease, border-color .15s ease;
-  }
-
-  .search-form:focus-within{
-    box-shadow: 0 1px 8px rgba(0,0,0,0.12);
-    border-color: var(--gray-200);
-  }
-
-  .search-form svg{ flex-shrink: 0; color: var(--gray-400); }
-
-  .search-form input{
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 15px;
-    font-family: inherit;
-    color: var(--gray-900);
-    background: transparent;
-  }
-
-  .search-form input::placeholder{ color: var(--gray-400); }
-
-  .search-form button{
-    border: none;
-    background: transparent;
-    color: var(--gray-600);
-    font-family: inherit;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 4px 4px;
-  }
-
-  .search-form button:hover{ color: var(--black); }
-
-  /* ---------- 본문 ---------- */
-  .layout{
-    width: 100%;
-    margin-top: 72px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-  }
-
-  @media (max-width: 600px){
-    .layout{ grid-template-columns: 1fr; gap: 48px; }
-    .page{ padding-top: 64px; }
-  }
-
-  .panel-title{
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--gray-600);
-    margin: 0 0 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .refresh-btn{
-    border: none;
-    background: none;
-    color: var(--gray-400);
-    font-family: inherit;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .refresh-btn:hover{ color: var(--black); text-decoration: underline; }
-
-  /* ---------- 뉴스 ---------- */
-  .news-list{
-    display: flex;
-    flex-direction: column;
-  }
-
-  .news-item{
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--gray-100);
-  }
-
-  .news-item:first-child{ padding-top: 0; }
-  .news-item:last-child{ border-bottom: none; }
-
-  .news-title{
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.55;
-    margin: 0;
-    color: var(--gray-900);
-  }
-
-  .news-item:hover .news-title{ text-decoration: underline; }
-
-  .news-meta{
-    font-size: 12px;
-    color: var(--gray-400);
-    margin-top: 5px;
-  }
-
-  .news-status{
-    font-size: 13px;
-    color: var(--gray-400);
-    padding: 8px 0;
-  }
-
-  /* ---------- 할 일 ---------- */
-  .todo-add{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid var(--gray-200);
-    padding-bottom: 10px;
-    margin-bottom: 16px;
-  }
-
-  .todo-add input{
-    flex: 1;
-    border: none;
-    outline: none;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--gray-900);
-    padding: 4px 0;
-  }
-
-  .todo-add input::placeholder{ color: var(--gray-400); }
-
-  .todo-add button{
-    border: none;
-    background: none;
-    color: var(--gray-400);
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0 2px;
-  }
-
-  .todo-add button:hover{ color: var(--black); }
-
-  .todo-list{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .todo-item{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 9px 0;
-  }
-
-  .todo-check{
-    width: 17px;
-    height: 17px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    border: 1.5px solid var(--gray-400);
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: transparent;
-    padding: 0;
-    transition: all .15s ease;
-  }
-
-  .todo-check.checked{
-    background: var(--black);
-    border-color: var(--black);
-    color: #fff;
-  }
-
-  .todo-text{
-    flex: 1;
-    font-size: 14px;
-    color: var(--gray-900);
-  }
-
-  .todo-item.done .todo-text{
-    color: var(--gray-400);
-    text-decoration: line-through;
-  }
-
-  .todo-delete{
-    border: none;
-    background: transparent;
-    color: var(--gray-400);
-    cursor: pointer;
-    font-size: 16px;
-    padding: 2px 4px;
-    opacity: 0;
-    transition: opacity .15s ease, color .15s ease;
-  }
-
-  .todo-item:hover .todo-delete{ opacity: 1; }
-  .todo-delete:hover{ color: var(--black); }
-
-  .todo-empty{
-    color: var(--gray-400);
-    font-size: 13px;
-    padding: 10px 0;
-  }
-
-  .todo-progress{
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--gray-100);
-    font-size: 12px;
-    color: var(--gray-400);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .progress-track{
-    flex: 1;
-    height: 2px;
-    background: var(--gray-200);
-    margin: 0 12px;
-    overflow: hidden;
-  }
-
-  .progress-fill{
-    height: 100%;
-    background: var(--black);
-    transition: width .2s ease;
-    width: 0%;
-  }
+  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 </style>
 </head>
 <body>
 
-<div class="page">
-
-  <div class="clock-wrap">
-    <p class="clock" id="clock">--<span class="colon">:</span>--</p>
-    <span class="period" id="period"></span>
+<header id="site-header">
+  <div class="wrap">
+    <a class="brand" href="#hero">CHEON GOEUN</a>
+    <nav id="main-nav" aria-label="주 메뉴">
+      <ul>
+        <li><a href="#about">소개</a></li>
+        <li><a href="#interests">관심사</a></li>
+        <li><a href="#activities">주요 활동</a></li>
+        <li><a href="#projects">프로젝트</a></li>
+        <li><a href="#contact">연락처</a></li>
+      </ul>
+    </nav>
   </div>
-  <p class="date-row" id="dateRow">-</p>
+</header>
 
-  <form class="search-form" id="searchForm" action="https://www.google.com/search" method="GET" target="_blank">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input type="text" name="q" placeholder="검색" autocomplete="off">
-    <button type="submit">검색</button>
-  </form>
+<main class="wrap">
 
-  <div class="layout">
-
-    <div class="news-panel">
-      <p class="panel-title">
-        <span>기술 뉴스</span>
-        <button class="refresh-btn" id="refreshNews">새로고침</button>
-      </p>
-      <div class="news-list" id="newsList">
-        <p class="news-status">불러오는 중...</p>
-      </div>
+  <section id="hero">
+    <div class="hero-card">
+      <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 0C54 30 70 46 100 50 70 54 54 70 50 100 46 70 30 54 0 50 30 46 46 30 50 0Z"/></svg>
+      <p class="kicker">PERSONAL WEBSITE · 2026</p>
+      <h1>안녕하세요,<br>천고은입니다.</h1>
+      <!-- TODO: 마음에 드는 소개 문구로 바꿔 보세요 -->
+      <p class="lead">컴퓨터교육을 전공하고 문헌정보교육을 함께 공부하고 있습니다. 정보를 정리하고, 학생들이 쉽게 쓸 수 있는 교육 도구를 직접 만들어 보는 과정에 관심이 있습니다.</p>
+      <ul class="chips">
+        <li>컴퓨터교육</li>
+        <li>문헌정보</li>
+        <li>바이브코딩</li>
+      </ul>
     </div>
+  </section>
 
-    <div class="todo-panel">
-      <p class="panel-title"><span>오늘의 할 일</span></p>
-      <form class="todo-add" id="todoForm">
-        <input type="text" id="todoInput" placeholder="할 일 추가" autocomplete="off">
-        <button type="submit" aria-label="추가">+</button>
-      </form>
-      <ul class="todo-list" id="todoList"></ul>
-      <div class="todo-progress" id="todoProgress" style="display:none;">
-        <span id="progressLabel">0 / 0</span>
-        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-        <span id="progressPct">0%</span>
-      </div>
+  <section id="about" class="block">
+    <h2>저를 소개합니다</h2>
+    <p class="desc">방문자가 가장 먼저 알아야 할 기본 정보입니다.</p>
+    <article class="card">
+      <p>안녕하세요, 컴퓨터교육과에서 문헌정보교육을 복수전공하고 있는 천고은입니다. 교육과 정보 정리, 그리고 AI 도구를 활용해 필요한 것을 직접 만들어 보는 데 흥미가 있습니다.</p>
+    </article>
+  </section>
+
+  <section id="interests" class="block">
+    <h2>관심사</h2>
+    <p class="desc">평소 관심을 가지고 탐색하는 분야입니다.</p>
+    <div class="grid">
+      <article class="card">
+        <span class="icon" aria-hidden="true">⌘</span>
+        <h3>컴퓨터 교육</h3>
+        <p>학교 현장에서 쓸 수 있는 교육용 앱과 콘텐츠를 만들어 보는 것을 좋아합니다.</p>
+      </article>
+      <article class="card">
+        <span class="icon" aria-hidden="true">✦</span>
+        <h3>문헌정보와 메타데이터</h3>
+        <p>자료를 분류하고 설명하는 방법을 공부하며 교육용 메타데이터에 관심을 갖고 있습니다.</p>
+      </article>
+      <article class="card">
+        <span class="icon" aria-hidden="true">✎</span>
+        <h3>바이브코딩</h3>
+        <p>생성형 AI와 함께 아이디어를 구체화해 웹 페이지와 작은 앱을 만들어 봅니다.</p>
+      </article>
     </div>
+  </section>
 
-  </div>
+  <section id="activities" class="block">
+    <h2>주요 활동</h2>
+    <p class="desc">지금까지 참여한 학업과 프로젝트 활동입니다.</p>
+    <!-- TODO: 동아리, 대외활동 등 실제 활동으로 바꿔 보세요 -->
+    <div class="grid">
+      <article class="card">
+        <h3>중학교 교육실습</h3>
+        <p>중학교에서 교육실습을 마쳤습니다.</p>
+      </article>
+      <article class="card">
+        <h3>데이터 리터러시 팀 프로젝트</h3>
+        <p>청소년 독서 현황을 주제로 데이터를 분석했습니다.</p>
+      </article>
+    </div>
+  </section>
 
-</div>
+  <section id="projects" class="block">
+    <h2>개별 프로젝트</h2>
+    <p class="desc">직접 기획하거나 제작한 프로젝트를 소개합니다.</p>
+    <article class="card project-item">
+      <h3><span aria-hidden="true">✓</span> 오늘의 할 일 관리 앱</h3>
+      <p>오늘 해야 할 일을 기록하고 완료 여부를 확인해 하루의 할 일을 정리하는 프로젝트입니다.</p>
+      <span class="meta">개인 프로젝트</span>
+      <!-- 파일 이름이 다르면 href를 본인 파일 이름으로 바꾸세요 -->
+      <a class="open-link" href="todo.html" target="_blank" rel="noopener">프로젝트 열기 ↗</a>
+    </article>
+  </section>
 
-<script>
-  // ---------- 시계 & 날짜 ----------
-  const clockEl = document.getElementById('clock');
-  const periodEl = document.getElementById('period');
-  const dateRowEl = document.getElementById('dateRow');
-  const days = ['일','월','화','수','목','금','토'];
+  <section id="contact" class="block">
+    <h2>연락처</h2>
+    <p class="desc">이메일로 연락할 수 있습니다.</p>
+    <article class="card">
+      <h3>이메일</h3>
+      <p class="label">연락처 정보</p>
+      <p><a href="mailto:goeuncheon@gmail.com">goeuncheon@gmail.com</a></p>
+    </article>
+  </section>
 
-  function updateClock(){
-    const now = new Date();
-    const h24 = now.getHours();
-    let h = h24 % 12; if (h === 0) h = 12;
-    const m = String(now.getMinutes()).padStart(2,'0');
-    clockEl.innerHTML = String(h).padStart(2,'0') + '<span class="colon">:</span>' + m;
-    periodEl.textContent = h24 < 12 ? 'AM' : 'PM';
-    dateRowEl.textContent = now.getFullYear() + '년 ' + (now.getMonth()+1) + '월 ' + now.getDate() + '일 ' + days[now.getDay()] + '요일';
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
+</main>
 
-  // ---------- 기술 뉴스 ----------
-  const newsList = document.getElementById('newsList');
-  const refreshBtn = document.getElementById('refreshNews');
-
-  const fallbackNews = [
-    { title: 'AI 전환 성패는 기술 도입 순서가 아닌 조직의 변화 관리 역량에 달려있다는 분석', source: 'ITWorld', url: 'https://www.itworld.co.kr/' },
-    { title: 'AI 고용 충격, 경력을 막 시작한 청년층에 집중되고 있다는 연구 결과', source: 'ITWorld', url: 'https://www.itworld.co.kr/' },
-    { title: '애플 M6 맥 미니, 최저 진입가 두 달 새 300달러 상승', source: 'ITWorld', url: 'https://www.itworld.co.kr/' },
-    { title: 'LG전자, 로보틱스 사업 추진 속도... 빅테크 대상 액추에이터 공급 논의 본격화', source: '중앙SUNDAY', url: 'https://news.daum.net/tech' },
-    { title: 'AI 데이터센터도 모듈형이 대세... 빠르고 유연한 구축 방식 부상', source: '아시아경제', url: 'https://news.daum.net/tech' },
-    { title: '개발자·스타트업을 위한 최신 기술 소식 모음', source: 'GeekNews', url: 'https://news.hada.io/' }
-  ];
-
-  function renderNews(items){
-    if (!items.length){
-      newsList.innerHTML = '<p class="news-status">표시할 뉴스가 없습니다.</p>';
-      return;
-    }
-    newsList.innerHTML = items.slice(0, 6).map(item => `
-      <a class="news-item" href="${item.url}" target="_blank" rel="noopener">
-        <p class="news-title">${item.title}</p>
-        <p class="news-meta">${item.source}</p>
-      </a>
-    `).join('');
-  }
-
-  async function loadNews(){
-    newsList.innerHTML = '<p class="news-status">불러오는 중...</p>';
-    try{
-      const rssUrl = encodeURIComponent('https://news.google.com/rss/search?q=%EA%B8%B0%EC%88%A0&hl=ko&gl=KR&ceid=KR:ko');
-      const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + rssUrl);
-      if (!res.ok) throw new Error('fetch failed');
-      const data = await res.json();
-      if (data.status !== 'ok' || !data.items || !data.items.length) throw new Error('empty');
-      const items = data.items.map(it => ({
-        title: it.title,
-        source: (it.title.match(/- (.+)$/) || [])[1] || 'Google 뉴스',
-        url: it.link
-      }));
-      renderNews(items);
-    }catch(e){
-      renderNews(fallbackNews);
-    }
-  }
-
-  loadNews();
-  refreshBtn.addEventListener('click', loadNews);
-
-  // ---------- 오늘의 할 일 ----------
-  const todoForm = document.getElementById('todoForm');
-  const todoInput = document.getElementById('todoInput');
-  const todoListEl = document.getElementById('todoList');
-  const todoProgress = document.getElementById('todoProgress');
-  const progressLabel = document.getElementById('progressLabel');
-  const progressPct = document.getElementById('progressPct');
-  const progressFill = document.getElementById('progressFill');
-
-  const STORAGE_KEY = 'today-dashboard-todos';
-  const todayKey = new Date().toDateString();
-
-  function loadTodos(){
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      if (parsed.date !== todayKey) return [];
-      return parsed.items || [];
-    }catch(e){ return []; }
-  }
-
-  function saveTodos(items){
-    try{
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: todayKey, items }));
-    }catch(e){}
-  }
-
-  let todos = loadTodos();
-
-  function renderTodos(){
-    if (!todos.length){
-      todoListEl.innerHTML = '<li class="todo-empty">할 일을 추가해 보세요</li>';
-      todoProgress.style.display = 'none';
-      return;
-    }
-    todoListEl.innerHTML = todos.map((t, i) => `
-      <li class="todo-item ${t.done ? 'done' : ''}" data-index="${i}">
-        <button class="todo-check ${t.done ? 'checked' : ''}" aria-label="완료 표시">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-        </button>
-        <span class="todo-text">${t.text}</span>
-        <button class="todo-delete" aria-label="삭제">×</button>
-      </li>
-    `).join('');
-
-    const doneCount = todos.filter(t => t.done).length;
-    const pct = Math.round((doneCount / todos.length) * 100);
-    todoProgress.style.display = 'flex';
-    progressLabel.textContent = doneCount + ' / ' + todos.length;
-    progressPct.textContent = pct + '%';
-    progressFill.style.width = pct + '%';
-  }
-
-  todoForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const text = todoInput.value.trim();
-    if (!text) return;
-    todos.push({ text, done: false });
-    todoInput.value = '';
-    saveTodos(todos);
-    renderTodos();
-  });
-
-  todoListEl.addEventListener('click', e => {
-    const item = e.target.closest('.todo-item');
-    if (!item) return;
-    const index = Number(item.dataset.index);
-
-    if (e.target.closest('.todo-check')){
-      todos[index].done = !todos[index].done;
-      saveTodos(todos);
-      renderTodos();
-    }
-    if (e.target.closest('.todo-delete')){
-      todos.splice(index, 1);
-      saveTodos(todos);
-      renderTodos();
-    }
-  });
-
-  renderTodos();
-</script>
+<footer id="site-footer">
+  <div class="wrap">© 2026 천고은 · 개인 홈페이지</div>
+</footer>
 
 </body>
 </html>
