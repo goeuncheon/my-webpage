@@ -3,156 +3,324 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>전자 도장 생성기</title>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700;800&family=Noto+Serif+KR:wght@400;700&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<title>전자 도장·사인 생성기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700;800&family=Noto+Serif+KR:wght@400;700&family=Nanum+Brush+Script&family=Nanum+Pen+Script&family=Hi+Melody&family=East+Sea+Dokdo&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --red:#c0281c; --ink:#1f2937; --sub:#6b7280; --line:#d9dce3; }
+  :root { --red:#c0281c; --ink:#1f2937; --sub:#6b7280; --line:#d9dce3; --navy:#1d3a8a; }
   * { box-sizing:border-box; }
-  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; background:#f3f4f7; color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; }
-  .app { width:100%; max-width:940px; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:28px; box-shadow:0 30px 60px -28px rgba(30,40,70,.3); overflow:hidden; }
+  body { margin:0; min-height:100vh; padding:24px; background:#f3f4f7; color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; }
+  .shell { width:100%; max-width:940px; margin:0 auto; }
+  .tabs { display:flex; gap:8px; margin-bottom:14px; }
+  .tabs button { font:inherit; font-weight:700; padding:10px 24px; border:0; border-radius:999px; background:#e4e6ee; color:var(--sub); cursor:pointer; }
+  .tabs button[aria-selected=true] { background:var(--ink); color:#fff; }
+  .app { display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:28px; box-shadow:0 30px 60px -28px rgba(30,40,70,.3); overflow:hidden; }
+  .app[hidden] { display:none; }
   .panel { padding:44px 40px; }
   .panel.form { background:#fafbfd; border-right:1px solid #eceef3; }
   h1 { margin:0 0 6px; font-size:1.9rem; letter-spacing:-.03em; }
   .hint { margin:0 0 28px; color:var(--sub); font-size:.95rem; }
   label, .group-title { display:block; font-weight:700; font-size:.95rem; margin:0 0 8px; }
   .field { margin-bottom:24px; }
+  .field[hidden] { display:none; }
   input[type=text], select { width:100%; font:inherit; font-size:1.05rem; padding:13px 16px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); }
+  input[type=range] { width:100%; accent-color:var(--ink); }
   input:focus-visible, select:focus-visible, button:focus-visible { outline:3px solid #f0a49d; outline-offset:2px; }
-  .shape { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .shape button { font:inherit; font-weight:500; padding:14px; border:2px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; color:var(--ink); }
-  .shape button[aria-pressed=true] { border-color:var(--red); background:#fdf1f0; color:var(--red); font-weight:700; }
+  .choice { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .choice button { font:inherit; font-weight:500; padding:14px; border:2px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; color:var(--ink); }
+  .choice button[aria-pressed=true] { border-color:var(--red); background:#fdf1f0; color:var(--red); font-weight:700; }
+  .colors { display:flex; gap:12px; }
+  .colors button { width:44px; height:44px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 2px var(--line); cursor:pointer; }
+  .colors button[aria-pressed=true] { box-shadow:0 0 0 3px var(--ink); }
+  .row { display:flex; gap:10px; }
+  .ghost { flex:1; font:inherit; font-weight:500; padding:12px; border:1px solid var(--line); border-radius:12px; background:#fff; cursor:pointer; color:var(--ink); }
+  .ghost:hover { background:#f3f4f7; }
   .badge { display:block; width:max-content; margin:0 auto 18px; background:#eceef3; color:var(--sub); font-size:.85rem; padding:4px 16px; border-radius:999px; }
-  .preview { width:100%; max-width:320px; aspect-ratio:1; margin:0 auto; display:block; border-radius:18px;
-    background-color:#fff;
+  .checker { background-color:#fff;
     background-image:linear-gradient(45deg,#e8e9ee 25%,transparent 25%,transparent 75%,#e8e9ee 75%),linear-gradient(45deg,#e8e9ee 25%,transparent 25%,transparent 75%,#e8e9ee 75%);
-    background-size:24px 24px; background-position:0 0,12px 12px; }
+    background-size:24px 24px; background-position:0 0,12px 12px; border-radius:18px; }
+  .preview { width:100%; max-width:320px; aspect-ratio:1; margin:0 auto; display:block; }
+  .sigbox { position:relative; width:100%; aspect-ratio:2/1; }
+  #sig { position:absolute; inset:0; width:100%; height:100%; border-radius:18px; touch-action:none; cursor:crosshair; }
+  #sigEmpty { position:absolute; inset:0; display:grid; place-items:center; color:#a3a8b5; font-size:.95rem; pointer-events:none; }
   .note { margin:18px 0 20px; color:var(--sub); font-size:.85rem; text-align:center; }
   .download { width:100%; font:inherit; font-weight:700; font-size:1.05rem; padding:16px; border:0; border-radius:14px; background:var(--red); color:#fff; cursor:pointer; box-shadow:0 10px 20px -10px rgba(192,40,28,.7); }
   .download:hover { background:#a8221a; }
   .download:disabled { background:#d3a5a1; cursor:not-allowed; box-shadow:none; }
   @media (max-width:760px) {
+    body { padding:14px; }
     .app { grid-template-columns:1fr; }
-    .panel { padding:32px 24px; }
+    .panel { padding:30px 22px; }
     .panel.form { border-right:0; border-bottom:1px solid #eceef3; }
   }
 </style>
 </head>
 <body>
-<main class="app">
-  <section class="panel form">
-    <h1>전자 도장 생성기</h1>
-    <p class="hint">이름을 입력하면 '인'자가 붙어 자동 생성됩니다.</p>
+<div class="shell">
 
-    <div class="field">
-      <label for="name">이름 (최대 3글자)</label>
-      <input type="text" id="name" maxlength="3" value="홍길동" autocomplete="off">
-    </div>
+  <div class="tabs" role="tablist" aria-label="만들기 종류">
+    <button type="button" role="tab" id="tab-stamp" aria-selected="true" aria-controls="stamp-app">도장 만들기</button>
+    <button type="button" role="tab" id="tab-sign" aria-selected="false" aria-controls="sign-app">내 사인 만들기</button>
+  </div>
 
-    <div class="field">
-      <label for="font">글씨체 선택</label>
-      <select id="font">
-        <option value="Nanum Myeongjo|800">나눔명조 (기본)</option>
-        <option value="Nanum Gothic|800">나눔고딕</option>
-        <option value="Noto Serif KR|700">노토 세리프</option>
-        <option value="Nanum Brush Script|400">나눔 붓글씨</option>
-      </select>
-    </div>
+  <!-- ===== 도장 ===== -->
+  <main class="app" id="stamp-app" role="tabpanel" aria-labelledby="tab-stamp">
+    <section class="panel form">
+      <h1>전자 도장 생성기</h1>
+      <p class="hint">이름을 입력하면 '인'자가 붙어 자동 생성됩니다.</p>
+      <div class="field">
+        <label for="name">이름 (최대 3글자)</label>
+        <input type="text" id="name" maxlength="3" value="홍길동" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="font">글씨체 선택</label>
+        <select id="font">
+          <option value="Nanum Myeongjo|800">나눔명조 (기본)</option>
+          <option value="Nanum Gothic|800">나눔고딕</option>
+          <option value="Noto Serif KR|700">노토 세리프</option>
+          <option value="Nanum Brush Script|400">나눔 붓글씨</option>
+        </select>
+      </div>
+      <div class="field">
+        <span class="group-title" id="shape-label">테두리 모양</span>
+        <div class="choice" role="group" aria-labelledby="shape-label">
+          <button type="button" data-shape="circle" aria-pressed="true">원형</button>
+          <button type="button" data-shape="square" aria-pressed="false">사각형</button>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <span class="badge">미리보기</span>
+      <canvas id="stamp" class="preview checker" width="600" height="600" aria-label="도장 미리보기"></canvas>
+      <p class="note">ⓘ 투명 배경이 적용되어 문서 위 글자와 겹쳐 사용할 수 있습니다.</p>
+      <button type="button" class="download" id="stampDownload">⬇ 투명 PNG 다운로드</button>
+    </section>
+  </main>
 
-    <div class="field">
-      <span class="group-title" id="shape-label">테두리 모양</span>
-      <div class="shape" role="group" aria-labelledby="shape-label">
-        <button type="button" data-shape="circle" aria-pressed="true">원형</button>
-        <button type="button" data-shape="square" aria-pressed="false">사각형</button>
+  <!-- ===== 사인 ===== -->
+  <section class="app" id="sign-app" role="tabpanel" aria-labelledby="tab-sign" hidden>
+    <div class="panel form">
+      <h1>내 사인 만들기</h1>
+      <p class="hint">직접 그리거나, 이름을 손글씨체로 바꿔 사인을 만들어요.</p>
+
+      <div class="field">
+        <span class="group-title" id="mode-label">만드는 방법</span>
+        <div class="choice" role="group" aria-labelledby="mode-label">
+          <button type="button" data-mode="draw" aria-pressed="true">직접 그리기</button>
+          <button type="button" data-mode="type" aria-pressed="false">이름으로 만들기</button>
+        </div>
+      </div>
+
+      <div class="field" id="typeName" hidden>
+        <label for="signName">이름</label>
+        <input type="text" id="signName" maxlength="12" value="천고은" autocomplete="off">
+      </div>
+      <div class="field" id="typeFont" hidden>
+        <label for="signFont">손글씨체</label>
+        <select id="signFont">
+          <option value="Nanum Pen Script">나눔 펜 스크립트</option>
+          <option value="Nanum Brush Script">나눔 붓글씨</option>
+          <option value="Hi Melody">하이멜로디</option>
+          <option value="East Sea Dokdo">동해 독도</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <span class="group-title" id="color-label">펜 색상</span>
+        <div class="colors" role="group" aria-labelledby="color-label">
+          <button type="button" data-color="#111827" style="background:#111827" aria-label="검정" aria-pressed="true"></button>
+          <button type="button" data-color="#1d3a8a" style="background:#1d3a8a" aria-label="남색" aria-pressed="false"></button>
+          <button type="button" data-color="#c0281c" style="background:#c0281c" aria-label="빨강" aria-pressed="false"></button>
+        </div>
+      </div>
+
+      <div class="field" id="drawWidth">
+        <label for="width">펜 굵기</label>
+        <input type="range" id="width" min="2" max="16" value="6">
+      </div>
+
+      <div class="field row" id="drawTools">
+        <button type="button" class="ghost" id="undo">↩ 되돌리기</button>
+        <button type="button" class="ghost" id="clear">지우기</button>
       </div>
     </div>
+
+    <div class="panel">
+      <span class="badge" id="sigBadge">여기에 그려 보세요</span>
+      <div class="sigbox checker">
+        <canvas id="sig" width="800" height="400" aria-label="사인 그리기 영역"></canvas>
+        <div id="sigEmpty">마우스나 손가락으로 사인을 그려 보세요</div>
+      </div>
+      <p class="note">ⓘ 투명 배경으로 저장되고, 사인 주변의 빈 공간은 자동으로 잘려요.</p>
+      <button type="button" class="download" id="sigDownload" disabled>⬇ 투명 PNG 다운로드</button>
+    </div>
   </section>
 
-  <section class="panel">
-    <span class="badge">미리보기</span>
-    <canvas id="stamp" class="preview" width="600" height="600" aria-label="도장 미리보기"></canvas>
-    <p class="note">ⓘ 투명 배경이 적용되어 문서 위 글자와 겹쳐 사용할 수 있습니다.</p>
-    <button type="button" class="download" id="download">⬇ 투명 PNG 다운로드</button>
-  </section>
-</main>
+</div>
 
 <script>
-  var canvas = document.getElementById("stamp");
-  var ctx = canvas.getContext("2d");
-  var nameInput = document.getElementById("name");
-  var fontSelect = document.getElementById("font");
-  var downloadBtn = document.getElementById("download");
-  var shape = "circle";
-  var RED = "#c0281c";
-  var S = 600;
+  /* ---------- 탭 ---------- */
+  var tabStamp = document.getElementById("tab-stamp"), tabSign = document.getElementById("tab-sign");
+  var stampApp = document.getElementById("stamp-app"), signApp = document.getElementById("sign-app");
+  function showTab(sign) {
+    stampApp.hidden = sign; signApp.hidden = !sign;
+    tabStamp.setAttribute("aria-selected", !sign); tabSign.setAttribute("aria-selected", sign);
+  }
+  tabStamp.onclick = function () { showTab(false); };
+  tabSign.onclick = function () { showTab(true); drawSig(); };
 
-  function layout(chars) {
-    // 글자 위치(중심 좌표)를 글자 수에 따라 정함
-    var c = S / 2, d = 118;
-    if (chars.length === 2) return [[c, c - d * 0.9], [c, c + d * 0.9]];
-    if (chars.length === 3) return [[c - d, c - d * 0.9], [c + d, c - d * 0.9], [c, c + d * 0.9]];
-    return [[c - d, c - d * 0.9], [c + d, c - d * 0.9], [c - d, c + d * 0.9], [c + d, c + d * 0.9]];
+  function saveCanvas(c, filename) {
+    c.toBlob(function (blob) {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    }, "image/png");
+  }
+  function loadFont(spec, text, cb) {
+    if (document.fonts && document.fonts.load) document.fonts.load(spec, text).then(cb, cb); else cb();
   }
 
-  function draw() {
-    var name = nameInput.value.trim().slice(0, 3);
-    var parts = fontSelect.value.split("|");
-    var family = parts[0], weight = parts[1];
-    ctx.clearRect(0, 0, S, S);
-    downloadBtn.disabled = !name;
-    if (!name) return;
+  /* ---------- 도장 ---------- */
+  var canvas = document.getElementById("stamp"), ctx = canvas.getContext("2d");
+  var nameInput = document.getElementById("name"), fontSelect = document.getElementById("font");
+  var stampBtn = document.getElementById("stampDownload");
+  var shape = "circle", RED = "#c0281c", S = 600;
 
-    ctx.strokeStyle = RED;
-    ctx.lineWidth = 26;
-    ctx.beginPath();
-    if (shape === "circle") {
-      ctx.arc(S / 2, S / 2, S / 2 - 20, 0, Math.PI * 2);
-    } else {
+  function layout(n) {
+    var c = S / 2, d = 118;
+    if (n === 2) return [[c, c - d * 0.9], [c, c + d * 0.9]];
+    if (n === 3) return [[c - d, c - d * 0.9], [c + d, c - d * 0.9], [c, c + d * 0.9]];
+    return [[c - d, c - d * 0.9], [c + d, c - d * 0.9], [c - d, c + d * 0.9], [c + d, c + d * 0.9]];
+  }
+  function drawStamp() {
+    var name = nameInput.value.trim().slice(0, 3), parts = fontSelect.value.split("|");
+    ctx.clearRect(0, 0, S, S);
+    stampBtn.disabled = !name;
+    if (!name) return;
+    ctx.strokeStyle = RED; ctx.lineWidth = 26; ctx.beginPath();
+    if (shape === "circle") { ctx.arc(S / 2, S / 2, S / 2 - 20, 0, Math.PI * 2); }
+    else {
       var m = 20, r = 36;
       ctx.moveTo(m + r, m); ctx.arcTo(S - m, m, S - m, S - m, r); ctx.arcTo(S - m, S - m, m, S - m, r);
       ctx.arcTo(m, S - m, m, m, r); ctx.arcTo(m, m, S - m, m, r); ctx.closePath();
     }
     ctx.stroke();
-
-    var chars = (name + "인").split("");
-    var size = chars.length === 2 ? 190 : 170;
-    ctx.fillStyle = RED;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = weight + " " + size + 'px "' + family + '", serif';
-    layout(chars).forEach(function (p, i) { ctx.fillText(chars[i], p[0], p[1] + 8); });
+    var chars = (name + "인").split(""), size = chars.length === 2 ? 190 : 170;
+    ctx.fillStyle = RED; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = parts[1] + " " + size + 'px "' + parts[0] + '", serif';
+    layout(chars.length).forEach(function (p, i) { ctx.fillText(chars[i], p[0], p[1] + 8); });
   }
-
-  function redraw() {
+  function redrawStamp() {
     var parts = fontSelect.value.split("|");
-    var spec = parts[1] + ' 100px "' + parts[0] + '"';
-    var text = nameInput.value + "인";
-    if (document.fonts && document.fonts.load) {
-      document.fonts.load(spec, text).then(draw, draw);
-    } else { draw(); }
+    loadFont(parts[1] + ' 100px "' + parts[0] + '"', nameInput.value + "인", drawStamp);
   }
-
-  nameInput.addEventListener("input", redraw);
-  fontSelect.addEventListener("change", redraw);
-  document.querySelectorAll(".shape button").forEach(function (b) {
+  nameInput.addEventListener("input", redrawStamp);
+  fontSelect.addEventListener("change", redrawStamp);
+  document.querySelectorAll("[data-shape]").forEach(function (b) {
     b.addEventListener("click", function () {
       shape = b.dataset.shape;
-      document.querySelectorAll(".shape button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-      redraw();
+      document.querySelectorAll("[data-shape]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      redrawStamp();
     });
   });
-  downloadBtn.addEventListener("click", function () {
-    canvas.toBlob(function (blob) {
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = (nameInput.value.trim() || "도장") + "_도장.png";
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-    }, "image/png");
+  stampBtn.addEventListener("click", function () { saveCanvas(canvas, (nameInput.value.trim() || "도장") + "_도장.png"); });
+
+  /* ---------- 사인 ---------- */
+  var sig = document.getElementById("sig"), sctx = sig.getContext("2d");
+  var sigEmpty = document.getElementById("sigEmpty"), sigBtn = document.getElementById("sigDownload");
+  var strokes = [], cur = null, mode = "draw", penColor = "#111827", penWidth = 6;
+  var signName = document.getElementById("signName"), signFont = document.getElementById("signFont");
+
+  function pos(e) {
+    var r = sig.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * sig.width / r.width, y: (e.clientY - r.top) * sig.height / r.height };
+  }
+  function drawSig() {
+    sctx.clearRect(0, 0, sig.width, sig.height);
+    var has = false;
+    if (mode === "draw") {
+      has = strokes.length > 0;
+      strokes.forEach(function (s) {
+        sctx.strokeStyle = s.color; sctx.fillStyle = s.color; sctx.lineWidth = s.width;
+        sctx.lineCap = "round"; sctx.lineJoin = "round";
+        var p = s.pts;
+        if (p.length === 1) { sctx.beginPath(); sctx.arc(p[0].x, p[0].y, s.width / 2, 0, Math.PI * 2); sctx.fill(); return; }
+        sctx.beginPath(); sctx.moveTo(p[0].x, p[0].y);
+        for (var i = 1; i < p.length - 1; i++) {
+          var mx = (p[i].x + p[i + 1].x) / 2, my = (p[i].y + p[i + 1].y) / 2;
+          sctx.quadraticCurveTo(p[i].x, p[i].y, mx, my);
+        }
+        sctx.lineTo(p[p.length - 1].x, p[p.length - 1].y); sctx.stroke();
+      });
+    } else {
+      var text = signName.value.trim();
+      has = !!text;
+      if (text) {
+        var fam = '"' + signFont.value + '", cursive';
+        sctx.fillStyle = penColor; sctx.textAlign = "center"; sctx.textBaseline = "middle";
+        sctx.font = "220px " + fam;
+        var w = sctx.measureText(text).width, size = Math.min(220, 220 * 700 / w);
+        sctx.font = size + "px " + fam;
+        sctx.fillText(text, sig.width / 2, sig.height / 2);
+      }
+    }
+    sigEmpty.hidden = mode !== "draw" || has;
+    sigBtn.disabled = !has;
+  }
+
+  sig.addEventListener("pointerdown", function (e) {
+    if (mode !== "draw") return;
+    e.preventDefault(); sig.setPointerCapture(e.pointerId);
+    cur = { color: penColor, width: penWidth, pts: [pos(e)] }; strokes.push(cur); drawSig();
+  });
+  sig.addEventListener("pointermove", function (e) { if (cur) { cur.pts.push(pos(e)); drawSig(); } });
+  ["pointerup", "pointercancel"].forEach(function (t) { sig.addEventListener(t, function () { cur = null; }); });
+
+  document.getElementById("undo").onclick = function () { strokes.pop(); drawSig(); };
+  document.getElementById("clear").onclick = function () { strokes = []; drawSig(); };
+  document.getElementById("width").oninput = function (e) { penWidth = +e.target.value; };
+
+  document.querySelectorAll("[data-color]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      penColor = b.dataset.color;
+      document.querySelectorAll("[data-color]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      if (mode === "type") redrawSign();
+    });
+  });
+  document.querySelectorAll("[data-mode]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      mode = b.dataset.mode;
+      document.querySelectorAll("[data-mode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      var t = mode === "type";
+      document.getElementById("typeName").hidden = !t; document.getElementById("typeFont").hidden = !t;
+      document.getElementById("drawWidth").hidden = t; document.getElementById("drawTools").hidden = t;
+      document.getElementById("sigBadge").textContent = t ? "미리보기" : "여기에 그려 보세요";
+      sig.style.cursor = t ? "default" : "crosshair";
+      redrawSign();
+    });
+  });
+  function redrawSign() { loadFont('100px "' + signFont.value + '"', signName.value, drawSig); }
+  signName.addEventListener("input", redrawSign);
+  signFont.addEventListener("change", redrawSign);
+
+  sigBtn.addEventListener("click", function () {
+    // 사인이 있는 영역만 잘라서 저장
+    var d = sctx.getImageData(0, 0, sig.width, sig.height).data, w = sig.width, h = sig.height;
+    var x0 = w, y0 = h, x1 = 0, y1 = 0;
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) {
+      if (d[(y * w + x) * 4 + 3] > 0) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x1 < x0) return;
+    var pad = 20; x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad);
+    x1 = Math.min(w - 1, x1 + pad); y1 = Math.min(h - 1, y1 + pad);
+    var out = document.createElement("canvas"); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+    out.getContext("2d").drawImage(sig, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+    saveCanvas(out, "내_사인.png");
   });
 
-  draw();
-  redraw();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+  /* 시작 */
+  drawStamp(); redrawStamp();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { redrawStamp(); if (!signApp.hidden) drawSig(); });
 </script>
 </body>
 </html>
