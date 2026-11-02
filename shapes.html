@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>도형 돌리기·뒤집기 교구 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
+.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
+header.top{text-align:center;margin-bottom:24px}
+.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
+.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 22px;font-weight:700;color:var(--sub)}
+.tabs button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.chips button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 14px;font-weight:500}
+.chips button[aria-pressed=true]{border-color:var(--accent);background:var(--soft);color:var(--accent);font-weight:700}
+.chips button:disabled{opacity:.5;cursor:not-allowed}
+.stage{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.box{position:relative;width:min(100%,300px);aspect-ratio:1;background:#fff;border:1px solid var(--line);border-radius:20px;
+ background-image:linear-gradient(#eeecf7 1px,transparent 1px),linear-gradient(90deg,#eeecf7 1px,transparent 1px);background-size:30px 30px;background-position:center}
+.box .lab{position:absolute;top:8px;left:12px;font-size:.82rem;font-weight:700;color:var(--sub);z-index:2}
+.box svg.shape{position:absolute;inset:0;width:100%;height:100%;transition:transform .45s ease}
+.box .axis{position:absolute;background:#d6d2ea}
+.box .axis.h{left:0;right:0;top:50%;height:1px}.box .axis.v{top:0;bottom:0;left:50%;width:1px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
+.ctrl .btn{padding:10px 16px}
+.info{text-align:center;min-height:3.4em;font-weight:500;margin:6px 0}
+.info.ok{color:#237a4b;font-weight:700}.info.no{color:#c92a2a;font-weight:700}
+.score{text-align:center;font-weight:700}
+.note{background:var(--soft);border-radius:14px;padding:10px 16px;font-size:.92rem;color:#3d3a66;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 8 · 10주차 · 초급 · 사용자 조작에 반응하는 앱</p><h1>도형 돌리기·뒤집기 교구</h1><p class="sub">도형을 돌리고 뒤집어 보며 공간 감각을 키워요. 연습한 뒤 퀴즈에 도전해 보세요.</p></header>
+
+<section class="panel" aria-label="도형 학습 교구">
+  <div class="tabs" role="group" aria-label="모드">
+    <button type="button" id="mPractice" aria-pressed="true">연습 모드</button>
+    <button type="button" id="mQuiz" aria-pressed="false">퀴즈 모드</button>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="도형 고르기"></div>
+  <div class="stage">
+    <div class="box" id="targetBox" hidden><span class="lab">🎯 목표 모양</span><span class="axis h"></span><span class="axis v"></span>
+      <svg class="shape" id="target" viewBox="-150 -150 300 300" aria-label="목표 도형"><polygon id="tPoly" fill="#f08c00" fill-opacity=".85" stroke="#b86400" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="box"><span class="lab" id="meLab">내 도형</span><span class="axis h"></span><span class="axis v"></span>
+      <svg class="shape" id="me" viewBox="-150 -150 300 300" aria-label="내 도형"><polygon id="mPoly" fill="#7a63d8" fill-opacity=".85" stroke="#3f2fa0" stroke-width="4" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="ctrl">
+    <button type="button" class="btn" id="cw">⟳ 시계 방향 돌리기</button>
+    <button type="button" class="btn" id="ccw">⟲ 반시계 방향 돌리기</button>
+    <button type="button" class="btn" id="fh">↔ 좌우 뒤집기</button>
+    <button type="button" class="btn" id="fv">↕ 상하 뒤집기</button>
+    <button type="button" class="btn ghost" id="reset">처음 모양으로</button>
+  </div>
+  <div class="ctrl" id="quizCtrl" hidden>
+    <button type="button" class="btn" id="check" style="background:#2f9e63">정답 확인</button>
+    <button type="button" class="btn ghost" id="nextQ">다음 문제</button>
+  </div>
+  <p class="info" id="info" role="status" aria-live="polite"></p>
+  <p class="score" id="scoreLine" hidden></p>
+  <p class="note">💡 <b>돌리기</b>는 모양을 그대로 둔 채 방향만 바꿔요. <b>뒤집기</b>는 거울에 비친 모양이 돼요. 색이나 방향이 달라져도 모양과 크기가 같으면 같은 도형이에요.</p>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function ngon(n,r){var p=[];for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;p.push([r*Math.cos(a),r*Math.sin(a)]);}return p;}
+function center(p){var sx=0,sy=0;p.forEach(function(q){sx+=q[0];sy+=q[1];});sx/=p.length;sy/=p.length;return p.map(function(q){return [q[0]-sx,q[1]-sy];});}
+var SHAPES=[
+ {id:"tri",name:"정삼각형",pts:center(ngon(3,100)),tip:"대칭이 많아서 뒤집어도 비슷해 보여요."},
+ {id:"sq",name:"정사각형",pts:center([[-70,-70],[70,-70],[70,70],[-70,70]]),tip:"돌려도 뒤집어도 똑같이 보여요."},
+ {id:"pent",name:"정오각형",pts:center(ngon(5,100)),tip:"좌우로 뒤집어도 똑같지만 돌리면 방향이 달라져요."},
+ {id:"rt",name:"직각삼각형",pts:center([[-70,-70],[-70,70],[70,70]]),tip:"직각의 위치를 보면 돌렸는지 뒤집었는지 알 수 있어요."},
+ {id:"L",name:"L자 도형",pts:center([[-60,-80],[-10,-80],[-10,30],[60,30],[60,80],[-60,80]]),tip:"뒤집으면 거울에 비친 L이 돼요."},
+ {id:"arrow",name:"화살표",pts:center([[0,-90],[60,-10],[25,-10],[25,80],[-25,80],[-25,-10],[-60,-10]]),tip:"좌우로 뒤집어도 같지만 상하로 뒤집으면 달라져요."}
+];
+var ID=[1,0,0,1];
+function mul(P,Q){return [P[0]*Q[0]+P[2]*Q[1],P[1]*Q[0]+P[3]*Q[1],P[0]*Q[2]+P[2]*Q[3],P[1]*Q[2]+P[3]*Q[3]];}
+var OPS={cw:[0,1,-1,0],ccw:[0,-1,1,0],fh:[-1,0,0,1],fv:[1,0,0,-1]};
+var OPNAME={cw:"시계 방향으로 돌렸어요",ccw:"반시계 방향으로 돌렸어요",fh:"좌우로 뒤집었어요",fv:"상하로 뒤집었어요"};
+var cur=SHAPES[4],M=ID.slice(),T=ID.slice(),mode="practice",solved=false,right=0,tries=0;
+
+function css(m){return "matrix("+m.join(",")+",0,0)";}
+function key(m){
+  return cur.pts.map(function(p){var x=Math.round(m[0]*p[0]+m[2]*p[1])||0,y=Math.round(m[1]*p[0]+m[3]*p[1])||0;return x+","+y;}).sort().join("|");
+}
+function det(m){return m[0]*m[3]-m[1]*m[2];}
+function draw(){
+  var s=cur.pts.map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1);}).join(" ");
+  $("mPoly").setAttribute("points",s);$("tPoly").setAttribute("points",s);
+  $("me").style.transform=css(M);$("target").style.transform=css(T);
+}
+function setInfo(t,c){$("info").textContent=t;$("info").className="info"+(c?" "+c:"");}
+
+function buildChips(){
+  var box=$("chips");box.innerHTML="";
+  SHAPES.forEach(function(s){
+    var b=document.createElement("button");b.type="button";b.textContent=s.name;b.setAttribute("aria-pressed",s===cur);
+    b.disabled=mode==="quiz";
+    b.onclick=function(){cur=s;M=ID.slice();buildChips();draw();setInfo(s.tip);};
+    box.appendChild(b);
+  });
+}
+function op(name){
+  if(mode==="quiz"&&solved)return;
+  M=mul(OPS[name],M);draw();tone(520,0.07,"triangle");
+  if(mode==="practice"){
+    setInfo(OPNAME[name]+(key(M)===key(ID)?" 지금은 처음과 같은 모양이에요!":""));
+  }else{setInfo(OPNAME[name]+" 목표와 비교해 보세요.");}
+}
+["cw","ccw","fh","fv"].forEach(function(n){$(n).onclick=function(){op(n);};});
+$("reset").onclick=function(){M=ID.slice();draw();setInfo("처음 모양으로 돌아왔어요.");};
+
+function newQuestion(){
+  var tries2=0;solved=false;
+  do{
+    cur=SHAPES[Math.floor(Math.random()*SHAPES.length)];
+    T=ID.slice();
+    var n=2+Math.floor(Math.random()*3),names=Object.keys(OPS);
+    for(var i=0;i<n;i++)T=mul(OPS[names[Math.floor(Math.random()*4)]],T);
+    tries2++;
+  }while(key(T)===key(ID)&&tries2<60);
+  M=ID.slice();draw();$("check").disabled=false;
+  setInfo("왼쪽 목표 모양과 똑같아지도록 돌리거나 뒤집어 보세요.");
+}
+$("check").onclick=function(){
+  if(solved)return;tries++;
+  if(key(M)===key(T)){
+    solved=true;right++;setInfo("정답이에요! 목표 모양과 똑같아요 🎉","ok");seq([[784,0.14],[988,0.22]]);$("check").disabled=true;
+  }else{
+    tone(210,0.3,"sawtooth",0.05);
+    setInfo(det(M)!==det(T)?"아직 달라요. 목표는 거울에 비친 모양이에요. 뒤집기가 필요해요!":"아직 달라요. 모양은 같아요. 돌려서 방향을 맞춰 보세요.","no");
+  }
+  updScore();
+};
+$("nextQ").onclick=function(){newQuestion();};
+function updScore(){$("scoreLine").textContent="맞힌 문제 "+right+"개 · 확인한 횟수 "+tries+"번";}
+
+function setMode(m){
+  mode=m;
+  $("mPractice").setAttribute("aria-pressed",m==="practice");$("mQuiz").setAttribute("aria-pressed",m==="quiz");
+  var q=m==="quiz";
+  $("targetBox").hidden=!q;$("quizCtrl").hidden=!q;$("scoreLine").hidden=!q;
+  $("meLab").textContent=q?"내 도형":"내 도형 (연습)";
+  if(q){newQuestion();updScore();}else{cur=cur||SHAPES[4];M=ID.slice();draw();setInfo("버튼을 눌러 도형을 마음껏 돌리고 뒤집어 보세요.");}
+  buildChips();
+}
+$("mPractice").onclick=function(){setMode("practice");};
+$("mQuiz").onclick=function(){setMode("quiz");};
+setMode("practice");
+</script>
+</body>
+</html>

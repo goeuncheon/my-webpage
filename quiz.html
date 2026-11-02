@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>독도의 날 퀴즈 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
+.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
+header.top{text-align:center;margin-bottom:24px}
+.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
+.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;font-weight:700}
+.top-row .sc b{color:var(--accent)}
+.prog{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;margin-bottom:22px}
+.prog span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.qtext{font-family:"Gowun Batang",serif;font-size:clamp(1.3rem,4.6vw,1.7rem);line-height:1.55;margin:0 0 20px;font-weight:700}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 18px;font-weight:500;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--accent);background:#faf9ff}
+.opt .n{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--soft);color:var(--accent);font-weight:800}
+.opt.ok{border-color:#2f9e63;background:#eafaf1}
+.opt.no{border-color:#e03131;background:#fff1f0;opacity:.8}
+.opt:disabled{cursor:default}
+.fb{min-height:3.2em;margin:18px 0 8px;font-weight:700}
+.fb.ok{color:#237a4b}.fb.no{color:#c92a2a}
+.fb small{display:block;font-weight:500;color:var(--sub)}
+.res{text-align:center}
+.res .big{font-size:3rem;font-weight:800;color:var(--accent);margin:0}
+.miss{text-align:left;margin:18px auto 0;max-width:560px}
+.miss li{margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 7 · 10주차 · 초급 · 사용자 조작에 반응하는 앱</p><h1>독도의 날 4지선다 퀴즈</h1><p class="sub">독도에 대해 얼마나 알고 있나요? 10문제를 풀고 점수를 확인해 보세요.</p></header>
+
+<section class="panel" id="quiz" aria-label="퀴즈">
+  <div class="top-row"><span id="progress">문제 1 / 10</span><span class="sc">점수 <b id="score">0</b>점 <button type="button" class="btn ghost" id="mute" style="padding:3px 12px;margin-left:8px" aria-pressed="false">🔊</button></span></div>
+  <div class="prog" aria-hidden="true"><span id="pbar"></span></div>
+  <p class="qtext" id="qtext"></p>
+  <div class="opts" id="opts"></div>
+  <div class="fb" id="fb" role="status" aria-live="polite"></div>
+  <button type="button" class="btn" id="next" hidden>다음 문제 →</button>
+</section>
+<section class="panel res" id="result" hidden aria-live="polite">
+  <p class="sub">최종 점수</p>
+  <p class="big"><span id="final">0</span> / 10</p>
+  <p id="msg" style="font-weight:700;font-size:1.1rem"></p>
+  <div class="miss" id="missBox" hidden><p style="font-weight:700">처음에 헷갈렸던 문제를 다시 볼까요?</p><ul id="missList"></ul></div>
+  <p style="margin-top:20px"><button type="button" class="btn" id="retry">다시 도전하기</button></p>
+  <p class="sub" style="font-size:.88rem">다시 도전하면 문제를 새로 뽑고, 보기 순서도 새로 섞여요.</p>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var POOL=[
+{q:"독도의 날은 언제일까요?",o:["10월 25일","3월 1일","8월 15일","10월 3일"],e:"1900년 10월 25일에 대한제국이 칙령으로 독도를 우리 행정구역에 분명히 포함시켰어요. 이날을 기념해 10월 25일을 독도의 날로 정했어요."},
+{q:"독도는 어느 바다에 있을까요?",o:["동해","서해","남해","태평양"],e:"독도는 동해에 있는 우리나라의 섬이에요."},
+{q:"독도는 우리나라 영토의 어느 쪽 끝에 있을까요?",o:["동쪽 끝","서쪽 끝","남쪽 끝","북쪽 끝"],e:"독도는 우리나라의 가장 동쪽 끝에 있는 섬이에요."},
+{q:"독도는 어떻게 만들어진 섬일까요?",o:["바다 속 화산이 터져서","사람이 흙을 쌓아서","강물이 흙을 날라서","빙하가 녹아서"],e:"독도는 아주 오래전 바다 속 화산 활동으로 만들어진 화산섬이에요."},
+{q:"독도를 이루는 가장 큰 두 섬의 이름은 무엇일까요?",o:["동도와 서도","남도와 북도","큰섬과 작은섬","해도와 달도"],e:"독도는 동도와 서도 두 개의 큰 섬과 주변의 작은 바위섬들로 이루어져 있어요."},
+{q:"독도는 어느 지역에 속해 있을까요?",o:["경상북도 울릉군","제주특별자치도","강원특별자치도 속초시","전라남도 신안군"],e:"독도의 주소는 경상북도 울릉군 울릉읍 독도리예요."},
+{q:"조선 시대에 울릉도와 독도 일대에서 일본 어부들에게 항의하며 우리 땅을 지키려 한 인물은 누구일까요?",o:["안용복","김구","이순신","장영실"],e:"안용복은 조선 숙종 때 울릉도와 독도 일대에서 일본 어부들에게 항의한 것으로 알려져 있어요."},
+{q:"신라 때 우산국(울릉도와 독도)을 신라에 복속시킨 장군은 누구일까요?",o:["이사부","김유신","강감찬","을지문덕"],e:"신라의 이사부 장군이 512년에 우산국을 복속시켰다고 전해져요."},
+{q:"독도가 우리 땅임을 알려 주는 옛 기록(문헌)이 실려 있는 책은 무엇일까요?",o:["세종실록지리지","동의보감","훈민정음 해례본","직지심체요절"],e:"『세종실록지리지』에는 울릉도와 독도로 보이는 우산·무릉 두 섬이 우리 땅으로 실려 있어요. 이렇게 옛 책(문헌)은 역사의 증거가 돼요."},
+{q:"독도에서 가장 가까운 우리나라 섬은 어디일까요?",o:["울릉도","제주도","거제도","강화도"],e:"독도는 울릉도에서 약 87km 떨어져 있어요. 맑은 날에는 울릉도에서 독도가 보이기도 해요."},
+{q:"독도에 많이 살고 있는 대표적인 새는 무엇일까요?",o:["괭이갈매기","펭귄","타조","앵무새"],e:"독도에는 괭이갈매기가 많이 살아요. 독도는 천연기념물 제336호 '독도 천연보호구역'이에요."},
+{q:"독도에서 우리 땅을 지키는 경찰 부대의 이름은 무엇일까요?",o:["독도경비대","독도소방대","독도해녀단","독도농업단"],e:"독도경비대가 독도를 지키고 있어요."},
+{q:"'독도'라는 이름은 어떤 말에서 왔다고 널리 알려져 있을까요?",o:["돌로 된 섬(돌섬)","독이 있는 풀이 많은 섬","독수리가 사는 섬","혼자 서 있는 큰 나무"],e:"'돌섬'이라는 말에서 왔다는 설이 널리 알려져 있어요. 한자로는 '홀로 있는 섬'이라는 뜻의 獨島로 써요."},
+{q:"독도의 날에 하기 좋은 일은 무엇일까요?",o:["독도에 대해 배우고 친구에게 알려 주기","독도를 모르는 척하기","쓰레기를 바다에 버리기","독도 사진을 모두 지우기"],e:"독도에 대해 알아보고 다른 사람에게 알리는 것이 독도를 사랑하는 첫걸음이에요."}
+];
+var set=[],qi=0,score=0,tried=false,missed=[],wasWrong=false;
+
+function newGame(){
+  set=shuffle(POOL).slice(0,10).map(function(p){
+    return {q:p.q,e:p.e,opts:shuffle(p.o.map(function(t,i){return {t:t,ok:i===0};}))};
+  });
+  qi=0;score=0;missed=[];
+  $("result").hidden=true;$("quiz").hidden=false;show();
+}
+function show(){
+  var Q=set[qi];wasWrong=false;
+  $("progress").textContent="문제 "+(qi+1)+" / 10";
+  $("pbar").style.width=(qi/10*100)+"%";
+  $("score").textContent=score;
+  $("qtext").textContent=Q.q;
+  $("fb").textContent="";$("fb").className="fb";
+  $("next").hidden=true;$("next").textContent=qi===9?"결과 보기":"다음 문제 →";
+  var box=$("opts");box.innerHTML="";
+  Q.opts.forEach(function(o,i){
+    var b=document.createElement("button");b.type="button";b.className="opt";
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span></span>';b.lastChild.textContent=o.t;
+    b.onclick=function(){choose(b,o);};
+    box.appendChild(b);
+  });
+}
+function choose(btn,o){
+  var Q=set[qi];
+  if(o.ok){
+    btn.classList.add("ok");
+    if(!wasWrong)score++;
+    $("score").textContent=score;
+    document.querySelectorAll(".opt").forEach(function(x){x.disabled=true;});
+    $("fb").className="fb ok";$("fb").innerHTML="";
+    $("fb").appendChild(document.createTextNode(wasWrong?"맞았어요! 끝까지 생각해 냈네요 👏":"정답이에요! 🎉"));
+    var s=document.createElement("small");s.textContent=Q.e;$("fb").appendChild(s);
+    seq([[784,0.14],[988,0.22]]);
+    $("next").hidden=false;$("next").focus();
+  }else{
+    btn.classList.add("no");btn.disabled=true;
+    if(!wasWrong){wasWrong=true;missed.push(Q);}
+    $("fb").className="fb no";$("fb").textContent="다시 생각해 보세요! 🤔";
+    tone(210,0.3,"sawtooth",0.05);
+  }
+}
+$("next").onclick=function(){
+  qi++;
+  if(qi>=10)finish();else show();
+};
+function finish(){
+  $("quiz").hidden=true;$("result").hidden=false;$("final").textContent=score;
+  var m=score>=9?"독도 박사님이에요! 🏆":score>=7?"아주 잘했어요! 독도를 잘 알고 있네요.":score>=5?"좋아요! 틀린 문제를 다시 보면 더 잘할 수 있어요.":"괜찮아요. 다시 도전하면 더 잘할 수 있어요!";
+  $("msg").textContent=m;
+  var list=$("missList");list.innerHTML="";
+  missed.forEach(function(Q){
+    var li=document.createElement("li");var ok=Q.opts.filter(function(x){return x.ok;})[0].t;
+    li.textContent=Q.q+" → 정답: "+ok;list.appendChild(li);
+  });
+  $("missBox").hidden=!missed.length;
+  seq(score>=7?[[523,0.16],[659,0.16],[784,0.16],[1046,0.4]]:[[392,0.2],[330,0.3]],150);
+}
+$("retry").onclick=newGame;
+$("mute").onclick=function(){muted=!muted;this.setAttribute("aria-pressed",muted);this.textContent=muted?"🔇":"🔊";};
+newGame();
+</script>
+</body>
+</html>

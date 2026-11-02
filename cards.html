@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>카드 뒤집기 게임 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
+.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
+header.top{text-align:center;margin-bottom:24px}
+.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
+.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sel{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.score{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 14px;font-weight:700;font-size:.92rem}
+.chip b{color:var(--accent)}
+.cap{text-align:center;color:var(--sub);margin:0 0 14px;font-weight:500}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:600px;margin:0 auto}
+.cardbtn{aspect-ratio:3/4;border:0;background:none;padding:0;perspective:700px}
+.inner{position:relative;display:block;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.cardbtn.flipped .inner,.cardbtn.matched .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:16px;display:grid;place-items:center}
+.f-front{background:linear-gradient(135deg,#5b46c0,#8d7be0);color:#fff;font-size:2rem;box-shadow:0 8px 16px -8px rgba(91,70,192,.6)}
+.f-back{transform:rotateY(180deg);background:#fff;border:2px solid var(--line);font-weight:800;color:var(--ink)}
+.f-back.animal{font-size:clamp(2rem,9vw,3.2rem)}
+.f-back.num{font-size:clamp(1.4rem,6vw,2rem);color:var(--accent)}
+.f-back.name{font-size:clamp(1rem,4.2vw,1.35rem);background:var(--soft)}
+.cardbtn.matched .f-back{border-color:#2f9e63;background:#eafaf1}
+.win{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(38,38,64,.45);padding:20px}
+.win .box{background:#fff;border-radius:26px;padding:30px 34px;text-align:center;max-width:380px}
+.win h2{margin:0 0 6px;font-size:1.7rem}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 6 · 10주차 · 초급 · 사용자 조작에 반응하는 앱</p><h1>카드 뒤집기 짝 맞추기</h1><p class="sub">같은 짝을 찾아 모든 카드를 뒤집어 보세요. 동물 친구들도, KDC 주류도 만나요.</p></header>
+
+<section class="panel" aria-label="카드 뒤집기 게임">
+  <div class="bar">
+    <div class="sel">
+      <label>주제 <select id="theme"><option value="animal">동물 친구들</option><option value="kdc">KDC 주류 연결하기</option></select></label>
+      <label>난이도 <select id="level"><option value="4">쉬움 (4쌍)</option><option value="6" selected>보통 (6쌍)</option><option value="8">어려움 (8쌍)</option></select></label>
+      <button type="button" class="btn" id="restart">다시 시작</button>
+      <button type="button" class="btn ghost" id="mute" aria-pressed="false">소리 켜짐 🔊</button>
+    </div>
+    <div class="score" aria-live="polite">
+      <span class="chip">찾은 짝 <b id="sMatch">0 / 0</b></span>
+      <span class="chip">시도 <b id="sTry">0</b>번</span>
+      <span class="chip">점수 <b id="sScore">0</b>점</span>
+    </div>
+  </div>
+  <p class="cap" id="cap"></p>
+  <div class="board" id="board"></div>
+</section>
+<div class="win" id="win" hidden role="dialog" aria-modal="true" aria-labelledby="winTitle">
+  <div class="box"><h2 id="winTitle">🎉 완성!</h2><p id="winText"></p><button type="button" class="btn" id="again">한 번 더 하기</button></div>
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var ANIMALS=["🐶","🐱","🐰","🦊","🐻","🐼","🐸","🦁","🐵","🐯","🐷","🐮"];
+var KDC=[["000","총류"],["100","철학"],["200","종교"],["300","사회과학"],["400","순수과학"],["500","기술과학"],["600","예술"],["700","언어"],["800","문학"],["900","역사"]];
+var first=null,lock=false,matchedN=0,attempts=0,score=0,totalPairs=0;
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function updateScore(){$("sMatch").textContent=matchedN+" / "+totalPairs;$("sTry").textContent=attempts;$("sScore").textContent=score;}
+
+function start(){
+  var theme=$("theme").value,pairs=+$("level").value,deck=[];
+  if(theme==="animal"){
+    $("cap").textContent="같은 동물 두 장을 찾아 보세요.";
+    shuffle(ANIMALS).slice(0,pairs).forEach(function(a,i){
+      deck.push({id:i,text:a,cls:"animal",label:"동물 "+a});deck.push({id:i,text:a,cls:"animal",label:"동물 "+a});
+    });
+  }else{
+    $("cap").textContent="분류 번호 카드와 주제 카드를 짝지어 보세요. 예) 800 ↔ 문학";
+    shuffle(KDC).slice(0,pairs).forEach(function(k,i){
+      deck.push({id:i,text:k[0],cls:"num",label:"분류 번호 "+k[0]});deck.push({id:i,text:k[1],cls:"name",label:"주제 "+k[1]});
+    });
+  }
+  deck=shuffle(deck);first=null;lock=false;matchedN=0;attempts=0;score=0;totalPairs=pairs;
+  $("win").hidden=true;
+  var b=$("board");b.innerHTML="";
+  deck.forEach(function(c,idx){
+    var btn=document.createElement("button");btn.type="button";btn.className="cardbtn";btn.setAttribute("aria-label",(idx+1)+"번 카드, 뒷면");
+    btn.innerHTML='<span class="inner"><span class="face f-front" aria-hidden="true">✦</span><span class="face f-back '+c.cls+'"></span></span>';
+    btn.querySelector(".f-back").textContent=c.text;
+    btn.onclick=function(){flip(btn,c,idx);};
+    b.appendChild(btn);
+  });
+  updateScore();
+}
+
+function flip(btn,c,idx){
+  if(lock||btn.classList.contains("flipped")||btn.classList.contains("matched"))return;
+  btn.classList.add("flipped");btn.setAttribute("aria-label",(idx+1)+"번 카드, "+c.label);tone(620,0.08,"triangle");
+  if(!first){first={btn:btn,c:c,idx:idx};return;}
+  var a=first,b={btn:btn,c:c,idx:idx};first=null;attempts++;
+  if(a.c.id===b.c.id){
+    a.btn.classList.add("matched");b.btn.classList.add("matched");
+    matchedN++;score+=10;seq([[784,0.14],[988,0.2]]);updateScore();
+    if(matchedN===totalPairs)setTimeout(win,500);
+  }else{
+    lock=true;updateScore();tone(200,0.25,"sawtooth",0.05);
+    setTimeout(function(){
+      [a,b].forEach(function(x){x.btn.classList.remove("flipped");x.btn.setAttribute("aria-label",(x.idx+1)+"번 카드, 뒷면");});
+      lock=false;
+    },1000);
+  }
+}
+
+function win(){
+  $("winText").textContent="짝을 모두 찾았어요! "+attempts+"번 만에 완성했고, 점수는 "+score+"점이에요.";
+  $("win").hidden=false;$("again").focus();
+  seq([[523,0.18],[659,0.18],[784,0.18],[1046,0.5]],150);
+  fireworks();
+}
+
+/* 폭죽 파티클 */
+var fx=$("fx"),fctx=fx.getContext("2d"),parts=[],fxRun=false,fxTimer=null;
+var COLORS=["#5b46c0","#f2b705","#e03131","#2f9e63","#1c7ed6","#f06595"];
+function fxSize(){fx.width=window.innerWidth;fx.height=window.innerHeight;}
+window.addEventListener("resize",fxSize);fxSize();
+function burst(x,y){
+  var n=reduce?10:50;
+  for(var i=0;i<n;i++){
+    var a=Math.random()*Math.PI*2,s=2+Math.random()*5;
+    parts.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:60+Math.random()*30,c:COLORS[Math.floor(Math.random()*COLORS.length)]});
+  }
+}
+function fxLoop(){
+  fctx.clearRect(0,0,fx.width,fx.height);
+  parts.forEach(function(p){
+    p.x+=p.vx;p.y+=p.vy;p.vy+=0.07;p.vx*=0.99;p.life--;
+    fctx.globalAlpha=Math.max(p.life/50,0);fctx.fillStyle=p.c;fctx.beginPath();fctx.arc(p.x,p.y,3,0,Math.PI*2);fctx.fill();
+  });
+  fctx.globalAlpha=1;parts=parts.filter(function(p){return p.life>0;});
+  if(parts.length||fxTimer){requestAnimationFrame(fxLoop);}else{fxRun=false;fctx.clearRect(0,0,fx.width,fx.height);}
+}
+function fireworks(){
+  var k=0;clearInterval(fxTimer);
+  burst(fx.width/2,fx.height/3);
+  fxTimer=setInterval(function(){
+    burst(fx.width*(0.2+Math.random()*0.6),fx.height*(0.15+Math.random()*0.35));
+    if(++k>=6){clearInterval(fxTimer);fxTimer=null;}
+  },380);
+  if(!fxRun){fxRun=true;fxLoop();}
+}
+
+$("restart").onclick=start;$("again").onclick=start;
+$("theme").onchange=start;$("level").onchange=start;
+$("mute").onclick=function(){muted=!muted;this.setAttribute("aria-pressed",muted);this.textContent=muted?"소리 꺼짐 🔇":"소리 켜짐 🔊";};
+start();
+</script>
+</body>
+</html>

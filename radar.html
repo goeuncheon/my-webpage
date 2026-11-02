@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>디지털 리터러시 자기평가 레이더 차트 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
+.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
+header.top{text-align:center;margin-bottom:24px}
+.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
+.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.layout{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 12px;font-weight:700;font-size:.92rem}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
+table{width:100%;border-collapse:collapse;margin-bottom:14px}
+th,td{padding:6px 4px;text-align:center;font-size:.92rem}
+th{color:var(--sub);font-weight:700}
+td.name{text-align:left;font-weight:500}
+td input{width:64px;text-align:center;padding:7px 4px}
+td input.pre{border-color:#a5c0f5}td input.post{border-color:#f0aaaa}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.cv{width:100%;max-width:560px;height:auto;display:block;margin:0 auto;border:1px solid var(--line);border-radius:18px;background:#fff}
+.sum{background:var(--soft);border-radius:16px;padding:14px 20px;margin-top:16px}
+.sum h2{font-size:1.05rem;margin:0 0 6px}
+.sum ul{margin:0;padding-left:1.2em}
+.warn{color:#b42318;font-weight:700;min-height:1.4em;margin:6px 0 0;font-size:.9rem}
+@media (max-width:760px){.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 10 · 11주차 · 중급 · 데이터를 시각적으로 보여주는 학습도구</p><h1>디지털 리터러시 자기평가</h1><p class="sub">영역별 점수를 입력하면 사전·사후 평가가 하나의 레이더 차트에 겹쳐 보여요.</p></header>
+
+<section class="panel layout" aria-label="디지털 리터러시 자기평가">
+  <div>
+    <p class="legend"><span><i style="background:#2f6fe0"></i>사전평가 (파란색)</span><span><i style="background:#e03131"></i>사후평가 (빨간색)</span></p>
+    <p class="sub" style="font-size:.9rem;margin:0 0 8px">영역별로 <b>1~5점</b>을 입력하세요. 아직 평가하지 않은 영역은 비워 두어도 돼요.</p>
+    <table>
+      <thead><tr><th scope="col" style="text-align:left">영역</th><th scope="col">사전</th><th scope="col">사후</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="warn" id="warn" role="status" aria-live="polite"></p>
+    <div class="btns">
+      <button type="button" class="btn ghost" id="sample">예시 불러오기</button>
+      <button type="button" class="btn ghost" id="clear">점수 초기화</button>
+      <button type="button" class="btn" id="save">이미지로 저장</button>
+    </div>
+  </div>
+  <div>
+    <canvas id="cv" class="cv" width="720" height="720" role="img" aria-label="사전·사후 평가 레이더 차트"></canvas>
+    <div class="sum" aria-live="polite"><h2>분석 요약</h2><ul id="sumList"></ul></div>
+  </div>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>var $=function(id){return document.getElementById(id);};
+var AREAS=["정보 검색","정보 평가","정보 정리·활용","디지털 소통·협업","AI 도구 활용","저작권·윤리"];
+var pre=[null,null,null,null,null,null],post=[null,null,null,null,null,null];
+var SAMPLE_PRE=[2,3,2,3,1,3],SAMPLE_POST=[4,4,3,4,3,4];
+var BLUE="#2f6fe0",RED="#e03131";
+
+function buildRows(){
+  var tb=$("rows");tb.innerHTML="";
+  AREAS.forEach(function(a,i){
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td class="name"></td><td><input class="pre" type="number" min="1" max="5" step="1" inputmode="numeric"></td><td><input class="post" type="number" min="1" max="5" step="1" inputmode="numeric"></td>';
+    tr.firstChild.textContent=a;
+    var ins=tr.querySelectorAll("input");
+    ins[0].setAttribute("aria-label",a+" 사전 점수");ins[1].setAttribute("aria-label",a+" 사후 점수");
+    ins[0].oninput=function(){pre[i]=read(ins[0]);refresh();};
+    ins[1].oninput=function(){post[i]=read(ins[1]);refresh();};
+    tb.appendChild(tr);
+  });
+}
+function read(el){
+  var s=el.value.trim();
+  if(s===""){$("warn").textContent="";return null;}
+  var v=Math.round(parseFloat(s));
+  if(isNaN(v)){return null;}
+  if(v<1||v>5){$("warn").textContent="점수는 1~5 사이로 입력해 주세요.";v=Math.max(1,Math.min(5,v));el.value=v;}
+  else $("warn").textContent="";
+  return v;
+}
+function syncInputs(){
+  var ins=document.querySelectorAll("#rows input");
+  AREAS.forEach(function(a,i){ins[i*2].value=pre[i]===null?"":pre[i];ins[i*2+1].value=post[i]===null?"":post[i];});
+}
+
+function pt(i,v,cx,cy,R){var a=-Math.PI/2+i*2*Math.PI/AREAS.length,r=R*v/5;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function poly(ctx,arr,color,cx,cy,R){
+  var P=[];arr.forEach(function(v,i){if(v!==null)P.push(pt(i,v,cx,cy,R));});
+  if(!P.length)return;
+  ctx.strokeStyle=color;ctx.lineWidth=4;ctx.lineJoin="round";
+  if(P.length>=3){
+    ctx.beginPath();P.forEach(function(p,k){k?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);});ctx.closePath();
+    ctx.globalAlpha=0.16;ctx.fillStyle=color;ctx.fill();ctx.globalAlpha=1;ctx.stroke();
+  }else if(P.length===2){ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);ctx.lineTo(P[1][0],P[1][1]);ctx.stroke();}
+  ctx.fillStyle=color;P.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],6,0,Math.PI*2);ctx.fill();});
+}
+function draw(){
+  var c=$("cv"),ctx=c.getContext("2d"),W=c.width,cx=W/2,cy=W/2+24,R=W*0.235,n=AREAS.length;
+  ctx.clearRect(0,0,W,W);ctx.fillStyle="#fff";ctx.fillRect(0,0,W,W);
+  ctx.font="700 26px 'Noto Sans KR',sans-serif";ctx.textBaseline="middle";ctx.textAlign="left";
+  ctx.fillStyle=BLUE;ctx.fillRect(40,34,22,22);ctx.fillStyle="#262640";ctx.fillText("사전평가",70,46);
+  ctx.fillStyle=RED;ctx.fillRect(210,34,22,22);ctx.fillStyle="#262640";ctx.fillText("사후평가",240,46);
+  ctx.strokeStyle="#d9d4f0";ctx.lineWidth=2;
+  for(var k=1;k<=5;k++){
+    ctx.beginPath();for(var i=0;i<n;i++){var p=pt(i,k,cx,cy,R);i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}ctx.closePath();ctx.stroke();
+  }
+  for(var j=0;j<n;j++){var q=pt(j,5,cx,cy,R);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(q[0],q[1]);ctx.stroke();}
+  ctx.fillStyle="#9a96b8";ctx.font="500 18px 'Noto Sans KR',sans-serif";ctx.textAlign="left";
+  for(var m=1;m<=5;m++){var r=pt(0,m,cx,cy,R);ctx.fillText(m,r[0]+6,r[1]);}
+  poly(ctx,pre,BLUE,cx,cy,R);poly(ctx,post,RED,cx,cy,R);
+  ctx.textBaseline="middle";
+  for(var a=0;a<n;a++){
+    var ang=-Math.PI/2+a*2*Math.PI/n,lx=cx+(R+52)*Math.cos(ang),ly=cy+(R+52)*Math.sin(ang);
+    var cs=Math.cos(ang);ctx.textAlign=Math.abs(cs)<0.2?"center":(cs>0?"left":"right");
+    if(Math.abs(cs)>=0.2)lx=cx+(R+26)*Math.cos(ang);
+    var none=pre[a]===null&&post[a]===null;
+    ctx.fillStyle=none?"#a3a0b8":"#262640";ctx.font="700 22px 'Noto Sans KR',sans-serif";ctx.fillText(AREAS[a],lx,ly-14);
+    ctx.font="500 17px 'Noto Sans KR',sans-serif";
+    ctx.fillStyle=none?"#a3a0b8":"#6b6b82";
+    ctx.fillText(none?"(미입력)":"사전 "+(pre[a]===null?"-":pre[a])+" · 사후 "+(post[a]===null?"-":post[a]),lx,ly+14);
+  }
+}
+
+function summary(){
+  var ul=$("sumList"),L=[];ul.innerHTML="";
+  var enteredPre=pre.filter(function(v){return v!==null;}).length,enteredPost=post.filter(function(v){return v!==null;}).length;
+  if(!enteredPre&&!enteredPost){L.push("점수를 입력하면 여기에 분석 요약이 나와요.");}
+  else{
+    var missing=AREAS.filter(function(a,i){return pre[i]===null&&post[i]===null;});
+    if(missing.length)L.push(missing.length+"개 영역("+missing.join(", ")+")은 입력되지 않아 차트에서 제외했어요.");
+    var both=[];AREAS.forEach(function(a,i){if(pre[i]!==null&&post[i]!==null)both.push({a:a,d:post[i]-pre[i]});});
+    if(both.length){
+      var avgPre=0,avgPost=0;AREAS.forEach(function(a,i){if(pre[i]!==null&&post[i]!==null){avgPre+=pre[i];avgPost+=post[i];}});
+      avgPre/=both.length;avgPost/=both.length;
+      L.push("사전·사후를 모두 입력한 "+both.length+"개 영역의 평균은 "+avgPre.toFixed(1)+"점에서 "+avgPost.toFixed(1)+"점으로 "+(avgPost>avgPre?"올랐어요.":avgPost<avgPre?"내려갔어요.":"같아요."));
+      var best=both.slice().sort(function(x,y){return y.d-x.d;})[0];
+      if(best.d>0)L.push("가장 많이 성장한 영역은 '"+best.a+"'예요 (+"+best.d+"점).");
+      var down=both.filter(function(x){return x.d<0;}).map(function(x){return x.a;});
+      if(down.length)L.push("점수가 낮아진 영역: "+down.join(", ")+" — 다시 살펴보면 좋아요.");
+    }else if(enteredPre&&enteredPost){L.push("같은 영역에 사전과 사후를 모두 입력하면 성장 정도를 비교할 수 있어요.");}
+    var base=enteredPost?post:pre,name=enteredPost?"사후":"사전",idx=[];
+    base.forEach(function(v,i){if(v!==null)idx.push(i);});
+    if(idx.length>=2){
+      var hi=idx.slice().sort(function(x,y){return base[y]-base[x];})[0],lo=idx.slice().sort(function(x,y){return base[x]-base[y];})[0];
+      if(base[hi]!==base[lo]){L.push(name+"평가 기준으로 강점은 '"+AREAS[hi]+"'("+base[hi]+"점), 보완할 영역은 '"+AREAS[lo]+"'("+base[lo]+"점)이에요.");}
+      else L.push(name+"평가 점수가 영역마다 비슷해요.");
+    }
+  }
+  L.forEach(function(t){var li=document.createElement("li");li.textContent=t;ul.appendChild(li);});
+}
+function refresh(){draw();summary();}
+
+$("sample").onclick=function(){pre=SAMPLE_PRE.slice();post=SAMPLE_POST.slice();syncInputs();$("warn").textContent="";refresh();};
+$("clear").onclick=function(){pre=[null,null,null,null,null,null];post=pre.slice();syncInputs();$("warn").textContent="";refresh();};
+$("save").onclick=function(){
+  $("cv").toBlob(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="디지털리터러시_레이더차트.png";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);});
+};
+buildRows();pre=SAMPLE_PRE.slice();post=SAMPLE_POST.slice();syncInputs();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(refresh);
+refresh();
+</script>
+</body>
+</html>

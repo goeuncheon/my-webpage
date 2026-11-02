@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리나라 기록 문화 연표 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
+.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
+header.top{text-align:center;margin-bottom:24px}
+.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
+.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.hint{text-align:center;color:var(--sub);font-size:.92rem;margin:0 0 12px}
+.nav{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.nav .cur{font-weight:700;min-width:12em;text-align:center}
+.scroller{overflow-x:auto;padding:12px 0 18px;scroll-behavior:smooth}
+.track{position:relative;display:flex;align-items:flex-start;width:max-content;padding:0 calc(50vw - 140px)}
+.col{position:relative;flex:none;width:200px;padding-top:44px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.col::before{content:"";position:absolute;left:0;right:0;top:30px;height:4px;background:#d9d4f0}
+.yr{position:absolute;top:0;left:0;right:0;text-align:center;font-weight:800;color:var(--accent)}
+.gap{position:absolute;left:0;top:19px;transform:translateX(-50%);background:#fff;border:1px solid var(--line);color:var(--sub);font-size:.74rem;border-radius:999px;padding:0 8px;z-index:2;white-space:nowrap}
+.ev{position:relative;z-index:1;width:176px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px 10px;font-weight:700;font-size:.92rem;line-height:1.35;color:var(--ink);transition:transform .25s,background .25s}
+.ev::before{content:"";position:absolute;top:-23px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#fff;border:4px solid var(--accent)}
+.ev + .ev::before{display:none}
+.ev:hover{border-color:var(--accent)}
+.ev.sel{background:var(--accent);color:#fff;border-color:var(--accent);transform:scale(1.07)}
+dialog{border:0;border-radius:26px;padding:0;max-width:min(92vw,460px);box-shadow:0 30px 70px -20px rgba(30,20,80,.5)}
+dialog::backdrop{background:rgba(38,38,64,.5)}
+.dlg{padding:28px 30px 22px}
+.badge{display:inline-block;background:var(--soft);color:var(--accent);font-weight:800;border-radius:999px;padding:2px 14px;margin-bottom:8px}
+.dlg h2{margin:0 0 10px;font-size:1.5rem;letter-spacing:-.03em}
+.dlg p{margin:0 0 18px}
+.dlg .row{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 9 · 11주차 · 중급 · 데이터를 시각적으로 보여주는 학습도구</p><h1>우리나라 기록 문화 연표</h1><p class="sub">글자와 책, 도서관의 역사를 따라 가로로 넘겨 보세요. 사건을 누르면 설명이 나와요.</p></header>
+
+<section class="panel" aria-label="인터랙티브 연표">
+  <p class="hint">사건을 눌러 보세요. 사건 사이의 시간은 <b>+n년</b>으로 보여 주고, 같은 해의 사건은 위아래로 쌓여요.</p>
+  <div class="nav">
+    <button type="button" class="btn ghost" id="prev">◀ 이전</button>
+    <span class="cur" id="cur" aria-live="polite"></span>
+    <button type="button" class="btn ghost" id="next">다음 ▶</button>
+  </div>
+  <div class="scroller" id="scroller" tabindex="0" aria-label="가로로 움직이는 연표"><div class="track" id="track"></div></div>
+</section>
+<dialog id="dlg" aria-labelledby="dTitle"><div class="dlg">
+  <span class="badge" id="dYear"></span>
+  <h2 id="dTitle"></h2><p id="dText"></p>
+  <div class="row"><button type="button" class="btn ghost" id="dPrev">◀ 이전 사건</button><button type="button" class="btn ghost" id="dNext">다음 사건 ▶</button><button type="button" class="btn" id="dClose">닫기</button></div>
+</div></dialog>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var EV=[
+{y:751,t:"무구정광대다라니경",d:"신라 때 나무판에 글자를 새겨 종이에 찍어 만든 인쇄물이에요. 불국사 석가탑 안에서 발견되었고, 세계에서 가장 오래된 목판 인쇄물 가운데 하나로 알려져 있어요."},
+{y:1011,t:"초조대장경 만들기 시작",d:"고려 때 거란이 쳐들어오자, 부처님의 힘으로 나라를 지키고 싶은 마음으로 불교 경전을 나무판에 새기기 시작했어요."},
+{y:1236,t:"팔만대장경 만들기 시작",d:"몽골이 쳐들어왔을 때 대장경을 다시 새기기 시작했어요. 약 16년이 걸렸고, 지금은 합천 해인사에 보관되어 있어요."},
+{y:1377,t:"직지심체요절",d:"고려의 청주 흥덕사에서 금속활자로 찍은 책이에요. 지금 남아 있는 금속활자 책 가운데 가장 오래된 것으로 알려져 있어요."},
+{y:1443,t:"훈민정음 창제",d:"세종대왕이 백성들이 쉽게 배우고 쓸 수 있는 새 글자를 만들었어요."},
+{y:1446,t:"훈민정음 반포",d:"새 글자를 온 나라에 알렸어요. '훈민정음'은 '백성을 가르치는 바른 소리'라는 뜻이에요."},
+{y:1446,t:"훈민정음 해례본",d:"글자를 만든 원리와 쓰는 방법을 자세히 설명한 책이에요. 유네스코 세계기록유산으로 등재되어 있어요."},
+{y:1896,t:"독립신문 창간",d:"한글로 쓴 우리나라 최초의 민간 신문이에요. 한글을 읽는 사람들이 늘어나는 데 큰 역할을 했어요."},
+{y:1945,t:"국립도서관 개관",d:"광복 뒤 우리나라 국립도서관이 문을 열었어요. 이 도서관이 지금의 국립중앙도서관으로 이어졌어요."},
+{y:1964,t:"한국십진분류법(KDC) 초판",d:"책을 번호로 분류해 정리하는 우리나라 기준, KDC의 첫 판이 나왔어요. 도서관 책장의 번호가 이 기준을 따라요."},
+{y:2001,t:"직지, 세계기록유산 등재",d:"직지심체요절이 유네스코 세계기록유산으로 등재되었어요. 우리의 인쇄 문화가 세계에서 인정받았다는 뜻이에요."}
+];
+var sel=0,btns=[],cols=[];
+function build(){
+  var tr=$("track"),lastY=null,col=null;
+  EV.forEach(function(e,i){
+    if(e.y!==lastY){
+      col=document.createElement("div");col.className="col";
+      var yr=document.createElement("span");yr.className="yr";yr.textContent=e.y+"년";col.appendChild(yr);
+      if(lastY!==null){var g=document.createElement("span");g.className="gap";g.textContent="+"+(e.y-lastY)+"년";col.appendChild(g);}
+      tr.appendChild(col);cols.push(col);lastY=e.y;
+    }
+    var b=document.createElement("button");b.type="button";b.className="ev";b.textContent=e.t;
+    b.onclick=function(){select(i,true);};
+    col.appendChild(b);btns.push({b:b,c:col});
+  });
+}
+function select(i,open){
+  sel=Math.max(0,Math.min(EV.length-1,i));
+  btns.forEach(function(x,k){x.b.classList.toggle("sel",k===sel);x.b.setAttribute("aria-current",k===sel?"true":"false");});
+  var c=btns[sel].c,sc=$("scroller");
+  sc.scrollTo({left:c.offsetLeft+c.offsetWidth/2-sc.clientWidth/2,behavior:"smooth"});
+  $("cur").textContent=EV[sel].y+"년 · "+EV[sel].t+" ("+(sel+1)+"/"+EV.length+")";
+  $("prev").disabled=sel===0;$("next").disabled=sel===EV.length-1;
+  $("dPrev").disabled=sel===0;$("dNext").disabled=sel===EV.length-1;
+  tone(520,0.08,"triangle");
+  if(open){
+    $("dYear").textContent=EV[sel].y+"년";$("dTitle").textContent=EV[sel].t;$("dText").textContent=EV[sel].d;
+    var d=$("dlg");if(!d.open){if(d.showModal)d.showModal();else d.setAttribute("open","");}
+  }
+}
+$("prev").onclick=function(){select(sel-1,false);};
+$("next").onclick=function(){select(sel+1,false);};
+$("dPrev").onclick=function(){select(sel-1,true);};
+$("dNext").onclick=function(){select(sel+1,true);};
+$("dClose").onclick=function(){var d=$("dlg");if(d.close)d.close();else d.removeAttribute("open");};
+$("dlg").addEventListener("click",function(e){if(e.target===this&&this.close)this.close();});
+document.addEventListener("keydown",function(e){
+  if($("dlg").open&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){select(sel+(e.key==="ArrowRight"?1:-1),true);}
+  else if(!$("dlg").open&&document.activeElement===$("scroller")){
+    if(e.key==="ArrowRight")select(sel+1,false);if(e.key==="ArrowLeft")select(sel-1,false);
+  }
+});
+build();select(0,false);
+</script>
+</body>
+</html>
