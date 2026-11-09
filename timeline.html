@@ -3,289 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>조선시대 역사 연표 | 천고은</title>
+<title>우리나라 기록 문화 연표 | 천고은</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#243047;--sub:#737b88;--accent:#9b7437;--gold:#c5a66b;--line:#e8e0d2;--paper:#fffdf8;--bg:#f5f1e8;--navy:#26364e;--soft:#f1eadc;--green:#587866}
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
-.wrap{max-width:1100px;margin:0 auto;padding:24px 22px 60px}
-.homelink{display:inline-block;margin-bottom:18px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
 header.top{text-align:center;margin-bottom:26px}
-.kicker{font-weight:800;font-size:.76rem;letter-spacing:.16em;color:var(--accent);margin:0 0 9px}
-h1{font-family:"Gowun Batang",serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:-.05em;margin:0 0 8px;color:var(--navy)}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{color:var(--sub);margin:0;font-weight:500}
 button{font:inherit;cursor:pointer}
-:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:23px 25px;box-shadow:0 20px 45px -34px rgba(49,44,32,.35)}
-.btn{border:0;background:var(--navy);color:#fff;border-radius:999px;padding:10px 19px;font-weight:700;transition:.2s}
-.btn:hover{transform:translateY(-1px);background:#354b69}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
-.btn.ghost:hover{background:var(--soft)}
-.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
 footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
 [hidden]{display:none!important}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important}}
-.hero-note{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:0 auto 20px;color:var(--sub);font-size:.9rem}
-.hero-note span{background:#fffaf0;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
-.filters{display:flex;gap:7px;flex-wrap:wrap}
-.filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;color:var(--sub);font-size:.86rem;font-weight:700}
-.filter.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.tools{display:flex;gap:8px;flex-wrap:wrap}
-.status{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--sub);font-size:.88rem;margin:4px 2px 8px}
-.status strong{color:var(--accent)}
-.progress{height:7px;background:#eee8dc;border-radius:99px;overflow:hidden;margin-bottom:14px}
-.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--accent));transition:width .35s}
-.timeline-shell{border:1px solid var(--line);border-radius:19px;background:linear-gradient(180deg,#fffefa,#f8f3e9);overflow:hidden}
-.timeline-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 17px;border-bottom:1px solid var(--line);font-size:.84rem;color:var(--sub)}
-.legend{display:flex;gap:12px;flex-wrap:wrap}
-.legend span{display:flex;align-items:center;gap:5px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block}
-.scroller{overflow-x:auto;overscroll-behavior-x:contain;padding:25px 0 27px;scroll-behavior:smooth}
-.track{position:relative;display:flex;align-items:flex-start;width:max-content;padding:0 max(34px,calc(50vw - 180px));min-height:280px}
-.track:before{content:"";position:absolute;left:0;right:0;top:112px;height:4px;border-radius:5px;background:linear-gradient(90deg,#cbb88f,#9b7437,#cbb88f)}
-.event-col{position:relative;flex:none;width:205px;min-height:235px;display:flex;flex-direction:column;align-items:center;padding-top:0}
-.era-tag{font-size:.7rem;letter-spacing:.04em;color:var(--sub);background:#f0e8d9;border-radius:999px;padding:3px 10px;margin-bottom:8px;white-space:nowrap}
-.year{font-family:"Gowun Batang",serif;font-size:1.12rem;font-weight:700;color:var(--navy);margin-bottom:9px}
-.node{position:relative;z-index:2;width:17px;height:17px;border-radius:50%;background:#fff;border:4px solid var(--accent);box-shadow:0 0 0 5px #f2e9d8;margin-bottom:14px;flex:none}
-.event-buttons{display:flex;flex-direction:column;align-items:center;gap:7px;width:100%;padding:0 9px}
-.ev{width:100%;min-height:43px;border:1px solid #e5dccb;border-radius:12px;background:#fffdf9;color:var(--ink);padding:8px 10px;font-size:.85rem;font-weight:700;line-height:1.4;box-shadow:0 4px 12px rgba(50,40,20,.04);transition:transform .2s,border .2s,background .2s}
-.ev:hover{border-color:var(--gold);transform:translateY(-2px)}
-.ev.sel{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 7px 18px rgba(38,54,78,.2)}
-.gap-label{position:absolute;top:103px;left:0;transform:translateX(-50%);z-index:3;font-size:.72rem;color:#8b7652;background:#fffdf8;border:1px solid #e7dcc8;border-radius:999px;padding:2px 8px;white-space:nowrap}
-.empty{padding:45px 20px;text-align:center;color:var(--sub)}
-.navrow{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
-.current{font-weight:700;min-width:220px;text-align:center;color:var(--navy)}
-.bottom-info{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:16px}
-.info-card{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:#fff}
-.info-card .label{font-size:.76rem;color:var(--sub);font-weight:700}
-.info-card strong{display:block;font-family:"Gowun Batang",serif;font-size:1.18rem;color:var(--navy);margin-top:3px}
-.info-card p{font-size:.82rem;color:var(--sub);margin:3px 0 0}
-dialog{border:0;border-radius:24px;padding:0;width:min(92vw,520px);max-width:520px;background:var(--paper);color:var(--ink);box-shadow:0 30px 80px rgba(22,28,38,.35)}
-dialog::backdrop{background:rgba(27,36,51,.58);backdrop-filter:blur(3px)}
-.dlg{padding:29px 30px 24px}
-.dlg-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}
-.badge{display:inline-block;background:#efe5d2;color:#86612e;font-weight:800;border-radius:999px;padding:4px 12px;font-size:.82rem}
-.dlg h2{font-family:"Gowun Batang",serif;font-size:1.7rem;line-height:1.35;margin:0 0 13px;color:var(--navy)}
-.dlg p{margin:0 0 16px;line-height:1.9}
-.fact{background:#f6f0e5;border-left:3px solid var(--gold);padding:12px 14px;border-radius:0 12px 12px 0;font-size:.9rem;color:#66563e;margin-bottom:18px}
-.dlg-actions{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.dlg-actions .right{display:flex;gap:8px}
-.quizbox{margin-top:18px}
-.quizbox h2{font-family:"Gowun Batang",serif;margin:0 0 5px}
-.quizbox .desc{margin:0 0 14px;color:var(--sub);font-size:.9rem}
-.quiz-question{font-weight:800;font-size:1.05rem;margin:14px 0}
-.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.quiz-option{border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px;text-align:left;color:var(--ink);font-weight:600}
-.quiz-option:hover{border-color:var(--gold);background:#fffcf5}
-.quiz-option.correct{border-color:#58866c;background:#edf6ef}
-.quiz-option.wrong{border-color:#c66b62;background:#fff0ed}
-.quiz-feedback{min-height:28px;margin:10px 0;color:var(--sub);font-size:.9rem;font-weight:700}
-@media(max-width:650px){
- .wrap{padding:18px 13px 42px}
- .panel{padding:17px 14px;border-radius:19px}
- .toolbar{align-items:flex-start}
- .tools{width:100%}
- .tools .btn{flex:1}
- .timeline-head{align-items:flex-start;flex-direction:column}
- .track{padding-left:calc(50vw - 102px);padding-right:calc(50vw - 102px)}
- .event-col{width:175px}
- .bottom-info{grid-template-columns:1fr}
- .current{min-width:150px;font-size:.88rem}
- .quiz-options{grid-template-columns:1fr}
- .dlg{padding:23px 20px 20px}
-}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.hint{text-align:center;color:var(--sub);font-size:.92rem;margin:0 0 12px}
+.nav{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.nav .cur{font-weight:700;min-width:12em;text-align:center}
+.scroller{overflow-x:auto;padding:12px 0 18px;scroll-behavior:smooth}
+.track{position:relative;display:flex;align-items:flex-start;width:max-content;padding:0 calc(50vw - 140px)}
+.col{position:relative;flex:none;width:200px;padding-top:44px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.col::before{content:"";position:absolute;left:0;right:0;top:30px;height:4px;background:#d9d4f0}
+.yr{position:absolute;top:0;left:0;right:0;text-align:center;font-weight:800;color:var(--accent)}
+.gap{position:absolute;left:0;top:19px;transform:translateX(-50%);background:#fff;border:1px solid var(--line);color:var(--sub);font-size:.74rem;border-radius:999px;padding:0 8px;z-index:2;white-space:nowrap}
+.ev{position:relative;z-index:1;width:176px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px 10px;font-weight:700;font-size:.92rem;line-height:1.35;color:var(--ink);transition:transform .25s,background .25s}
+.ev::before{content:"";position:absolute;top:-23px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#fff;border:4px solid var(--accent)}
+.ev + .ev::before{display:none}
+.ev:hover{border-color:var(--accent)}
+.ev.sel{background:var(--accent);color:#fff;border-color:var(--accent);transform:scale(1.07)}
+dialog{border:0;border-radius:26px;padding:0;max-width:min(92vw,460px);box-shadow:0 30px 70px -20px rgba(30,20,80,.5)}
+dialog::backdrop{background:rgba(38,38,64,.5)}
+.dlg{padding:28px 30px 22px}
+.badge{display:inline-block;background:var(--soft);color:var(--accent);font-weight:800;border-radius:999px;padding:2px 14px;margin-bottom:8px}
+.dlg h2{margin:0 0 10px;font-size:1.5rem;letter-spacing:-.03em}
+.dlg p{margin:0 0 18px}
+.dlg .row{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
 </style>
+
 </head>
 <body>
 <div class="wrap">
 <a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
-<header class="top">
-<p class="kicker">바이브코딩 실습 9 · 11주차 · 중급 · 데이터를 시각적으로 보여주는 학습도구</p>
-<h1>조선시대 역사 연표</h1>
-<p class="sub">조선의 시작부터 대한제국 선포까지, 중요한 사건을 시간의 흐름에 따라 살펴보세요.</p>
-</header>
-<div class="hero-note">
-<span>✦ 사건을 눌러 자세히 알아보기</span><span>↔ 가로로 이동하며 시대 흐름 살펴보기</span>
-</div>
+<header class="top"><p class="kicker">바이브코딩 실습 9 · 11주차 · 중급 · 데이터를 시각적으로 보여주는 학습도구</p><h1>우리나라 기록 문화 연표</h1><p class="sub">글자와 책, 도서관의 역사를 따라 가로로 넘겨 보세요. 사건을 누르면 설명이 나와요.</p></header>
 
-<section class="panel" aria-label="인터랙티브 역사 연표">
-<div class="toolbar">
-<div class="filters" id="filters" aria-label="시대별 필터">
-<button class="filter active" data-era="all">전체 보기</button>
-<button class="filter" data-era="early">조선 전기</button>
-<button class="filter" data-era="war">전란과 재건</button>
-<button class="filter" data-era="late">조선 후기</button>
-<button class="filter" data-era="modern">개항과 근대</button>
-</div>
-<div class="tools">
-<button class="btn ghost" id="reset">↺ 처음으로</button>
-<button class="btn" id="quizToggle">역사 퀴즈 풀기 ✦</button>
-</div>
-</div>
-
-<div class="status"><span id="countText">전체 사건 10개</span><span>탐색 진행률 <strong id="progressText">0%</strong></span></div>
-<div class="progress"><span id="progressBar"></span></div>
-
-<div class="timeline-shell">
-<div class="timeline-head">
-<strong>1392년 ─ 1897년</strong>
-<div class="legend"><span><i class="dot"></i> 주요 역사 사건</span><span>+n년 = 이전 사건과의 시간 차이</span></div>
-</div>
-<div class="scroller" id="scroller" tabindex="0" aria-label="가로로 움직이는 역사 연표">
-<div class="track" id="track"></div>
-</div>
-</div>
-
-<div class="navrow">
-<button type="button" class="btn ghost" id="prev">◀ 이전 사건</button>
-<span class="current" id="current" aria-live="polite">사건을 선택해 보세요</span>
-<button type="button" class="btn ghost" id="next">다음 사건 ▶</button>
-</div>
-
-<div class="bottom-info">
-<div class="info-card"><span class="label">선택한 사건</span><strong id="selectedTitle">아직 선택하지 않았어요</strong><p id="selectedYear">연표에서 사건을 선택해 주세요.</p></div>
-<div class="info-card"><span class="label">시대적 흐름</span><strong id="eraTitle">역사의 큰 흐름을 살펴보세요</strong><p id="eraDesc">시대별 필터를 이용하면 관련 사건만 모아 볼 수 있어요.</p></div>
-</div>
-
-<div class="quizbox" id="quizbox" hidden>
-<hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
-<h2>역사 흐름 확인 퀴즈</h2>
-<p class="desc">연표에서 살펴본 사건을 기억하고 있는지 확인해 보세요.</p>
-<div id="quizArea"></div>
-</div>
+<section class="panel" aria-label="인터랙티브 연표">
+  <p class="hint">사건을 눌러 보세요. 사건 사이의 시간은 <b>+n년</b>으로 보여 주고, 같은 해의 사건은 위아래로 쌓여요.</p>
+  <div class="nav">
+    <button type="button" class="btn ghost" id="prev">◀ 이전</button>
+    <span class="cur" id="cur" aria-live="polite"></span>
+    <button type="button" class="btn ghost" id="next">다음 ▶</button>
+  </div>
+  <div class="scroller" id="scroller" tabindex="0" aria-label="가로로 움직이는 연표"><div class="track" id="track"></div></div>
 </section>
+<dialog id="dlg" aria-labelledby="dTitle"><div class="dlg">
+  <span class="badge" id="dYear"></span>
+  <h2 id="dTitle"></h2><p id="dText"></p>
+  <div class="row"><button type="button" class="btn ghost" id="dPrev">◀ 이전 사건</button><button type="button" class="btn ghost" id="dNext">다음 사건 ▶</button><button type="button" class="btn" id="dClose">닫기</button></div>
+</div></dialog>
 
-<dialog id="dlg" aria-labelledby="dTitle">
-<div class="dlg">
-<div class="dlg-top"><span class="badge" id="dYear"></span><span class="badge" id="dEra"></span></div>
-<h2 id="dTitle"></h2>
-<p id="dText"></p>
-<div class="fact" id="dFact"></div>
-<div class="dlg-actions">
-<button type="button" class="btn ghost" id="dPrev">◀ 이전 사건</button>
-<div class="right"><button type="button" class="btn ghost" id="dNext">다음 사건 ▶</button><button type="button" class="btn" id="dClose">닫기</button></div>
-</div>
-</div>
-</dialog>
 <footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
 </div>
-
 <script>
-var $=function(id){return document.getElementById(id);};
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
 var EV=[
-{y:1392,t:"조선 건국",era:"early",eraName:"조선 전기",d:"이성계가 고려를 무너뜨리고 조선을 세웠어요. 새 왕조가 시작되면서 나라의 정치와 제도, 생활 모습에도 큰 변화가 나타났어요.",fact:"조선은 1392년에 세워져 1897년 대한제국이 선포될 때까지 이어졌어요."},
-{y:1418,t:"세종대왕 즉위",era:"early",eraName:"조선 전기",d:"세종은 조선의 네 번째 왕으로 즉위했어요. 백성의 생활을 편리하게 만들기 위해 과학, 농업, 음악, 글자 등 여러 분야의 발전을 이끌었어요.",fact:"세종의 재위 기간은 1418년부터 1450년까지예요."},
-{y:1443,t:"한글 창제",era:"early",eraName:"조선 전기",d:"세종대왕은 백성들이 한자를 몰라도 쉽게 읽고 쓸 수 있도록 새로운 글자를 만들었어요. 이 글자가 바로 오늘날 한글의 바탕이 된 훈민정음이에요.",fact:"훈민정음은 1443년에 만들어졌고, 1446년에 세상에 반포되었어요."},
-{y:1592,t:"임진왜란",era:"war",eraName:"전란과 재건",d:"일본이 조선을 침략하면서 큰 전쟁이 일어났어요. 많은 백성과 군인들이 나라를 지키기 위해 싸웠고, 이순신 장군의 수군도 바다에서 큰 활약을 했어요.",fact:"임진왜란은 1592년에 시작되어 1598년까지 이어졌어요."},
-{y:1636,t:"병자호란",era:"war",eraName:"전란과 재건",d:"청나라가 조선을 침략한 전쟁이에요. 조선은 남한산성에서 항전했지만 결국 청나라에 항복했고, 이후 조선과 청나라의 관계가 크게 달라졌어요.",fact:"병자호란 이후 조선은 청나라와 군신 관계를 맺게 되었어요."},
-{y:1724,t:"영조의 탕평책",era:"late",eraName:"조선 후기",d:"영조는 신하들이 서로 다른 편으로 나뉘어 다투는 붕당 정치를 줄이려고 노력했어요. 여러 붕당의 인재를 고르게 등용하는 정책을 탕평책이라고 해요.",fact:"영조는 1724년에 왕위에 올랐으며 탕평 정치를 추진했어요."},
-{y:1794,t:"수원 화성 축조",era:"late",eraName:"조선 후기",d:"정조는 아버지 사도세자를 기리고 새로운 정치와 도시 발전의 중심지를 만들기 위해 수원 화성을 쌓기 시작했어요. 과학적인 건축 기술과 튼튼한 방어 시설이 사용되었어요.",fact:"수원 화성은 1794년에 공사를 시작해 1796년에 완성되었어요."},
-{y:1866,t:"병인양요",era:"modern",eraName:"개항과 근대",d:"프랑스 군대가 조선을 침략한 사건이에요. 프랑스군은 강화도를 공격했고, 조선군은 이에 맞서 싸웠어요. 이 과정에서 외규장각 도서 등이 약탈되기도 했어요.",fact:"병인양요는 1866년에 일어났으며, 외규장각 도서 반환 문제와도 관련이 있어요."},
-{y:1894,t:"동학농민운동",era:"modern",eraName:"개항과 근대",d:"농민들이 잘못된 정치와 관리들의 부정부패를 바로잡고, 외세의 간섭에 맞서기 위해 일으킨 큰 운동이에요. 사람들은 더 나은 세상을 만들기 위해 힘을 모았어요.",fact:"동학농민운동은 1894년에 일어났으며 갑오개혁과 청일전쟁에도 영향을 주었어요."},
-{y:1897,t:"대한제국 선포",era:"modern",eraName:"개항과 근대",d:"고종은 나라의 이름을 대한제국으로 바꾸고 황제의 자리에 올랐어요. 이는 조선 왕조에서 근대 국가인 대한제국으로 나아가는 중요한 변화였어요.",fact:"대한제국은 1897년에 선포되었고, 고종은 광무개혁을 추진했어요."}
+{y:751,t:"무구정광대다라니경",d:"신라 때 나무판에 글자를 새겨 종이에 찍어 만든 인쇄물이에요. 불국사 석가탑 안에서 발견되었고, 세계에서 가장 오래된 목판 인쇄물 가운데 하나로 알려져 있어요."},
+{y:1011,t:"초조대장경 만들기 시작",d:"고려 때 거란이 쳐들어오자, 부처님의 힘으로 나라를 지키고 싶은 마음으로 불교 경전을 나무판에 새기기 시작했어요."},
+{y:1236,t:"팔만대장경 만들기 시작",d:"몽골이 쳐들어왔을 때 대장경을 다시 새기기 시작했어요. 약 16년이 걸렸고, 지금은 합천 해인사에 보관되어 있어요."},
+{y:1377,t:"직지심체요절",d:"고려의 청주 흥덕사에서 금속활자로 찍은 책이에요. 지금 남아 있는 금속활자 책 가운데 가장 오래된 것으로 알려져 있어요."},
+{y:1443,t:"훈민정음 창제",d:"세종대왕이 백성들이 쉽게 배우고 쓸 수 있는 새 글자를 만들었어요."},
+{y:1446,t:"훈민정음 반포",d:"새 글자를 온 나라에 알렸어요. '훈민정음'은 '백성을 가르치는 바른 소리'라는 뜻이에요."},
+{y:1446,t:"훈민정음 해례본",d:"글자를 만든 원리와 쓰는 방법을 자세히 설명한 책이에요. 유네스코 세계기록유산으로 등재되어 있어요."},
+{y:1896,t:"독립신문 창간",d:"한글로 쓴 우리나라 최초의 민간 신문이에요. 한글을 읽는 사람들이 늘어나는 데 큰 역할을 했어요."},
+{y:1945,t:"국립도서관 개관",d:"광복 뒤 우리나라 국립도서관이 문을 열었어요. 이 도서관이 지금의 국립중앙도서관으로 이어졌어요."},
+{y:1964,t:"한국십진분류법(KDC) 초판",d:"책을 번호로 분류해 정리하는 우리나라 기준, KDC의 첫 판이 나왔어요. 도서관 책장의 번호가 이 기준을 따라요."},
+{y:2001,t:"직지, 세계기록유산 등재",d:"직지심체요절이 유네스코 세계기록유산으로 등재되었어요. 우리의 인쇄 문화가 세계에서 인정받았다는 뜻이에요."}
 ];
-
-var eraInfo={
-early:["조선 전기","새로운 왕조가 세워지고 국가의 기틀과 문화가 발전한 시기예요."],
-war:["전란과 재건","외부의 침략으로 큰 전쟁을 겪고 사회를 다시 정비한 시기예요."],
-late:["조선 후기","정치 제도를 정비하고 새로운 개혁과 문화적 발전을 모색한 시기예요."],
-modern:["개항과 근대","외세의 침략과 사회 변화 속에서 근대 국가로 나아가던 시기예요."]
-};
-var selected=0,visible=EV.map(function(_,i){return i;}),visited={},buttons=[];
-
+var sel=0,btns=[],cols=[];
 function build(){
-var track=$("track");track.innerHTML="";buttons=[];var previous=null;
-visible.forEach(function(index,pos){
-var e=EV[index],col=document.createElement("div");col.className="event-col";
-if(previous!==null){
-var gap=document.createElement("span");gap.className="gap-label";gap.textContent="+"+(e.y-EV[previous].y)+"년";col.appendChild(gap);
+  var tr=$("track"),lastY=null,col=null;
+  EV.forEach(function(e,i){
+    if(e.y!==lastY){
+      col=document.createElement("div");col.className="col";
+      var yr=document.createElement("span");yr.className="yr";yr.textContent=e.y+"년";col.appendChild(yr);
+      if(lastY!==null){var g=document.createElement("span");g.className="gap";g.textContent="+"+(e.y-lastY)+"년";col.appendChild(g);}
+      tr.appendChild(col);cols.push(col);lastY=e.y;
+    }
+    var b=document.createElement("button");b.type="button";b.className="ev";b.textContent=e.t;
+    b.onclick=function(){select(i,true);};
+    col.appendChild(b);btns.push({b:b,c:col});
+  });
 }
-var tag=document.createElement("span");tag.className="era-tag";tag.textContent=e.eraName;col.appendChild(tag);
-var year=document.createElement("div");year.className="year";year.textContent=e.y+"년";col.appendChild(year);
-var node=document.createElement("div");node.className="node";node.setAttribute("aria-hidden","true");col.appendChild(node);
-var stack=document.createElement("div");stack.className="event-buttons";
-var b=document.createElement("button");b.type="button";b.className="ev";b.textContent=e.t;b.setAttribute("aria-label",e.y+"년 "+e.t+" 자세히 보기");
-b.onclick=function(){select(index,true);};stack.appendChild(b);col.appendChild(stack);
-track.appendChild(col);buttons.push({index:index,b:b,col:col});previous=index;
-});
-if(!visible.length){track.innerHTML='<div class="empty">이 시대에 해당하는 사건이 없어요.</div>';}
+function select(i,open){
+  sel=Math.max(0,Math.min(EV.length-1,i));
+  btns.forEach(function(x,k){x.b.classList.toggle("sel",k===sel);x.b.setAttribute("aria-current",k===sel?"true":"false");});
+  var c=btns[sel].c,sc=$("scroller");
+  sc.scrollTo({left:c.offsetLeft+c.offsetWidth/2-sc.clientWidth/2,behavior:"smooth"});
+  $("cur").textContent=EV[sel].y+"년 · "+EV[sel].t+" ("+(sel+1)+"/"+EV.length+")";
+  $("prev").disabled=sel===0;$("next").disabled=sel===EV.length-1;
+  $("dPrev").disabled=sel===0;$("dNext").disabled=sel===EV.length-1;
+  tone(520,0.08,"triangle");
+  if(open){
+    $("dYear").textContent=EV[sel].y+"년";$("dTitle").textContent=EV[sel].t;$("dText").textContent=EV[sel].d;
+    var d=$("dlg");if(!d.open){if(d.showModal)d.showModal();else d.setAttribute("open","");}
+  }
 }
-
-function select(index,open){
-if(visible.indexOf(index)===-1)return;
-selected=index;visited[index]=true;
-buttons.forEach(function(item){item.b.classList.toggle("sel",item.index===index);item.b.setAttribute("aria-pressed",item.index===index?"true":"false");});
-var item=buttons.find(function(x){return x.index===index;});
-if(item){$("scroller").scrollTo({left:item.col.offsetLeft+item.col.offsetWidth/2-$("scroller").clientWidth/2,behavior:"smooth"});}
-var e=EV[index],era=eraInfo[e.era];
-$("current").textContent=e.y+"년 · "+e.t+" ("+(visible.indexOf(index)+1)+"/"+visible.length+")";
-$("selectedTitle").textContent=e.t;$("selectedYear").textContent=e.y+"년 · "+e.eraName;
-$("eraTitle").textContent=era[0];$("eraDesc").textContent=era[1];
-$("prev").disabled=visible.indexOf(index)===0;$("next").disabled=visible.indexOf(index)===visible.length-1;
-var done=Object.keys(visited).length;
-$("progressText").textContent=Math.round(done/EV.length*100)+"%";$("progressBar").style.width=(done/EV.length*100)+"%";
-if(open)openDialog(index);
-}
-
-function openDialog(index){
-var e=EV[index];$("dYear").textContent=e.y+"년";$("dEra").textContent=e.eraName;$("dTitle").textContent=e.t;$("dText").textContent=e.d;$("dFact").textContent="알아두기 ✦ "+e.fact;
-var pos=visible.indexOf(index);$("dPrev").disabled=pos<=0;$("dNext").disabled=pos===visible.length-1;
-var d=$("dlg");if(!d.open)d.showModal();
-}
-function move(delta,open){var p=visible.indexOf(selected);var n=Math.max(0,Math.min(visible.length-1,p+delta));select(visible[n],open);}
-function filterEra(era){
-visible=EV.map(function(e,i){return {e:e,i:i};}).filter(function(x){return era==="all"||x.e.era===era;}).map(function(x){return x.i;});
-document.querySelectorAll(".filter").forEach(function(b){b.classList.toggle("active",b.dataset.era===era);});
-$("countText").textContent="전체 사건 "+visible.length+"개";
-build();if(visible.length)select(visible[0],false);
-}
-document.querySelectorAll(".filter").forEach(function(b){b.onclick=function(){filterEra(b.dataset.era);};});
-$("prev").onclick=function(){move(-1,false);};$("next").onclick=function(){move(1,false);};
-$("dPrev").onclick=function(){move(-1,true);};$("dNext").onclick=function(){move(1,true);};
-$("dClose").onclick=function(){$("dlg").close();};
-$("dlg").addEventListener("click",function(e){if(e.target===this)this.close();});
-$("reset").onclick=function(){visited={};filterEra("all");$("quizbox").hidden=true;$("quizToggle").textContent="역사 퀴즈 풀기 ✦";};
+$("prev").onclick=function(){select(sel-1,false);};
+$("next").onclick=function(){select(sel+1,false);};
+$("dPrev").onclick=function(){select(sel-1,true);};
+$("dNext").onclick=function(){select(sel+1,true);};
+$("dClose").onclick=function(){var d=$("dlg");if(d.close)d.close();else d.removeAttribute("open");};
+$("dlg").addEventListener("click",function(e){if(e.target===this&&this.close)this.close();});
 document.addEventListener("keydown",function(e){
-if($("dlg").open&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();move(e.key==="ArrowRight"?1:-1,true);}
-else if(!$("dlg").open&&document.activeElement===$("scroller")){
-if(e.key==="ArrowRight")move(1,false);if(e.key==="ArrowLeft")move(-1,false);
-}
+  if($("dlg").open&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){select(sel+(e.key==="ArrowRight"?1:-1),true);}
+  else if(!$("dlg").open&&document.activeElement===$("scroller")){
+    if(e.key==="ArrowRight")select(sel+1,false);if(e.key==="ArrowLeft")select(sel-1,false);
+  }
 });
-
-var quiz=[
-{q:"조선이 건국된 해는 언제일까요?",o:["1392년","1418년","1443년","1592년"],a:0,e:"이성계가 1392년에 조선을 세웠어요."},
-{q:"세종대왕이 즉위한 해는 언제일까요?",o:["1392년","1418년","1446년","1724년"],a:1,e:"세종대왕은 1418년에 왕위에 올랐어요."},
-{q:"한글이 창제된 해는 언제일까요?",o:["1418년","1443년","1592년","1897년"],a:1,e:"훈민정음은 1443년에 만들어졌어요."},
-{q:"일본이 조선을 침략한 전쟁은 무엇일까요?",o:["병자호란","병인양요","임진왜란","동학농민운동"],a:2,e:"임진왜란은 1592년에 시작되었어요."},
-{q:"영조가 추진한 정치 정책은 무엇일까요?",o:["탕평책","광무개혁","갑오개혁","대동법"],a:0,e:"영조는 붕당 간 다툼을 줄이기 위해 탕평책을 추진했어요."},
-{q:"수원 화성 축조를 시작한 왕은 누구일까요?",o:["세종","영조","정조","고종"],a:2,e:"정조는 1794년에 수원 화성 축조를 시작했어요."},
-{q:"프랑스 군대가 강화도를 침략한 사건은 무엇일까요?",o:["임진왜란","병인양요","병자호란","동학농민운동"],a:1,e:"병인양요는 1866년에 일어났어요."},
-{q:"대한제국이 선포된 해는 언제일까요?",o:["1866년","1894년","1897년","1905년"],a:2,e:"고종은 1897년에 대한제국을 선포했어요."}
-];
-var qIndex=0,qScore=0,qAnswered=false;
-function renderQuiz(){
-var area=$("quizArea"),q=quiz[qIndex];qAnswered=false;
-area.innerHTML="";
-var count=document.createElement("div");count.className="status";count.textContent="문제 "+(qIndex+1)+" / "+quiz.length+" · 점수 "+qScore;area.appendChild(count);
-var question=document.createElement("p");question.className="quiz-question";question.textContent=q.q;area.appendChild(question);
-var opts=document.createElement("div");opts.className="quiz-options";area.appendChild(opts);
-var feedback=document.createElement("p");feedback.className="quiz-feedback";feedback.setAttribute("aria-live","polite");area.appendChild(feedback);
-q.o.forEach(function(text,i){var b=document.createElement("button");b.className="quiz-option";b.textContent=(i+1)+". "+text;b.onclick=function(){
-if(qAnswered)return;qAnswered=true;
-if(i===q.a){b.classList.add("correct");qScore++;feedback.textContent="정답이에요! "+q.e;}
-else{b.classList.add("wrong");opts.children[q.a].classList.add("correct");feedback.textContent="아쉬워요. "+q.e;}
-Array.from(opts.children).forEach(function(x){x.disabled=true;});
-var next=document.createElement("button");next.className="btn";next.textContent=qIndex===quiz.length-1?"결과 확인":"다음 문제 →";next.onclick=function(){qIndex++;if(qIndex>=quiz.length){area.innerHTML="<h3>퀴즈 완료!</h3><p>총 "+quiz.length+"문제 중 "+qScore+"문제를 맞혔어요.</p><button class='btn' id='again'>다시 풀기</button>";$("again").onclick=function(){qIndex=0;qScore=0;renderQuiz();};}else renderQuiz();};area.appendChild(next);
-};opts.appendChild(b);});
-}
-$("quizToggle").onclick=function(){
-var box=$("quizbox");box.hidden=!box.hidden;
-this.textContent=box.hidden?"역사 퀴즈 풀기 ✦":"퀴즈 닫기";
-if(!box.hidden){qIndex=0;qScore=0;renderQuiz();box.scrollIntoView({behavior:"smooth",block:"nearest"});}
-};
 build();select(0,false);
 </script>
 </body>

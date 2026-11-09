@@ -1,26 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>독서·문헌정보교육 퀴즈 | 천고은</title>
+<title>독도의 날 퀴즈 | 천고은</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
 *{box-sizing:border-box}
-body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
-.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
-.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
-header.top{text-align:center;margin-bottom:24px}
-.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
-h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{color:var(--sub);margin:0;font-weight:500}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
-.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
-.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
 footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
@@ -47,320 +49,117 @@ footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
 .miss{text-align:left;margin:18px auto 0;max-width:560px}
 .miss li{margin-bottom:8px}
 </style>
-</head>
 
+</head>
 <body>
 <div class="wrap">
-
 <a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
-
-<header class="top">
-<p class="kicker">바이브코딩 실습 7 · 10주차 · 초급 · 사용자 조작에 반응하는 앱</p>
-<h1>독서·문헌정보교육 4지선다 퀴즈</h1>
-<p class="sub">독서와 도서관에 관한 지식을 얼마나 알고 있나요? 10문제를 풀고 점수를 확인해 보세요.</p>
-</header>
+<header class="top"><p class="kicker">바이브코딩 실습 7 · 10주차 · 초급 · 사용자 조작에 반응하는 앱</p><h1>독도의 날 4지선다 퀴즈</h1><p class="sub">독도에 대해 얼마나 알고 있나요? 10문제를 풀고 점수를 확인해 보세요.</p></header>
 
 <section class="panel" id="quiz" aria-label="퀴즈">
-  <div class="top-row">
-    <span id="progress">문제 1 / 10</span>
-    <span class="sc">점수 <b id="score">0</b>점
-      <button type="button" class="btn ghost" id="mute" style="padding:3px 12px;margin-left:8px" aria-pressed="false">🔊</button>
-    </span>
-  </div>
+  <div class="top-row"><span id="progress">문제 1 / 10</span><span class="sc">점수 <b id="score">0</b>점 <button type="button" class="btn ghost" id="mute" style="padding:3px 12px;margin-left:8px" aria-pressed="false">🔊</button></span></div>
   <div class="prog" aria-hidden="true"><span id="pbar"></span></div>
   <p class="qtext" id="qtext"></p>
   <div class="opts" id="opts"></div>
   <div class="fb" id="fb" role="status" aria-live="polite"></div>
   <button type="button" class="btn" id="next" hidden>다음 문제 →</button>
 </section>
-
 <section class="panel res" id="result" hidden aria-live="polite">
   <p class="sub">최종 점수</p>
   <p class="big"><span id="final">0</span> / 10</p>
   <p id="msg" style="font-weight:700;font-size:1.1rem"></p>
-  <div class="miss" id="missBox" hidden>
-    <p style="font-weight:700">처음에 헷갈렸던 문제를 다시 볼까요?</p>
-    <ul id="missList"></ul>
-  </div>
-  <p style="margin-top:20px">
-    <button type="button" class="btn" id="retry">다시 도전하기</button>
-  </p>
+  <div class="miss" id="missBox" hidden><p style="font-weight:700">처음에 헷갈렸던 문제를 다시 볼까요?</p><ul id="missList"></ul></div>
+  <p style="margin-top:20px"><button type="button" class="btn" id="retry">다시 도전하기</button></p>
   <p class="sub" style="font-size:.88rem">다시 도전하면 문제를 새로 뽑고, 보기 순서도 새로 섞여요.</p>
 </section>
 
 <footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
 </div>
-
 <script>
 var AC=null,muted=false;
-
 function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
-function tone(f,d,t,v){
-  if(muted)return;
-  try{
-    AC=AC||new(window.AudioContext||window.webkitAudioContext)();
-    var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;
-    o.type=t||"sine";
-    o.frequency.value=f;
-    o.connect(g);
-    g.connect(AC.destination);
-    g.gain.setValueAtTime(v||0.09,n);
-    g.gain.exponentialRampToValueAtTime(0.0001,n+d);
-    o.start(n);
-    o.stop(n+d);
-  }catch(e){}
-}
-
-function seq(list){
-  list.forEach(function(x,i){
-    setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));
-  });
-}
-
-function shuffle(a){
-  a=a.slice();
-  for(var i=a.length-1;i>0;i--){
-    var j=Math.floor(Math.random()*(i+1));
-    var t=a[i];a[i]=a[j];a[j]=t;
-  }
-  return a;
-}
-
-// 독서·문헌정보교육 문제 은행
 var POOL=[
-
-{
-q:"한국십진분류법(KDC)에서 총류에 해당하는 주류 기호는 무엇일까요?",
-o:["000","100","200","300"],
-e:"KDC는 지식 분야를 10개의 주류로 나누는 분류법이에요. 000은 총류이며 백과사전, 도서관학, 정보학 등이 포함돼요."
-},
-
-{
-q:"한국십진분류법(KDC)에서 문학에 해당하는 주류는 무엇일까요?",
-o:["800","700","600","900"],
-e:"KDC에서 800은 문학이에요. 한국문학, 중국문학, 영미문학 등 다양한 국가와 언어권의 문학 자료가 분류돼요."
-},
-
-{
-q:"도서관에서 책을 주제에 따라 구분하고 배열하는 체계는 무엇일까요?",
-o:["자료분류","자료대출","자료제적","자료수서"],
-e:"자료분류는 도서관 자료를 주제나 형식 등에 따라 체계적으로 구분하는 과정이에요. 이용자가 원하는 자료를 쉽게 찾도록 도와줘요."
-},
-
-{
-q:"다음 중 독서교육의 궁극적인 목표로 가장 적절한 것은 무엇일까요?",
-o:["자발적이고 지속적인 독서 습관 형성","많은 책을 빠르게 읽기","책의 내용을 무조건 암기하기","독서량만 늘리기"],
-e:"독서교육은 단순히 책을 많이 읽게 하는 것이 아니라 독서에 대한 흥미를 높이고 자발적이며 지속적인 독서 습관을 형성하도록 돕는 것이 중요해요."
-},
-
-{
-q:"책을 처음부터 끝까지 읽기보다 필요한 정보를 빠르게 찾아 읽는 독서 방법은 무엇일까요?",
-o:["훑어읽기","정독","음독","다독"],
-e:"훑어읽기는 글 전체의 구성이나 핵심 내용을 빠르게 파악하는 방법이에요. 필요한 정보를 찾을 때 효과적으로 활용할 수 있어요."
-},
-
-{
-q:"책의 제목, 저자, 출판사 등 서지 정보를 확인할 수 있는 자료는 무엇일까요?",
-o:["도서관 목록","신문 기사","독서 감상문","사전"],
-e:"도서관 목록은 도서관이 소장한 자료의 서지 정보를 제공해요. 제목, 저자, 출판사, 주제, 청구기호 등을 통해 원하는 자료를 찾을 수 있어요."
-},
-
-{
-q:"다음 중 참고정보원에 해당하는 자료는 무엇일까요?",
-o:["백과사전","소설책","시집","만화책"],
-e:"백과사전은 특정 주제나 여러 분야의 지식을 찾아볼 수 있는 대표적인 참고정보원이에요. 사전, 연감, 지도책 등도 참고정보원에 해당해요."
-},
-
-{
-q:"정보활용교육에서 정보를 찾은 뒤 가장 중요하게 해야 할 일은 무엇일까요?",
-o:["정보의 신뢰성과 정확성 평가","찾은 정보를 무조건 복사하기","검색 결과의 첫 번째 자료만 사용하기","출처를 표시하지 않고 활용하기"],
-e:"정보를 찾는 것만큼 정보의 신뢰성, 정확성, 최신성, 객관성을 평가하는 과정이 중요해요. 이를 통해 올바른 정보를 선택할 수 있어요."
-},
-
-{
-q:"다른 사람의 글이나 자료를 인용할 때 지켜야 할 올바른 방법은 무엇일까요?",
-o:["출처를 정확하게 표시하기","출처 없이 그대로 사용하기","저자의 이름을 삭제하기","내용을 조금 바꾸어 출처 없이 사용하기"],
-e:"다른 사람의 저작물을 인용할 때는 저자와 자료명 등 출처를 정확하게 표시해야 해요. 정당한 인용 요건도 함께 지켜야 해요."
-},
-
-{
-q:"학교도서관에서 사서교사의 역할로 가장 적절한 것은 무엇일까요?",
-o:["도서관 운영과 독서·정보활용교육","책 대출과 반납만 담당하기","학생의 독서 활동을 제한하기","교과 수업과 관계없이 자료만 보관하기"],
-e:"사서교사는 학교도서관을 운영하고 장서를 관리하는 역할뿐만 아니라 독서교육과 정보활용교육을 실시하고 교과교사와 협력하는 교육적 역할도 수행해요."
-},
-
-{
-q:"다음 중 독서 흥미를 높이기 위한 활동으로 가장 적절한 것은 무엇일까요?",
-o:["학생의 관심사에 맞는 책 추천하기","모든 학생에게 같은 책만 강요하기","독서량으로 학생을 비교하기","독후감 작성만 반복하기"],
-e:"학생의 흥미와 관심사를 반영한 책 추천은 독서에 대한 긍정적인 경험을 제공하고 자발적인 독서 참여를 이끌어 낼 수 있어요."
-},
-
-{
-q:"도서관에서 책의 위치를 알려 주는 기호는 무엇일까요?",
-o:["청구기호","ISBN","ISSN","바코드"],
-e:"청구기호는 도서관에서 자료의 위치를 나타내는 기호예요. 일반적으로 분류기호와 저자기호 등을 조합해 자료를 배열하고 찾을 수 있도록 해요."
-},
-
-{
-q:"독서교육에서 독서 전 활동으로 가장 적절한 것은 무엇일까요?",
-o:["책의 표지와 제목을 살펴보고 내용 예측하기","책을 다 읽은 뒤 감상문 작성하기","읽은 내용을 친구에게 발표하기","독서 후 토론하기"],
-e:"독서 전 활동은 책의 표지와 제목을 살펴보거나 배경지식을 활성화하는 등 읽기에 대한 흥미와 기대를 높이는 활동이에요."
-},
-
-{
-q:"도서관 자료를 주제별로 찾을 때 활용할 수 있는 검색 방법은 무엇일까요?",
-o:["주제명 검색","화면 밝기 조절","파일 압축","인터넷 연결 해제"],
-e:"주제명 검색은 자료의 주제와 관련된 용어를 이용해 정보를 찾는 방법이에요. 제목이나 저자뿐만 아니라 주제 접근도 자료 검색에서 중요해요."
-}
-
+{q:"독도의 날은 언제일까요?",o:["10월 25일","3월 1일","8월 15일","10월 3일"],e:"1900년 10월 25일에 대한제국이 칙령으로 독도를 우리 행정구역에 분명히 포함시켰어요. 이날을 기념해 10월 25일을 독도의 날로 정했어요."},
+{q:"독도는 어느 바다에 있을까요?",o:["동해","서해","남해","태평양"],e:"독도는 동해에 있는 우리나라의 섬이에요."},
+{q:"독도는 우리나라 영토의 어느 쪽 끝에 있을까요?",o:["동쪽 끝","서쪽 끝","남쪽 끝","북쪽 끝"],e:"독도는 우리나라의 가장 동쪽 끝에 있는 섬이에요."},
+{q:"독도는 어떻게 만들어진 섬일까요?",o:["바다 속 화산이 터져서","사람이 흙을 쌓아서","강물이 흙을 날라서","빙하가 녹아서"],e:"독도는 아주 오래전 바다 속 화산 활동으로 만들어진 화산섬이에요."},
+{q:"독도를 이루는 가장 큰 두 섬의 이름은 무엇일까요?",o:["동도와 서도","남도와 북도","큰섬과 작은섬","해도와 달도"],e:"독도는 동도와 서도 두 개의 큰 섬과 주변의 작은 바위섬들로 이루어져 있어요."},
+{q:"독도는 어느 지역에 속해 있을까요?",o:["경상북도 울릉군","제주특별자치도","강원특별자치도 속초시","전라남도 신안군"],e:"독도의 주소는 경상북도 울릉군 울릉읍 독도리예요."},
+{q:"조선 시대에 울릉도와 독도 일대에서 일본 어부들에게 항의하며 우리 땅을 지키려 한 인물은 누구일까요?",o:["안용복","김구","이순신","장영실"],e:"안용복은 조선 숙종 때 울릉도와 독도 일대에서 일본 어부들에게 항의한 것으로 알려져 있어요."},
+{q:"신라 때 우산국(울릉도와 독도)을 신라에 복속시킨 장군은 누구일까요?",o:["이사부","김유신","강감찬","을지문덕"],e:"신라의 이사부 장군이 512년에 우산국을 복속시켰다고 전해져요."},
+{q:"독도가 우리 땅임을 알려 주는 옛 기록(문헌)이 실려 있는 책은 무엇일까요?",o:["세종실록지리지","동의보감","훈민정음 해례본","직지심체요절"],e:"『세종실록지리지』에는 울릉도와 독도로 보이는 우산·무릉 두 섬이 우리 땅으로 실려 있어요. 이렇게 옛 책(문헌)은 역사의 증거가 돼요."},
+{q:"독도에서 가장 가까운 우리나라 섬은 어디일까요?",o:["울릉도","제주도","거제도","강화도"],e:"독도는 울릉도에서 약 87km 떨어져 있어요. 맑은 날에는 울릉도에서 독도가 보이기도 해요."},
+{q:"독도에 많이 살고 있는 대표적인 새는 무엇일까요?",o:["괭이갈매기","펭귄","타조","앵무새"],e:"독도에는 괭이갈매기가 많이 살아요. 독도는 천연기념물 제336호 '독도 천연보호구역'이에요."},
+{q:"독도에서 우리 땅을 지키는 경찰 부대의 이름은 무엇일까요?",o:["독도경비대","독도소방대","독도해녀단","독도농업단"],e:"독도경비대가 독도를 지키고 있어요."},
+{q:"'독도'라는 이름은 어떤 말에서 왔다고 널리 알려져 있을까요?",o:["돌로 된 섬(돌섬)","독이 있는 풀이 많은 섬","독수리가 사는 섬","혼자 서 있는 큰 나무"],e:"'돌섬'이라는 말에서 왔다는 설이 널리 알려져 있어요. 한자로는 '홀로 있는 섬'이라는 뜻의 獨島로 써요."},
+{q:"독도의 날에 하기 좋은 일은 무엇일까요?",o:["독도에 대해 배우고 친구에게 알려 주기","독도를 모르는 척하기","쓰레기를 바다에 버리기","독도 사진을 모두 지우기"],e:"독도에 대해 알아보고 다른 사람에게 알리는 것이 독도를 사랑하는 첫걸음이에요."}
 ];
-
-var set=[],qi=0,score=0,missed=[],wasWrong=false;
+var set=[],qi=0,score=0,tried=false,missed=[],wasWrong=false;
 
 function newGame(){
   set=shuffle(POOL).slice(0,10).map(function(p){
-    return {
-      q:p.q,
-      e:p.e,
-      opts:shuffle(p.o.map(function(t,i){
-        return {t:t,ok:i===0};
-      }))
-    };
+    return {q:p.q,e:p.e,opts:shuffle(p.o.map(function(t,i){return {t:t,ok:i===0};}))};
   });
-
-  qi=0;
-  score=0;
-  missed=[];
-  $("result").hidden=true;
-  $("quiz").hidden=false;
-  show();
+  qi=0;score=0;missed=[];
+  $("result").hidden=true;$("quiz").hidden=false;show();
 }
-
 function show(){
-  var Q=set[qi];
-  wasWrong=false;
-
+  var Q=set[qi];wasWrong=false;
   $("progress").textContent="문제 "+(qi+1)+" / 10";
   $("pbar").style.width=(qi/10*100)+"%";
   $("score").textContent=score;
   $("qtext").textContent=Q.q;
-  $("fb").textContent="";
-  $("fb").className="fb";
-  $("next").hidden=true;
-  $("next").textContent=qi===9?"결과 보기":"다음 문제 →";
-
-  var box=$("opts");
-  box.innerHTML="";
-
+  $("fb").textContent="";$("fb").className="fb";
+  $("next").hidden=true;$("next").textContent=qi===9?"결과 보기":"다음 문제 →";
+  var box=$("opts");box.innerHTML="";
   Q.opts.forEach(function(o,i){
-    var b=document.createElement("button");
-    b.type="button";
-    b.className="opt";
-    b.innerHTML='<span class="n">'+(i+1)+'</span><span></span>';
-    b.lastChild.textContent=o.t;
+    var b=document.createElement("button");b.type="button";b.className="opt";
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span></span>';b.lastChild.textContent=o.t;
     b.onclick=function(){choose(b,o);};
     box.appendChild(b);
   });
 }
-
 function choose(btn,o){
   var Q=set[qi];
-
   if(o.ok){
     btn.classList.add("ok");
-
     if(!wasWrong)score++;
-
     $("score").textContent=score;
-
-    document.querySelectorAll(".opt").forEach(function(x){
-      x.disabled=true;
-    });
-
-    $("fb").className="fb ok";
-    $("fb").innerHTML="";
-
-    $("fb").appendChild(
-      document.createTextNode(
-        wasWrong?"맞았어요! 끝까지 생각해 냈네요 👏":"정답이에요! 🎉"
-      )
-    );
-
-    var s=document.createElement("small");
-    s.textContent=Q.e;
-    $("fb").appendChild(s);
-
+    document.querySelectorAll(".opt").forEach(function(x){x.disabled=true;});
+    $("fb").className="fb ok";$("fb").innerHTML="";
+    $("fb").appendChild(document.createTextNode(wasWrong?"맞았어요! 끝까지 생각해 냈네요 👏":"정답이에요! 🎉"));
+    var s=document.createElement("small");s.textContent=Q.e;$("fb").appendChild(s);
     seq([[784,0.14],[988,0.22]]);
-
-    $("next").hidden=false;
-    $("next").focus();
-
+    $("next").hidden=false;$("next").focus();
   }else{
-    btn.classList.add("no");
-    btn.disabled=true;
-
-    if(!wasWrong){
-      wasWrong=true;
-      missed.push(Q);
-    }
-
-    $("fb").className="fb no";
-    $("fb").textContent="다시 생각해 보세요! 🤔";
-
+    btn.classList.add("no");btn.disabled=true;
+    if(!wasWrong){wasWrong=true;missed.push(Q);}
+    $("fb").className="fb no";$("fb").textContent="다시 생각해 보세요! 🤔";
     tone(210,0.3,"sawtooth",0.05);
   }
 }
-
 $("next").onclick=function(){
   qi++;
-  if(qi>=10)finish();
-  else show();
+  if(qi>=10)finish();else show();
 };
-
 function finish(){
-  $("quiz").hidden=true;
-  $("result").hidden=false;
-  $("final").textContent=score;
-
-  var m=score>=9
-    ?"문헌정보 전문가예요! 🏆"
-    :score>=7
-    ?"아주 잘했어요! 독서와 도서관 지식이 풍부하네요."
-    :score>=5
-    ?"좋아요! 틀린 문제를 다시 보면 더 잘할 수 있어요."
-    :"괜찮아요. 다시 도전하면서 문헌정보 지식을 쌓아 보세요!";
-
+  $("quiz").hidden=true;$("result").hidden=false;$("final").textContent=score;
+  var m=score>=9?"독도 박사님이에요! 🏆":score>=7?"아주 잘했어요! 독도를 잘 알고 있네요.":score>=5?"좋아요! 틀린 문제를 다시 보면 더 잘할 수 있어요.":"괜찮아요. 다시 도전하면 더 잘할 수 있어요!";
   $("msg").textContent=m;
-
-  var list=$("missList");
-  list.innerHTML="";
-
+  var list=$("missList");list.innerHTML="";
   missed.forEach(function(Q){
-    var li=document.createElement("li");
-    var ok=Q.opts.filter(function(x){return x.ok;})[0].t;
-    li.textContent=Q.q+" → 정답: "+ok;
-    list.appendChild(li);
+    var li=document.createElement("li");var ok=Q.opts.filter(function(x){return x.ok;})[0].t;
+    li.textContent=Q.q+" → 정답: "+ok;list.appendChild(li);
   });
-
   $("missBox").hidden=!missed.length;
-
-  seq(
-    score>=7
-    ?[[523,0.16],[659,0.16],[784,0.16],[1046,0.4]]
-    :[[392,0.2],[330,0.3]],
-    150
-  );
+  seq(score>=7?[[523,0.16],[659,0.16],[784,0.16],[1046,0.4]]:[[392,0.2],[330,0.3]],150);
 }
-
 $("retry").onclick=newGame;
-
-$("mute").onclick=function(){
-  muted=!muted;
-  this.setAttribute("aria-pressed",muted);
-  this.textContent=muted?"🔇":"🔊";
-};
-
+$("mute").onclick=function(){muted=!muted;this.setAttribute("aria-pressed",muted);this.textContent=muted?"🔇":"🔊";};
 newGame();
 </script>
 </body>

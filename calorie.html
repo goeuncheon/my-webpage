@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>칼로리 추정 앱 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.keybox{background:var(--soft);border-radius:18px;padding:14px 18px;margin-bottom:16px}
+.keybox label{display:block;font-weight:700;font-size:.9rem;margin-bottom:4px}
+.keybox input[type=password],.keybox input[type=text]{width:100%;margin-bottom:8px}
+.note{font-size:.82rem;color:var(--sub);margin:0}
+.up{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center}
+.drop{border:2px dashed #cfc6f3;border-radius:22px;min-height:220px;display:grid;place-items:center;text-align:center;color:var(--sub);background:#fdfcff;overflow:hidden}
+.drop img{width:100%;height:100%;max-height:300px;object-fit:cover;display:block}
+.act{display:flex;flex-direction:column;gap:10px}
+input[type=file]{display:none}
+label.btn{text-align:center;cursor:pointer}
+.err{color:#c92a2a;font-weight:700}
+.spin{text-align:center;font-weight:700;color:var(--accent);margin:14px 0}
+.tot{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.tot div{background:linear-gradient(135deg,#6c4de6,#9a7bff);color:#fff;border-radius:18px;padding:10px;text-align:center}
+.tot div:nth-child(n+2){background:#fff;color:var(--ink);border:1px solid var(--line)}
+.tot b{display:block;font-size:1.5rem}.tot span{font-size:.8rem;opacity:.85}
+.foodname{width:100%;font-size:1.3rem;font-weight:800;margin-bottom:6px}
+table{width:100%;border-collapse:collapse}
+th{font-size:.8rem;color:var(--sub);padding:4px}
+td{padding:4px}td input{width:100%;min-width:0;padding:7px 8px}
+td input.n{text-align:center}
+td button{border:1px solid #f0cbc7;background:#fff;color:#b42318;border-radius:8px;padding:4px 8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+@media (max-width:680px){.up{grid-template-columns:1fr}.tot{grid-template-columns:1fr 1fr}.wide{overflow-x:auto}table{min-width:520px}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 16 · 11주차 · 중상급 · 기록이 남고 공유할 수 있는 앱</p><h1>음식 사진 칼로리 추정</h1><p class="sub">음식 사진 한 장으로 칼로리와 영양을 대략 짐작해 보세요. 결과는 직접 고칠 수 있어요.</p></header>
+
+<section class="panel" aria-label="칼로리 추정">
+  <div class="keybox">
+    <label for="key">Anthropic API 키 (AI 분석용, 선택)</label>
+    <input type="password" id="key" autocomplete="off" placeholder="AI 분석을 쓰려면 입력하세요">
+    <label for="model">모델 이름</label><input type="text" id="model" value="claude-sonnet-5-5">
+    <label style="font-weight:500"><input type="checkbox" id="remember" style="width:auto;margin-right:6px">이 기기에 키 기억하기</label>
+    <p class="note">키는 이 브라우저에서 Anthropic으로만 전송돼요. 공용 컴퓨터에서는 기억하기를 끄세요. 키가 없으면 '직접 입력하기'로 표를 채울 수 있어요.</p>
+  </div>
+  <div class="up" id="upBox">
+    <div class="drop" id="drop"><span>🍽️<br>음식 사진을 올려 주세요</span></div>
+    <div class="act">
+      <label class="btn" for="file">📷 사진 올리기 / 찍기</label><input type="file" id="file" accept="image/*">
+      <button type="button" class="btn" id="analyze" disabled>✨ AI로 분석하기</button>
+      <button type="button" class="btn ghost" id="manual">직접 입력하기</button>
+    </div>
+  </div>
+  <p class="spin" id="spin" hidden>🤖 AI가 음식을 살펴보는 중이에요...</p>
+  <p class="err" id="err" role="alert"></p>
+  <div id="resultBox" hidden>
+    <input type="text" class="foodname" id="foodName" aria-label="음식 이름" placeholder="음식 이름">
+    <div class="tot"><div><b id="tK">0</b><span>총 칼로리 kcal</span></div><div><b id="tC">0</b><span>탄수화물 g</span></div><div><b id="tP">0</b><span>단백질 g</span></div><div><b id="tF">0</b><span>지방 g</span></div></div>
+    <div class="wide"><table><thead><tr><th scope="col" style="text-align:left">재료·구성</th><th scope="col">kcal</th><th scope="col">탄수 g</th><th scope="col">단백질 g</th><th scope="col">지방 g</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="row"><button type="button" class="btn ghost" id="addRow">＋ 재료 추가</button><button type="button" class="btn ghost" id="restart">다시 시작</button></div>
+    <p class="note" style="margin-top:12px">⚠ 사진으로 짐작한 <b>추정치</b>예요. 정확한 영양 정보나 건강 상담을 대신하지 않아요.</p>
+  </div>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var b64="",rows=[];
+try{var k=localStorage.getItem("calorie-key");if(k){$("key").value=k;$("remember").checked=true;}var m=localStorage.getItem("calorie-model");if(m)$("model").value=m;}catch(e){}
+function saveKey(){try{if($("remember").checked)localStorage.setItem("calorie-key",$("key").value.trim());else localStorage.removeItem("calorie-key");localStorage.setItem("calorie-model",$("model").value.trim());}catch(e){}}
+
+$("file").onchange=function(){
+  var f=this.files[0];if(!f)return;$("err").textContent="";
+  var img=new Image(),url=URL.createObjectURL(f);
+  img.onload=function(){
+    var s=Math.min(1,1024/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height);var u=c.toDataURL("image/jpeg",0.85);b64=u.split(",")[1];
+    $("drop").innerHTML="";var p=document.createElement("img");p.src=u;p.alt="올린 음식 사진";$("drop").appendChild(p);$("analyze").disabled=false;URL.revokeObjectURL(url);
+  };
+  img.onerror=function(){$("err").textContent="사진을 읽지 못했어요. 다른 사진으로 해 볼까요?";};
+  img.src=url;
+};
+function num(v){v=parseFloat(v);return isFinite(v)&&v>=0?Math.round(v*10)/10:0;}
+function totals(){
+  var t=[0,0,0,0];rows.forEach(function(r){t[0]+=r.kcal;t[1]+=r.carb;t[2]+=r.protein;t[3]+=r.fat;});
+  $("tK").textContent=Math.round(t[0]);$("tC").textContent=Math.round(t[1]*10)/10;$("tP").textContent=Math.round(t[2]*10)/10;$("tF").textContent=Math.round(t[3]*10)/10;
+}
+function renderRows(){
+  var tb=$("rows");tb.innerHTML="";
+  rows.forEach(function(r,i){
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td><input type="text" maxlength="30" aria-label="재료 이름"></td><td><input class="n" type="number" min="0" aria-label="칼로리"></td><td><input class="n" type="number" min="0" aria-label="탄수화물"></td><td><input class="n" type="number" min="0" aria-label="단백질"></td><td><input class="n" type="number" min="0" aria-label="지방"></td><td><button type="button" aria-label="삭제">삭제</button></td>';
+    var ins=tr.querySelectorAll("input"),keys=["name","kcal","carb","protein","fat"];
+    ins[0].value=r.name;for(var j=1;j<5;j++)ins[j].value=r[keys[j]];
+    ins[0].oninput=function(){r.name=this.value;};
+    [1,2,3,4].forEach(function(j){ins[j].oninput=function(){r[keys[j]]=num(this.value);totals();};});
+    tr.querySelector("button").onclick=function(){rows.splice(i,1);renderRows();};
+    tb.appendChild(tr);
+  });
+  totals();
+}
+function showResult(food,items){$("foodName").value=food||"";rows=items;$("resultBox").hidden=false;$("upBox").hidden=true;renderRows();}
+$("manual").onclick=function(){$("err").textContent="";showResult("",[{name:"",kcal:0,carb:0,protein:0,fat:0}]);};
+$("addRow").onclick=function(){rows.push({name:"",kcal:0,carb:0,protein:0,fat:0});renderRows();};
+$("restart").onclick=function(){rows=[];b64="";$("resultBox").hidden=true;$("upBox").hidden=false;$("drop").innerHTML="<span>🍽️<br>음식 사진을 올려 주세요</span>";$("analyze").disabled=true;$("file").value="";$("err").textContent="";};
+
+$("analyze").onclick=async function(){
+  var key=$("key").value.trim();$("err").textContent="";
+  if(!key){$("err").textContent="AI 분석에는 API 키가 필요해요. 키 없이 쓰려면 '직접 입력하기'를 눌러 주세요.";return;}
+  saveKey();$("spin").hidden=false;$("analyze").disabled=true;
+  var prompt='이 사진 속 음식을 보고 1인분 기준 영양을 추정해 주세요. 반드시 JSON만 출력하세요. 형식: {"food":"음식 이름","items":[{"name":"재료 또는 구성 요소","kcal":숫자,"carb":숫자,"protein":숫자,"fat":숫자}]} 단위는 kcal와 g이며 모든 값은 추정치입니다. 음식이 아니면 items를 빈 배열로 하세요.';
+  try{
+    var r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:$("model").value.trim()||"claude-sonnet-5-5",max_tokens:1000,messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64}},{type:"text",text:prompt}]}]})});
+    var d=await r.json();
+    if(!r.ok)throw new Error((d.error&&d.error.message)||("요청 실패 ("+r.status+")"));
+    var txt=(d.content||[]).map(function(x){return x.text||"";}).join("");var m=txt.match(/\{[\s\S]*\}/);
+    if(!m)throw new Error("결과를 읽지 못했어요.");
+    var j=JSON.parse(m[0]);
+    var items=(j.items||[]).map(function(x){return {name:String(x.name||""),kcal:num(x.kcal),carb:num(x.carb),protein:num(x.protein),fat:num(x.fat)};});
+    if(!items.length){$("err").textContent="음식을 찾지 못했어요. 다른 사진으로 해 보거나 직접 입력해 주세요.";}
+    else{showResult(String(j.food||""),items);seq([[784,0.12],[988,0.18]]);}
+  }catch(e){$("err").textContent="AI 분석에 실패했어요: "+e.message;}
+  $("spin").hidden=true;$("analyze").disabled=false;
+};
+</script>
+</body>
+</html>

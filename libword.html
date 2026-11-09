@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>도서관 용어 이어 말하기 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.start{max-width:560px;margin:0 auto;text-align:center}
+.start h2{margin:0 0 6px;font-size:1.5rem}
+.slider{margin:22px 0}
+.slider input[type=range]{width:100%;accent-color:var(--accent)}
+.slider output{display:block;font-weight:800;font-size:1.6rem;color:var(--accent)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0;font-size:.9rem}
+.tools .file{display:inline-block}
+.tools input[type=file]{display:none}
+.note{color:var(--sub);font-size:.86rem;margin:6px 0}
+.hud{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-weight:700}
+.hud b{color:var(--accent);font-size:1.2rem}
+.tbar{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;margin-bottom:22px}
+.tbar span{display:block;height:100%;width:100%;background:linear-gradient(90deg,#6c4de6,#ff7eb6);transition:width 1s linear}
+.q{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;font-size:clamp(1.35rem,5vw,2rem);line-height:1.5;text-align:center;margin:10px 0 18px}
+.q .blank{display:inline-block;min-width:3.5em;border-bottom:4px solid var(--accent);margin-left:6px}
+.hint{min-height:2.2em;text-align:center;font-size:1.5rem;letter-spacing:.2em;font-weight:800;color:#d6336c}
+.ans{display:flex;gap:8px;max-width:520px;margin:0 auto 12px}
+.ans input{flex:1;font-size:1.15rem;padding:12px 16px}
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.fb{text-align:center;min-height:1.8em;font-weight:700;margin-top:12px}
+.fb.ok{color:#237a4b}.fb.no{color:#c92a2a}
+.res{text-align:center}
+.res .big{font-size:3rem;font-weight:800;color:var(--accent);margin:0}
+.miss{max-width:560px;margin:14px auto 0;text-align:left}
+.miss li{margin-bottom:6px}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 12 · 11주차 · 중급 · 퀴즈형 반복학습</p><h1>도서관 용어 이어 말하기</h1><p class="sub">문장의 앞부분을 보고 뒷부분을 맞혀요. 초성 힌트와 제한 시간이 있는 문헌정보 퀴즈 게임이에요.</p></header>
+
+<section class="panel" id="startBox">
+  <div class="start">
+    <h2>📚 도서관 용어 이어 말하기</h2>
+    <p class="sub">문장의 앞부분을 보고, 빈칸에 들어갈 문헌정보 용어를 맞춰 보세요. 힌트는 최대 2번이에요.</p>
+    <div class="slider"><label for="limit">제한 시간</label><output id="limitOut">90초</output><input type="range" id="limit" min="30" max="300" step="10" value="90"></div>
+    <div class="tools">
+      <label class="btn ghost file" for="csv">📂 문제 CSV 불러오기</label><input type="file" id="csv" accept=".csv,text/csv">
+      <button type="button" class="btn ghost" id="sample">샘플 CSV 받기</button>
+    </div>
+    <p class="note" id="bankInfo"></p>
+    <p class="note">CSV는 <b>문제,정답</b> 두 칸으로 만들어요. 정답이 여러 개면 <b>|</b>로 나눠요. (예: 연속간행물|정기간행물)<br>구구단, 사자성어, 영어 단어도 이 방법으로 바꿔 쓸 수 있어요.</p>
+    <button type="button" class="btn" id="go" style="margin-top:12px;padding:14px 40px;font-size:1.1rem">게임 시작</button>
+  </div>
+</section>
+<section class="panel" id="game" hidden>
+  <div class="hud"><span>점수 <b id="score">0</b>점</span><span>정답 <b id="okN">0</b>개</span><span>남은 시간 <b id="left">0</b>초</span></div>
+  <div class="tbar" aria-hidden="true"><span id="tb"></span></div>
+  <p class="q"><span id="qtext"></span><span class="blank" aria-hidden="true"></span></p>
+  <p class="hint" id="hint" aria-live="polite"></p>
+  <div class="ans"><input type="text" id="answer" placeholder="정답을 입력하세요" autocomplete="off" aria-label="정답 입력"><button type="button" class="btn" id="check">정답 확인</button></div>
+  <div class="row"><button type="button" class="btn ghost" id="hintBtn">💡 초성 힌트 (2번 남음)</button><button type="button" class="btn ghost" id="skip">넘기기 →</button></div>
+  <p class="fb" id="fb" role="status" aria-live="polite"></p>
+</section>
+<section class="panel res" id="result" hidden aria-live="polite">
+  <p class="sub">시간 끝!</p><p class="big"><span id="rScore">0</span>점</p>
+  <p id="rMsg" style="font-weight:700"></p>
+  <div class="miss" id="missBox" hidden><p style="font-weight:700">놓친 문제를 다시 볼까요?</p><ul id="missList"></ul></div>
+  <p style="margin-top:18px"><button type="button" class="btn" id="again">다시 하기</button></p>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var DEFAULT=[
+["KDC 000번대 주류의 이름은","총류"],["KDC 100번대 주류의 이름은","철학"],["KDC 200번대 주류의 이름은","종교"],["KDC 300번대 주류의 이름은","사회과학"],["KDC 400번대 주류의 이름은","순수과학"],
+["KDC 500번대 주류의 이름은","기술과학"],["KDC 600번대 주류의 이름은","예술"],["KDC 700번대 주류의 이름은","언어"],["KDC 800번대 주류의 이름은","문학"],["KDC 900번대 주류의 이름은","역사"],
+["도서관에서 책을 빌려 가는 일을","대출"],["빌린 책을 도서관에 돌려주는 일을","반납"],["책이 꽂힐 자리를 알려 주는 기호는","청구기호"],["책 한 권마다 따로 붙이는 고유한 번호는","등록번호"],
+["도서관에서 책을 주제별로 나누어 정리하는 일을","분류"],["도서관에서 책을 꽂아 두는 책장을","서가"],["신문이나 잡지처럼 정해진 간격으로 나오는 자료를","연속간행물|정기간행물"],
+["도서관에서 자료를 모으고 정리하고 이용을 도와주는 전문가는","사서"],["책을 읽고 느낌과 생각을 쓴 글은","독서감상문"],["자료의 정보를 설명해 주는 데이터를 무엇이라고 할까요","메타데이터"],
+["더블린 코어의 기본 요소는 모두 몇 개일까요","15|15개"],["정보를 찾고 평가하고 활용하는 능력을","정보리터러시"],["다른 사람이 만든 글과 그림을 함부로 쓰지 않는 것은 이것을 지키는 일이에요","저작권"],
+["책의 앞쪽에 제목, 저자, 출판사가 적힌 쪽을","표제지|속표지"],["책 속 용어를 찾아가기 쉽게 정리한 목록을","색인"],["글을 쓸 때 참고한 자료를 모아 적은 목록은","참고문헌"],
+["이용자가 자료를 찾도록 사서가 도와주는 서비스는","참고봉사|참고서비스"],["자료의 제목, 저자 등을 적어 찾기 쉽게 정리하는 일을","목록"],["책 내용을 짧게 줄여 소개한 글을","초록|요약"],["도서관에서 책을 빌릴 때 쓰는 기간을","대출기간"]
+];
+var bank=DEFAULT.slice(),order=[],oi=0,cur=null,score=0,okN=0,hints=0,total=0,left=0,tick=null,missed=[],tried=false;
+var CHO="ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+function cho(ch){var c=ch.charCodeAt(0);return(c>=0xAC00&&c<=0xD7A3)?CHO.charAt(Math.floor((c-0xAC00)/588)):ch;}
+function hintText(ans,lv){return ans.split("").map(function(ch,i){return ch===" "?" ":(lv>=2&&i===0?ch:cho(ch));}).join(" ");}
+function norm(s){return s.replace(/[\s·.,!?'"()\-]/g,"").toLowerCase();}
+function info(){$("bankInfo").textContent="현재 문제 "+bank.length+"개"+(bank===DEFAULT?" (기본 문제)":" (불러온 CSV)");}
+
+$("limit").oninput=function(){$("limitOut").textContent=this.value+"초";};
+function parseCSV(text){
+  text=text.replace(/^\uFEFF/,"");var rows=[],row=[],c="",q=false;
+  function endRow(){row.push(c);c="";if(row.some(function(x){return x.trim();}))rows.push(row);row=[];}
+  for(var i=0;i<text.length;i++){
+    var ch=text.charAt(i);
+    if(q){if(ch==='"'){if(text.charAt(i+1)==='"'){c+='"';i++;}else q=false;}else c+=ch;}
+    else if(ch==='"')q=true;
+    else if(ch===","){row.push(c);c="";}
+    else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&text.charAt(i+1)==="\n")i++;endRow();}
+    else c+=ch;
+  }
+  if(c||row.length)endRow();
+  rows=rows.filter(function(r){return r.length>=2&&r[0].trim()&&r[1].trim();});
+  if(rows.length&&/문제/.test(rows[0][0])&&/정답/.test(rows[0][1]))rows.shift();
+  return rows.map(function(r){return [r[0].trim(),r[1].trim()];});
+}
+$("csv").onchange=function(){
+  var f=this.files[0];if(!f)return;var rd=new FileReader();
+  rd.onload=function(){var r=parseCSV(String(rd.result));if(r.length>=2){bank=r;info();}else{alert("문제를 읽지 못했어요. '문제,정답' 형식인지 확인해 주세요.");}};
+  rd.readAsText(f,"utf-8");
+};
+$("sample").onclick=function(){
+  var t="\uFEFF문제,정답\n"+DEFAULT.map(function(r){return '"'+r[0].replace(/"/g,'""')+'","'+r[1]+'"';}).join("\n");
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/csv;charset=utf-8"}));a.download="문제_샘플.csv";document.body.appendChild(a);a.click();a.remove();
+};
+
+function nextQ(){
+  if(oi>=order.length){order=shuffle(bank);oi=0;}
+  cur=order[oi++];hints=0;tried=false;
+  $("qtext").textContent=cur[0];$("hint").textContent="";$("answer").value="";$("fb").textContent="";$("fb").className="fb";
+  $("hintBtn").disabled=false;$("hintBtn").textContent="💡 초성 힌트 (2번 남음)";$("answer").focus();
+}
+function start(){
+  order=shuffle(bank);oi=0;score=0;okN=0;total=0;missed=[];left=+$("limit").value;var full=left;
+  $("startBox").hidden=true;$("result").hidden=true;$("game").hidden=false;
+  $("score").textContent=0;$("okN").textContent=0;$("left").textContent=left;$("tb").style.width="100%";
+  nextQ();clearInterval(tick);
+  tick=setInterval(function(){left--;$("left").textContent=left;$("tb").style.width=(left/full*100)+"%";if(left<=5&&left>0)tone(880,0.05,"square",0.04);if(left<=0)finish();},1000);
+}
+function check(){
+  var v=norm($("answer").value);if(!v)return;
+  var ok=cur[1].split("|").some(function(a){return norm(a)===v;});
+  if(ok){
+    var pts=[10,7,5][hints];score+=pts;okN++;total++;
+    $("score").textContent=score;$("okN").textContent=okN;
+    $("fb").className="fb ok";$("fb").textContent="정답! +"+pts+"점 🎉";seq([[784,0.12],[988,0.18]]);
+    setTimeout(nextQ,700);
+  }else{
+    tried=true;$("fb").className="fb no";$("fb").textContent="아쉬워요. 다시 생각해 봐요!";tone(210,0.25,"sawtooth",0.05);$("answer").select();
+  }
+}
+$("check").onclick=check;
+$("answer").onkeydown=function(e){if(e.key==="Enter")check();};
+$("hintBtn").onclick=function(){
+  if(hints>=2)return;hints++;
+  $("hint").textContent=hintText(cur[1].split("|")[0],hints);
+  $("hintBtn").textContent="💡 초성 힌트 ("+(2-hints)+"번 남음)";
+  if(hints>=2)$("hintBtn").disabled=true;$("answer").focus();
+};
+$("skip").onclick=function(){
+  missed.push(cur);total++;$("fb").className="fb no";$("fb").textContent="정답은 '"+cur[1].split("|")[0]+"' 였어요.";
+  setTimeout(nextQ,900);
+};
+function finish(){
+  clearInterval(tick);if(!$("game").hidden){}
+  $("game").hidden=true;$("result").hidden=false;$("rScore").textContent=score;
+  $("rMsg").textContent="정답 "+okN+"개를 맞혔어요! "+(okN>=15?"사서 선생님 같아요 🏆":okN>=8?"아주 잘했어요!":"다시 하면 더 잘할 수 있어요.");
+  var l=$("missList");l.innerHTML="";var seen={};
+  missed.concat(tried&&cur&&!(cur===undefined)?[cur]:[]).forEach(function(q){if(seen[q[0]])return;seen[q[0]]=1;var li=document.createElement("li");li.textContent=q[0]+" → "+q[1].split("|")[0];l.appendChild(li);});
+  $("missBox").hidden=!l.children.length;
+  seq([[523,0.16],[659,0.16],[784,0.3]],150);
+}
+$("go").onclick=start;
+$("again").onclick=function(){$("result").hidden=true;$("startBox").hidden=false;};
+info();
+</script>
+</body>
+</html>

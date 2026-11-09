@@ -3,80 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="컴퓨터교육과 문헌정보를 공부하는 천고은의 개인 홈페이지">
-<title>천고은 | 개인 홈페이지</title>
+<meta name="description" content="컴퓨터교육과 문헌정보를 공부하는 천고은의 개인 홈페이지와 바이브코딩 프로젝트 모음">
+<title>천고은 | 디지털 서가</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink:#262640;
-    --sub:#6b6b82;
-    --accent:#5b46c0;
-    --star:#9189aa;
-    --line:#e6e4f2;
-    --sans:"Noto Sans KR","Malgun Gothic",sans-serif;
-    --latin:"Plus Jakarta Sans","Noto Sans KR",sans-serif;
-  }
-  * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; scroll-padding-top:24px; }
-  body { margin:0; background:#fff; color:var(--ink); font-family:var(--sans); line-height:1.7; }
-  a { color:var(--accent); }
-  a:focus-visible { outline:3px solid var(--accent); outline-offset:3px; border-radius:4px; }
-  .wrap { max-width:940px; margin:0 auto; padding:0 24px; }
+  :root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--pink:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff;
+    --sans:"Noto Sans KR","Malgun Gothic",sans-serif;--latin:"Plus Jakarta Sans","Noto Sans KR",sans-serif}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{margin:0;color:var(--ink);font-family:var(--sans);line-height:1.7;
+    background:radial-gradient(900px 560px at 6% -6%,#e6dcff 0,transparent 62%),radial-gradient(760px 480px at 100% 4%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+  a{color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
 
   /* 헤더 */
-  #site-header .wrap { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px 24px; padding-top:40px; padding-bottom:40px; }
-  .brand { font-family:var(--latin); font-weight:800; font-size:1.1rem; letter-spacing:.08em; color:var(--ink); text-decoration:none; }
-  #main-nav ul { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 26px; }
-  #main-nav a { color:var(--sub); text-decoration:none; font-weight:500; font-size:.95rem; }
-  #main-nav a:hover { color:var(--accent); }
+  #site-header{position:sticky;top:0;z-index:20;background:rgba(250,249,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(233,229,251,.9)}
+  #site-header .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding:12px 22px;max-width:1040px;margin:0 auto}
+  .brand{font-family:var(--latin);font-weight:800;letter-spacing:.06em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+  .brand i{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;font-style:normal;font-size:.85rem}
+  #main-nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px 6px}
+  #main-nav a{display:block;padding:5px 14px;border-radius:999px;text-decoration:none;color:var(--sub);font-weight:500;font-size:.94rem}
+  #main-nav a:hover{background:var(--soft);color:var(--accent)}
 
   /* 히어로 */
-  #hero .hero-card {
-    position:relative; background:#fff; border:1px solid var(--line); border-radius:36px;
-    padding:72px 88px 64px; box-shadow:0 30px 60px -30px rgba(70,60,140,.22);
+  #hero{padding:34px 0 10px}
+  .hero-card{position:relative;overflow:hidden;border-radius:40px;padding:72px 64px 60px;color:#fff;
+    background:radial-gradient(520px 320px at 85% 10%,rgba(255,126,182,.65),transparent 65%),radial-gradient(480px 360px at 0% 100%,rgba(47,196,165,.45),transparent 60%),linear-gradient(135deg,#5a3fd6,#7c5cf0 55%,#9a7bff);
+    box-shadow:0 40px 80px -40px rgba(90,63,214,.8)}
+  .kicker{display:inline-block;font-family:var(--latin);font-weight:800;font-size:.76rem;letter-spacing:.16em;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 16px;margin:0 0 22px}
+  .hero-card h1{font-size:clamp(2.5rem,8.5vw,4.8rem);line-height:1.12;letter-spacing:-.05em;margin:0 0 20px;font-weight:800}
+  .hero-card h1 span{background:linear-gradient(90deg,#ffe58a,#ffb3d6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{max-width:34em;font-size:1.1rem;font-weight:500;opacity:.95;margin:0 0 28px}
+  .chips{list-style:none;margin:0 0 30px;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+  .chips li{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 16px;font-weight:700;font-size:.92rem}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .cta a{display:inline-block;text-decoration:none;font-weight:800;border-radius:999px;padding:13px 28px}
+  .cta .main{background:#fff;color:#4b32c4;box-shadow:0 16px 30px -16px rgba(0,0,0,.5)}
+  .cta .sub{border:2px solid rgba(255,255,255,.55);color:#fff}
+  .stickers{position:absolute;right:48px;top:40px;display:grid;gap:14px;font-size:2.6rem;text-align:center;transform:rotate(6deg)}
+  .stickers span{display:block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:22px;padding:6px 14px;backdrop-filter:blur(4px)}
+  .stickers span:nth-child(2){transform:translateX(-26px) rotate(-8deg)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:-34px;position:relative;padding:0 34px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px 18px;text-align:center;box-shadow:0 20px 40px -28px rgba(80,60,160,.55)}
+  .stat b{display:block;font-family:var(--latin);font-size:1.9rem;line-height:1.1;color:var(--accent)}
+  .stat span{font-size:.86rem;color:var(--sub);font-weight:500}
+
+  /* 섹션 공통 */
+  section.block{padding-top:84px}
+  .sec-head{margin-bottom:22px}
+  .eyebrow{font-family:var(--latin);font-weight:800;font-size:.76rem;letter-spacing:.16em;color:var(--accent);margin:0 0 4px}
+  section.block h2{font-size:clamp(1.6rem,4.5vw,2.2rem);letter-spacing:-.04em;margin:0 0 6px}
+  .desc{color:var(--sub);font-weight:500;margin:0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 24px 50px -36px rgba(80,60,160,.5)}
+  .card h3{margin:0 0 6px;font-size:1.15rem;letter-spacing:-.02em}
+  .card p{margin:0;color:var(--sub);font-weight:500}
+  .ico{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:var(--soft);font-size:1.4rem;margin-bottom:12px}
+
+  /* 소개 */
+  .about{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+  .catalog{border:2px solid var(--ink);border-radius:18px;background:repeating-linear-gradient(#fff 0 33px,#efedf8 33px 34px);padding:22px 24px;box-shadow:8px 8px 0 var(--accent);position:relative}
+  .catalog::before{content:"";position:absolute;left:50%;top:10px;width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:#faf9ff;transform:translateX(-50%)}
+  .catalog dl{margin:10px 0 0}
+  .catalog dt{font-size:.78rem;font-weight:800;color:var(--accent);margin-top:12px}.catalog dt:first-child{margin-top:0}
+  .catalog dd{margin:0;font-weight:700}
+
+  /* 활동 */
+  .act{position:relative;padding-left:24px}
+  .act::before{content:"";position:absolute;left:0;top:30px;width:10px;height:10px;border-radius:50%;background:var(--pink)}
+
+  /* 프로젝트 */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .fchip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;font:inherit;font-weight:700;font-size:.9rem;color:var(--sub);cursor:pointer}
+  .fchip em{font-style:normal;opacity:.6;margin-left:2px}
+  .fchip:hover{border-color:var(--accent);color:var(--accent)}
+  .fchip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .project-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+  .project-item{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 24px 50px -38px rgba(80,60,160,.55);transition:transform .2s,box-shadow .2s}
+  .project-item:hover{transform:translateY(-5px);box-shadow:0 30px 56px -30px rgba(80,60,160,.55)}
+  .cover{position:relative;height:118px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c1),var(--c2))}
+  .cover .emoji{font-size:3rem;filter:drop-shadow(0 8px 10px rgba(0,0,0,.2))}
+  .cover .num{position:absolute;left:16px;top:12px;font-family:var(--latin);font-weight:800;font-size:.78rem;color:#fff;background:rgba(0,0,0,.22);border-radius:999px;padding:1px 12px}
+  .project-item .body{display:flex;flex-direction:column;flex:1;padding:18px 22px 22px}
+  .project-item .cat{align-self:flex-start;font-size:.78rem;font-weight:800;color:var(--c1);background:color-mix(in srgb,var(--c1) 12%,#fff);border-radius:999px;padding:1px 12px;margin-bottom:8px}
+  .project-item h3{margin:0 0 6px;font-size:1.12rem;letter-spacing:-.02em}
+  .project-item p{margin:0 0 16px;flex:1;color:var(--sub);font-weight:500;font-size:.94rem}
+  .open-link{align-self:flex-start;font-weight:800;text-decoration:none;color:var(--ink);background:var(--soft);border-radius:999px;padding:6px 18px}
+  .open-link:hover{background:var(--accent);color:#fff}
+
+  /* 연락처 */
+  .contact-card{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;border-radius:32px;padding:34px 38px;color:#fff;background:linear-gradient(135deg,#2b2552,#5a3fd6)}
+  .contact-card h3{margin:0 0 4px;font-size:1.4rem}
+  .contact-card p{margin:0;opacity:.85}
+  .contact-card a{background:#fff;color:#4b32c4;text-decoration:none;font-weight:800;border-radius:999px;padding:12px 26px}
+
+  #site-footer{margin-top:84px;padding:30px 0 44px;text-align:center;color:var(--sub);font-size:.9rem}
+
+  @media (prefers-reduced-motion:no-preference){.project-item,.card,.stat{animation:fadeUp .6s both}@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}}}
+  @media (max-width:820px){
+    .hero-card{padding:44px 26px 40px;border-radius:30px}
+    .stickers{display:none}
+    .stats{padding:0 10px;grid-template-columns:repeat(3,1fr);margin-top:-26px}.stat{padding:10px 6px}.stat b{font-size:1.4rem}.stat span{font-size:.76rem}
+    .about{grid-template-columns:1fr}
+    section.block{padding-top:64px}
+    .contact-card{padding:26px}
   }
-  .kicker { font-family:var(--latin); font-weight:800; font-size:.8rem; letter-spacing:.2em; color:var(--accent); margin:0 0 18px; }
-  #hero h1 { font-size:clamp(2.4rem,8vw,4.4rem); font-weight:800; line-height:1.18; letter-spacing:-.04em; margin:0 0 26px; }
-  .lead { max-width:30em; color:var(--sub); font-weight:500; font-size:1.08rem; margin:0 0 26px; }
-  .chips { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px 28px; }
-  .chips li { color:var(--accent); font-weight:700; font-size:.92rem; }
-  .star { position:absolute; top:84px; right:72px; width:92px; height:92px; color:var(--star); }
-
-  /* 공통 섹션 */
-  section.block { padding-top:72px; }
-  section.block h2 { font-size:1.6rem; font-weight:800; letter-spacing:-.03em; margin:0 0 6px; }
-  .desc { color:var(--sub); font-weight:500; margin:0 0 22px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
-  .card { background:#fff; border:1px solid var(--line); border-radius:28px; padding:28px 32px; }
-  .card h3 { font-size:1.15rem; font-weight:700; margin:0 0 8px; letter-spacing:-.02em; }
-  .card p { margin:0; color:var(--sub); font-weight:500; }
-  .icon { display:block; font-size:1.5rem; color:var(--accent); margin-bottom:10px; line-height:1; }
-  .pill { display:inline-block; background:#efecfa; color:var(--accent); font-weight:700; font-size:.82rem; border-radius:999px; padding:3px 14px; margin-bottom:14px; }
-  .project-item { display:flex; flex-direction:column; align-items:flex-start; }
-  .project-item p { flex:1; margin-bottom:22px; }
-  .open-link { font-weight:700; text-decoration:none; }
-  .open-link:hover { text-decoration:underline; }
-  .label { color:var(--accent); font-weight:700; font-size:.88rem; margin:0 0 4px; }
-
-  #site-footer { margin-top:80px; padding:0 0 48px; text-align:center; color:var(--sub); font-size:.9rem; }
-
-  @media (max-width:720px) {
-    #site-header .wrap { padding-top:24px; padding-bottom:24px; }
-    #hero .hero-card { padding:40px 28px 36px; border-radius:28px; }
-    .star { top:28px; right:24px; width:56px; height:56px; }
-    section.block { padding-top:52px; }
-    .card { padding:22px 22px; border-radius:22px; }
-    .grid { grid-template-columns:1fr; }
-  }
-  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
 </head>
 <body>
 
 <header id="site-header">
-  <div class="wrap">
-    <a class="brand" href="#hero">CHEON GOEUN</a>
+  <div class="bar">
+    <a class="brand" href="#hero"><i>✦</i>CHEON GOEUN</a>
     <nav id="main-nav" aria-label="주 메뉴">
       <ul>
         <li><a href="#about">소개</a></li>
@@ -93,136 +134,226 @@
 
   <section id="hero">
     <div class="hero-card">
-      <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 0C54 30 70 46 100 50 70 54 54 70 50 100 46 70 30 54 0 50 30 46 46 30 50 0Z"/></svg>
-      <p class="kicker">PERSONAL WEBSITE · 2026</p>
-      <h1>안녕하세요,<br>천고은입니다.</h1>
+      <div class="stickers" aria-hidden="true"><span>📚</span><span>💻</span><span>✨</span></div>
+      <p class="kicker">DIGITAL LIBRARY · 2026</p>
+      <h1>안녕하세요,<br><span>천고은</span>입니다.</h1>
       <!-- TODO: 마음에 드는 소개 문구로 바꿔 보세요 -->
-      <p class="lead">컴퓨터교육을 전공하고 문헌정보교육을 함께 공부하고 있습니다. 정보를 정리하고, 학생들이 쉽게 쓸 수 있는 교육 도구를 직접 만들어 보는 과정에 관심이 있습니다.</p>
-      <ul class="chips">
-        <li>컴퓨터교육</li>
-        <li>문헌정보</li>
-        <li>바이브코딩</li>
-      </ul>
+      <p class="lead">컴퓨터교육을 전공하고 문헌정보교육을 함께 공부하고 있어요. 정보를 정리하고, 학생들이 쉽게 쓸 수 있는 교육 도구를 직접 만들어 보는 과정을 좋아합니다.</p>
+      <ul class="chips"><li>컴퓨터교육</li><li>문헌정보</li><li>바이브코딩</li></ul>
+      <div class="cta"><a class="main" href="#projects">프로젝트 구경하기</a><a class="sub" href="#contact">연락하기</a></div>
+    </div>
+    <div class="stats" aria-label="요약">
+      <div class="stat"><b>15</b><span>만든 앱</span></div>
+      <div class="stat"><b>6</b><span>프로젝트 분야</span></div>
+      <div class="stat"><b>2</b><span>전공 영역</span></div>
     </div>
   </section>
 
   <section id="about" class="block">
-    <h2>저를 소개합니다</h2>
-    <p class="desc">방문자가 가장 먼저 알아야 할 기본 정보입니다.</p>
-    <article class="card">
-      <p>안녕하세요, 컴퓨터교육과에서 문헌정보교육을 복수전공하고 있는 천고은입니다. 교육과 정보 정리, 그리고 AI 도구를 활용해 필요한 것을 직접 만들어 보는 데 흥미가 있습니다.</p>
-    </article>
+    <div class="sec-head"><p class="eyebrow">ABOUT</p><h2>저를 소개합니다</h2><p class="desc">방문자가 가장 먼저 알아야 할 기본 정보예요.</p></div>
+    <div class="about">
+      <article class="card">
+        <h3>컴퓨터교육 × 문헌정보</h3>
+        <p>컴퓨터교육과에서 문헌정보교육을 복수전공하고 있는 천고은입니다. 교육과 정보 정리, 그리고 AI 도구를 활용해 필요한 것을 직접 만들어 보는 데 흥미가 있어요. 학교 현장에서 쓸 수 있는 작은 앱을 만드는 교사를 꿈꿉니다.</p>
+      </article>
+      <aside class="catalog" aria-label="서가 카드">
+        <strong style="font-family:var(--latin);letter-spacing:.1em">CHEON GOEUN</strong>
+        <dl><dt>전공</dt><dd>컴퓨터교육 · 문헌정보교육</dd><dt>주제 분류</dt><dd>004 컴퓨터과학 / 020 문헌정보학</dd><dt>목표</dt><dd>학교 현장에서 쓸 수 있는 교육 도구 만들기</dd></dl>
+      </aside>
+    </div>
   </section>
 
   <section id="interests" class="block">
-    <h2>관심사</h2>
-    <p class="desc">평소 관심을 가지고 탐색하는 분야입니다.</p>
+    <div class="sec-head"><p class="eyebrow">INTERESTS</p><h2>관심사</h2><p class="desc">평소 관심을 가지고 탐색하는 분야예요.</p></div>
     <div class="grid">
-      <article class="card">
-        <span class="icon" aria-hidden="true">⌘</span>
-        <h3>컴퓨터 교육</h3>
-        <p>학교 현장에서 쓸 수 있는 교육용 앱과 콘텐츠를 만들어 보는 것을 좋아합니다.</p>
-      </article>
-      <article class="card">
-        <span class="icon" aria-hidden="true">✦</span>
-        <h3>문헌정보와 메타데이터</h3>
-        <p>자료를 분류하고 설명하는 방법을 공부하며 교육용 메타데이터에 관심을 갖고 있습니다.</p>
-      </article>
-      <article class="card">
-        <span class="icon" aria-hidden="true">✎</span>
-        <h3>바이브코딩</h3>
-        <p>생성형 AI와 함께 아이디어를 구체화해 웹 페이지와 작은 앱을 만들어 봅니다.</p>
-      </article>
+      <article class="card"><div class="ico" aria-hidden="true">💻</div><h3>컴퓨터 교육</h3><p>학교 현장에서 쓸 수 있는 교육용 앱과 콘텐츠를 만들어 보는 것을 좋아해요.</p></article>
+      <article class="card"><div class="ico" aria-hidden="true">🏷️</div><h3>문헌정보와 메타데이터</h3><p>자료를 분류하고 설명하는 방법을 공부하며 교육용 메타데이터에 관심이 있어요.</p></article>
+      <article class="card"><div class="ico" aria-hidden="true">✨</div><h3>바이브코딩</h3><p>생성형 AI와 함께 아이디어를 구체화해 웹 페이지와 작은 앱을 만들어 봐요.</p></article>
     </div>
   </section>
 
   <section id="activities" class="block">
-    <h2>주요 활동</h2>
-    <p class="desc">지금까지 참여한 학업과 프로젝트 활동입니다.</p>
+    <div class="sec-head"><p class="eyebrow">ACTIVITIES</p><h2>주요 활동</h2><p class="desc">지금까지 참여한 학업과 프로젝트 활동이에요.</p></div>
     <!-- TODO: 동아리, 대외활동 등 실제 활동으로 바꿔 보세요 -->
     <div class="grid">
-      <article class="card">
-        <h3>중학교 교육실습</h3>
-        <p>중학교에서 교육실습을 마쳤습니다.</p>
-      </article>
-      <article class="card">
-        <h3>데이터 리터러시 팀 프로젝트</h3>
-        <p>청소년 독서 현황을 주제로 데이터를 분석했습니다.</p>
-      </article>
+      <article class="card act"><h3>중학교 교육실습</h3><p>중학교에서 교육실습을 마쳤어요.</p></article>
+      <article class="card act"><h3>데이터 리터러시 팀 프로젝트</h3><p>청소년 독서 현황을 주제로 데이터를 분석했어요.</p></article>
+      <article class="card act"><h3>교육용 메타데이터 프로젝트</h3><p>교육용 메타데이터를 설계하고 개발하는 프로젝트에 참여했어요.</p></article>
     </div>
   </section>
 
   <section id="projects" class="block">
-    <h2>개별 프로젝트</h2>
-    <p class="desc">직접 만든 프로젝트를 확인할 수 있습니다.</p>
-    <div class="grid">
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>오늘의 할 일 관리</h3>
-        <p>하루의 할 일을 정리하고 관리할 수 있도록 만든 웹 앱 프로젝트입니다.</p>
-        <!-- 파일 이름이 다르면 href를 본인 파일 이름으로 바꾸세요 -->
-        <a class="open-link" href="todo.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+    <div class="sec-head"><p class="eyebrow">PROJECTS</p><h2>개별 프로젝트</h2><p class="desc">바이브코딩 수업에서 직접 기획하고 만든 앱 15개를 모았어요.</p></div>
+    <div class="filters" id="filters" role="group" aria-label="분야별로 보기">
+        <button type="button" class="fchip" data-f="all" aria-pressed="true">전체 <em>15</em></button>
+        <button type="button" class="fchip" data-f="life" aria-pressed="false">생활·기록 <em>3</em></button>
+        <button type="button" class="fchip" data-f="game" aria-pressed="false">학습 게임 <em>3</em></button>
+        <button type="button" class="fchip" data-f="math" aria-pressed="false">수학 교구 <em>2</em></button>
+        <button type="button" class="fchip" data-f="viz" aria-pressed="false">데이터 시각화 <em>3</em></button>
+        <button type="button" class="fchip" data-f="lib" aria-pressed="false">문헌정보 <em>2</em></button>
+        <button type="button" class="fchip" data-f="ai" aria-pressed="false">AI 활용 <em>2</em></button>
+    </div>
+    <div class="project-list" id="plist">
+      <article class="project-item" data-cat="life" style="--c1:#2fc4a5;--c2:#7be3cd">
+        <div class="cover" aria-hidden="true"><span class="num">No. 01</span><span class="emoji">✅</span></div>
+        <div class="body">
+          <span class="cat">생활·기록</span>
+          <h3>오늘의 할 일 관리</h3>
+          <p>하루의 할 일을 정리하고 관리할 수 있도록 만든 웹 앱이에요. 날짜별 조회와 완료율을 볼 수 있어요.</p>
+          <a class="open-link" href="todo.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>디지털 이름 도장 생성 앱</h3>
-        <p>행정 서류 및 공문서 작성을 자주 처리하는 교사를 위한 도장 만들기 프로젝트입니다.</p>
-        <a class="open-link" href="stamp.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="life" style="--c1:#2fc4a5;--c2:#7be3cd">
+        <div class="cover" aria-hidden="true"><span class="num">No. 02</span><span class="emoji">🔏</span></div>
+        <div class="body">
+          <span class="cat">생활·기록</span>
+          <h3>도장·사인 만들기</h3>
+          <p>이름으로 전자 도장을 만들고, 직접 그리거나 손글씨체로 사인을 만들어 투명 PNG로 저장해요.</p>
+          <a class="open-link" href="stamp.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>마음 서가 · 감정별 명언 추천 앱</h3>
-        <p>지금의 감정을 버튼으로 누르면 그 마음에 맞는 명언을 건네주는 웹 앱 프로젝트입니다.</p>
-        <a class="open-link" href="quotes.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="life" style="--c1:#2fc4a5;--c2:#7be3cd">
+        <div class="cover" aria-hidden="true"><span class="num">No. 03</span><span class="emoji">📚</span></div>
+        <div class="body">
+          <span class="cat">생활·기록</span>
+          <h3>공부 체크리스트</h3>
+          <p>오늘 공부할 내용을 적고 체크하면 완료율과 과목별 진행 상황을 한눈에 볼 수 있어요.</p>
+          <a class="open-link" href="studycheck.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>카드 뒤집기 짝 맞추기</h3>
-        <p>KDC 주류를 짝지어 보는, 저학년을 위한 게임형 디지털 교구입니다.</p>
-        <a class="open-link" href="cards.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="game" style="--c1:#ff6fae;--c2:#ffa8cf">
+        <div class="cover" aria-hidden="true"><span class="num">No. 04</span><span class="emoji">🃏</span></div>
+        <div class="body">
+          <span class="cat">학습 게임</span>
+          <h3>카드 뒤집기 짝 맞추기</h3>
+          <p>동물 그림과 KDC 주류를 짝지어 보는 저학년용 게임형 교구예요. 폭죽 효과도 있어요.</p>
+          <a class="open-link" href="cards.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>독서교육 4지선다 퀴즈</h3>
-        <p>10문제를 풀고 바로 채점과 피드백을 받는 독서 학습 퀴즈 앱입니다.</p>
-        <a class="open-link" href="quiz.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="game" style="--c1:#ff6fae;--c2:#ffa8cf">
+        <div class="cover" aria-hidden="true"><span class="num">No. 05</span><span class="emoji">🇰🇷</span></div>
+        <div class="body">
+          <span class="cat">학습 게임</span>
+          <h3>독도의 날 퀴즈</h3>
+          <p>10문제를 풀고 바로 채점과 피드백을 받는 4지선다 퀴즈예요.</p>
+          <a class="open-link" href="quiz.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>도형 돌리기·뒤집기 교구</h3>
-        <p>도형을 돌리고 뒤집어 보며 공간 감각을 익히는 연습·퀴즈 통합 수학 교구입니다.</p>
-        <a class="open-link" href="shapes.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="game" style="--c1:#ff6fae;--c2:#ffa8cf">
+        <div class="cover" aria-hidden="true"><span class="num">No. 06</span><span class="emoji">⚔️</span></div>
+        <div class="body">
+          <span class="cat">학습 게임</span>
+          <h3>수학 대모험</h3>
+          <p>경험치와 배지, 4가지 게임 모드로 사칙연산을 게임처럼 연습해요.</p>
+          <a class="open-link" href="mathquest.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>우리나라 기록 문화 연표</h3>
-        <p>글자와 책, 도서관의 역사를 가로로 넘기며 사건을 눌러 확인하는 인터랙티브 연표입니다.</p>
-        <a class="open-link" href="timeline.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="math" style="--c1:#ffa81c;--c2:#ffd37a">
+        <div class="cover" aria-hidden="true"><span class="num">No. 07</span><span class="emoji">🔷</span></div>
+        <div class="body">
+          <span class="cat">수학 교구</span>
+          <h3>도형 돌리기·뒤집기</h3>
+          <p>도형을 돌리고 뒤집어 보며 공간 감각을 익히는 연습·퀴즈 통합 교구예요.</p>
+          <a class="open-link" href="shapes.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
-      <article class="card project-item">
-        <span class="pill">개인 프로젝트</span>
-        <h3>디지털 리터러시 자기평가</h3>
-        <p>사전·사후 점수를 한 장의 레이더 차트에 겹쳐 보고 분석 요약까지 확인하는 도구입니다.</p>
-        <a class="open-link" href="radar.html" target="_blank" rel="noopener">프로젝트 결과물 보기 ↗</a>
+      <article class="project-item" data-cat="math" style="--c1:#ffa81c;--c2:#ffd37a">
+        <div class="cover" aria-hidden="true"><span class="num">No. 08</span><span class="emoji">🕒</span></div>
+        <div class="body">
+          <span class="cat">수학 교구</span>
+          <h3>시계 읽기 연습</h3>
+          <p>긴 바늘과 짧은 바늘이 정확히 연동되는 시계로 시각 읽기를 연습해요.</p>
+          <a class="open-link" href="clock.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="viz" style="--c1:#3d8bff;--c2:#8dbcff">
+        <div class="cover" aria-hidden="true"><span class="num">No. 09</span><span class="emoji">🎲</span></div>
+        <div class="body">
+          <span class="cat">데이터 시각화</span>
+          <h3>3D 주사위 시뮬레이터</h3>
+          <p>3D 주사위를 수천 번 굴리고 눈별 횟수와 확률을 그래프로 확인해요.</p>
+          <a class="open-link" href="dice.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="viz" style="--c1:#3d8bff;--c2:#8dbcff">
+        <div class="cover" aria-hidden="true"><span class="num">No. 10</span><span class="emoji">🧭</span></div>
+        <div class="body">
+          <span class="cat">데이터 시각화</span>
+          <h3>기록 문화 인터랙티브 연표</h3>
+          <p>글자와 책, 도서관의 역사를 가로로 넘기며 사건을 눌러 확인해요.</p>
+          <a class="open-link" href="timeline.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="viz" style="--c1:#3d8bff;--c2:#8dbcff">
+        <div class="cover" aria-hidden="true"><span class="num">No. 11</span><span class="emoji">🕸️</span></div>
+        <div class="body">
+          <span class="cat">데이터 시각화</span>
+          <h3>디지털 리터러시 자기평가</h3>
+          <p>사전·사후 점수를 한 장의 레이더 차트에 겹쳐 보고 분석 요약까지 확인해요.</p>
+          <a class="open-link" href="radar.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="lib" style="--c1:#7c5cf0;--c2:#b39dff">
+        <div class="cover" aria-hidden="true"><span class="num">No. 12</span><span class="emoji">🏷️</span></div>
+        <div class="body">
+          <span class="cat">문헌정보</span>
+          <h3>도서관 용어 이어 말하기</h3>
+          <p>초성 힌트와 제한 시간이 있는 문헌정보 퀴즈 게임이에요. CSV로 문제를 바꿀 수 있어요.</p>
+          <a class="open-link" href="libword.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="lib" style="--c1:#7c5cf0;--c2:#b39dff">
+        <div class="cover" aria-hidden="true"><span class="num">No. 13</span><span class="emoji">💌</span></div>
+        <div class="body">
+          <span class="cat">문헌정보</span>
+          <h3>마음 서가 · 명언 추천</h3>
+          <p>지금의 감정을 누르면 그 마음에 맞는 명언을 서가에서 꺼내 줘요.</p>
+          <a class="open-link" href="quotes.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="ai" style="--c1:#2b2552;--c2:#6a5fb0">
+        <div class="cover" aria-hidden="true"><span class="num">No. 14</span><span class="emoji">🎨</span></div>
+        <div class="body">
+          <span class="cat">AI 활용</span>
+          <h3>AI 캐치마인드</h3>
+          <p>제시어를 그림으로 그리면 AI가 무엇인지 맞혀 봐요.</p>
+          <a class="open-link" href="catchmind.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
+      </article>
+      <article class="project-item" data-cat="ai" style="--c1:#2b2552;--c2:#6a5fb0">
+        <div class="cover" aria-hidden="true"><span class="num">No. 15</span><span class="emoji">🍱</span></div>
+        <div class="body">
+          <span class="cat">AI 활용</span>
+          <h3>음식 사진 칼로리 추정</h3>
+          <p>음식 사진 한 장으로 칼로리와 영양을 짐작하고, 결과를 직접 고칠 수 있어요.</p>
+          <a class="open-link" href="calorie.html" target="_blank" rel="noopener">열어보기 ↗</a>
+        </div>
       </article>
     </div>
   </section>
 
   <section id="contact" class="block">
-    <h2>연락처</h2>
-    <p class="desc">이메일로 연락할 수 있습니다.</p>
-    <article class="card">
-      <h3>이메일</h3>
-      <p class="label">연락처 정보</p>
-      <p><a href="mailto:goeuncheon@gmail.com">goeuncheon@gmail.com</a></p>
-    </article>
+    <div class="contact-card">
+      <div><h3>함께 이야기해요 👋</h3><p>궁금한 점이나 제안은 이메일로 보내 주세요.</p></div>
+      <a href="mailto:goeuncheon@gmail.com">goeuncheon@gmail.com</a>
+    </div>
   </section>
 
 </main>
 
 <footer id="site-footer">
-  <div class="wrap">© 2026 천고은 · 개인 홈페이지</div>
+  <div class="wrap">© 2026 천고은 · 개인 홈페이지 · 생성형 AI와 함께 PRD를 바탕으로 제작했어요</div>
 </footer>
 
+<script>
+  var chips=document.querySelectorAll(".fchip"),items=document.querySelectorAll(".project-item");
+  chips.forEach(function(c){
+    c.addEventListener("click",function(){
+      var f=c.dataset.f;
+      chips.forEach(function(x){x.setAttribute("aria-pressed",x===c);});
+      items.forEach(function(it){it.hidden=!(f==="all"||it.dataset.cat===f);});
+    });
+  });
+</script>
 </body>
 </html>

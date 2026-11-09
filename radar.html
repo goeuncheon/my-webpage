@@ -6,152 +6,110 @@
 <title>디지털 리터러시 자기평가 레이더 차트 | 천고은</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
 *{box-sizing:border-box}
-body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
-.wrap{max-width:1024px;margin:0 auto;padding:24px 20px 56px}
-.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
-header.top{text-align:center;margin-bottom:24px}
-.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
-h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{color:var(--sub);margin:0;font-weight:500}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35);margin-bottom:24px}
-.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
-.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
-.btn.danger{background:#fff;color:#b42318;border:1px solid #f0aaaa;font-weight:500}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
 footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
-.layout{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}
+.layout{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start}
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 12px;font-weight:700;font-size:.92rem}
 .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
 table{width:100%;border-collapse:collapse;margin-bottom:14px}
 th,td{padding:6px 4px;text-align:center;font-size:.92rem}
 th{color:var(--sub);font-weight:700}
 td.name{text-align:left;font-weight:500}
-td input.name-input{width:100%;padding:6px 8px;font-size:.9rem}
-td input.score{width:56px;text-align:center;padding:7px 2px}
+td input{width:64px;text-align:center;padding:7px 4px}
 td input.pre{border-color:#a5c0f5}td input.post{border-color:#f0aaaa}
-.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
 .cv{width:100%;max-width:560px;height:auto;display:block;margin:0 auto;border:1px solid var(--line);border-radius:18px;background:#fff}
 .sum{background:var(--soft);border-radius:16px;padding:14px 20px;margin-top:16px}
 .sum h2{font-size:1.05rem;margin:0 0 6px}
 .sum ul{margin:0;padding-left:1.2em}
 .warn{color:#b42318;font-weight:700;min-height:1.4em;margin:6px 0 0;font-size:.9rem}
-
-/* 최종 보고서 스타일 */
-.report-section{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 32px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
-.report-section h2{font-size:1.35rem;margin-top:0;color:var(--accent);border-bottom:2px solid var(--soft);padding-bottom:10px}
-.report-content{font-size:0.98rem;line-height:1.8}
-.report-content h3{font-size:1.1rem;margin:20px 0 8px;color:var(--ink)}
-.report-content p{margin:0 0 12px}
-
 @media (max-width:760px){.layout{grid-template-columns:1fr}}
 </style>
+
 </head>
 <body>
 <div class="wrap">
 <a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
-<header class="top"><p class="kicker">바이브코딩 실습 10 · 11주차 · 중급 · 데이터를 시각적으로 보여주는 학습도구</p><h1>디지털 리터러시 자기평가</h1><p class="sub">지표별 점수(0~100점)를 입력하면 사전·사후 평가가 하나의 레이더 차트에 겹쳐 보여요.</p></header>
+<header class="top"><p class="kicker">바이브코딩 실습 10 · 11주차 · 중급 · 데이터를 시각적으로 보여주는 학습도구</p><h1>디지털 리터러시 자기평가</h1><p class="sub">영역별 점수를 입력하면 사전·사후 평가가 하나의 레이더 차트에 겹쳐 보여요.</p></header>
 
 <section class="panel layout" aria-label="디지털 리터러시 자기평가">
   <div>
     <p class="legend"><span><i style="background:#2f6fe0"></i>사전평가 (파란색)</span><span><i style="background:#e03131"></i>사후평가 (빨간색)</span></p>
-    <p class="sub" style="font-size:.9rem;margin:0 0 8px">영역별 이름을 수정하거나 <b>0~100점</b>을 입력하세요.</p>
-    <div style="max-height:360px;overflow-y:auto;">
-      <table>
-        <thead><tr><th scope="col" style="text-align:left">영역명</th><th scope="col">사전</th><th scope="col">사후</th><th scope="col">삭제</th></tr></thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
+    <p class="sub" style="font-size:.9rem;margin:0 0 8px">영역별로 <b>1~5점</b>을 입력하세요. 아직 평가하지 않은 영역은 비워 두어도 돼요.</p>
+    <table>
+      <thead><tr><th scope="col" style="text-align:left">영역</th><th scope="col">사전</th><th scope="col">사후</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
     <p class="warn" id="warn" role="status" aria-live="polite"></p>
     <div class="btns">
-      <button type="button" class="btn ghost" id="addMetric">＋ 지표 추가</button>
-      <button type="button" class="btn ghost" id="sample">초기 데이터</button>
-      <button type="button" class="btn ghost" id="clear">초기화</button>
+      <button type="button" class="btn ghost" id="sample">예시 불러오기</button>
+      <button type="button" class="btn ghost" id="clear">점수 초기화</button>
       <button type="button" class="btn" id="save">이미지로 저장</button>
     </div>
   </div>
   <div>
     <canvas id="cv" class="cv" width="720" height="720" role="img" aria-label="사전·사후 평가 레이더 차트"></canvas>
-    <div class="sum" aria-live="polite"><h2>간이 분석 요약</h2><ul id="sumList"></ul></div>
-  </div>
-</section>
-
-<!-- 최종 보고서 섹션 -->
-<section class="report-section" aria-label="최종 보고서">
-  <h2>📋 디지털 리터러시 역량 성장 최종 보고서</h2>
-  <div class="report-content" id="finalReport">
-    <!-- 동적 생성 -->
+    <div class="sum" aria-live="polite"><h2>분석 요약</h2><ul id="sumList"></ul></div>
   </div>
 </section>
 
 <footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
 </div>
-
-<script>
-var $=function(id){return document.getElementById(id);};
-var AREAS=["정보검색 능력","비판적 사고","디지털 도구 활용","협업 능력","창의적 문제해결"];
-var pre=[45, 38, 52, 60, 41];
-var post=[78, 71, 85, 80, 75];
+<script>var $=function(id){return document.getElementById(id);};
+var AREAS=["정보 검색","정보 평가","정보 정리·활용","디지털 소통·협업","AI 도구 활용","저작권·윤리"];
+var pre=[null,null,null,null,null,null],post=[null,null,null,null,null,null];
+var SAMPLE_PRE=[2,3,2,3,1,3],SAMPLE_POST=[4,4,3,4,3,4];
 var BLUE="#2f6fe0",RED="#e03131";
 
 function buildRows(){
   var tb=$("rows");tb.innerHTML="";
   AREAS.forEach(function(a,i){
     var tr=document.createElement("tr");
-    tr.innerHTML='<td class="name"><input class="name-input" type="text" value="'+a+'" aria-label="영역 이름"></td>' +
-                 '<td><input class="score pre" type="number" min="0" max="100" step="1" inputmode="numeric" value="'+(pre[i]!==null?pre[i]:'')+'"></td>' +
-                 '<td><input class="score post" type="number" min="0" max="100" step="1" inputmode="numeric" value="'+(post[i]!==null?post[i]:'')+'"></td>' +
-                 '<td><button type="button" class="btn danger" style="padding:4px 8px;font-size:0.8rem;" onclick="removeMetric('+i+')">삭제</button></td>';
-    
-    var nameInput=tr.querySelector(".name-input");
-    var ins=tr.querySelectorAll(".score");
-    
-    nameInput.oninput=function(){AREAS[i]=nameInput.value;refresh();};
+    tr.innerHTML='<td class="name"></td><td><input class="pre" type="number" min="1" max="5" step="1" inputmode="numeric"></td><td><input class="post" type="number" min="1" max="5" step="1" inputmode="numeric"></td>';
+    tr.firstChild.textContent=a;
+    var ins=tr.querySelectorAll("input");
+    ins[0].setAttribute("aria-label",a+" 사전 점수");ins[1].setAttribute("aria-label",a+" 사후 점수");
     ins[0].oninput=function(){pre[i]=read(ins[0]);refresh();};
     ins[1].oninput=function(){post[i]=read(ins[1]);refresh();};
     tb.appendChild(tr);
   });
 }
-
 function read(el){
   var s=el.value.trim();
   if(s===""){$("warn").textContent="";return null;}
   var v=Math.round(parseFloat(s));
   if(isNaN(v)){return null;}
-  if(v<0||v>100){$("warn").textContent="점수는 0~100 사이로 입력해 주세요.";v=Math.max(0,Math.min(100,v));el.value=v;}
+  if(v<1||v>5){$("warn").textContent="점수는 1~5 사이로 입력해 주세요.";v=Math.max(1,Math.min(5,v));el.value=v;}
   else $("warn").textContent="";
   return v;
 }
-
-function removeMetric(i){
-  if(AREAS.length <= 3){
-    $("warn").textContent="최소 3개 이상의 지표가 필요합니다.";
-    return;
-  }
-  AREAS.splice(i, 1);
-  pre.splice(i, 1);
-  post.splice(i, 1);
-  buildRows();
-  refresh();
+function syncInputs(){
+  var ins=document.querySelectorAll("#rows input");
+  AREAS.forEach(function(a,i){ins[i*2].value=pre[i]===null?"":pre[i];ins[i*2+1].value=post[i]===null?"":post[i];});
 }
 
-function addMetric(){
-  AREAS.push("새 지표");
-  pre.push(null);
-  post.push(null);
-  buildRows();
-  refresh();
-}
-
-function pt(i,v,cx,cy,R){var a=-Math.PI/2+i*2*Math.PI/AREAS.length,r=R*v/100;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
-
+function pt(i,v,cx,cy,R){var a=-Math.PI/2+i*2*Math.PI/AREAS.length,r=R*v/5;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
 function poly(ctx,arr,color,cx,cy,R){
   var P=[];arr.forEach(function(v,i){if(v!==null)P.push(pt(i,v,cx,cy,R));});
   if(!P.length)return;
@@ -162,7 +120,6 @@ function poly(ctx,arr,color,cx,cy,R){
   }else if(P.length===2){ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);ctx.lineTo(P[1][0],P[1][1]);ctx.stroke();}
   ctx.fillStyle=color;P.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],6,0,Math.PI*2);ctx.fill();});
 }
-
 function draw(){
   var c=$("cv"),ctx=c.getContext("2d"),W=c.width,cx=W/2,cy=W/2+24,R=W*0.235,n=AREAS.length;
   ctx.clearRect(0,0,W,W);ctx.fillStyle="#fff";ctx.fillRect(0,0,W,W);
@@ -170,26 +127,21 @@ function draw(){
   ctx.fillStyle=BLUE;ctx.fillRect(40,34,22,22);ctx.fillStyle="#262640";ctx.fillText("사전평가",70,46);
   ctx.fillStyle=RED;ctx.fillRect(210,34,22,22);ctx.fillStyle="#262640";ctx.fillText("사후평가",240,46);
   ctx.strokeStyle="#d9d4f0";ctx.lineWidth=2;
-  
-  // 5단계 눈금 (20, 40, 60, 80, 100)
-  for(var k=20;k<=100;k+=20){
+  for(var k=1;k<=5;k++){
     ctx.beginPath();for(var i=0;i<n;i++){var p=pt(i,k,cx,cy,R);i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}ctx.closePath();ctx.stroke();
   }
-  for(var j=0;j<n;j++){var q=pt(j,100,cx,cy,R);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(q[0],q[1]);ctx.stroke();}
-  
-  ctx.fillStyle="#9a96b8";ctx.font="500 16px 'Noto Sans KR',sans-serif";ctx.textAlign="left";
-  for(var m=20;m<=100;m+=20){var r=pt(0,m,cx,cy,R);ctx.fillText(m,r[0]+6,r[1]);}
-  
+  for(var j=0;j<n;j++){var q=pt(j,5,cx,cy,R);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(q[0],q[1]);ctx.stroke();}
+  ctx.fillStyle="#9a96b8";ctx.font="500 18px 'Noto Sans KR',sans-serif";ctx.textAlign="left";
+  for(var m=1;m<=5;m++){var r=pt(0,m,cx,cy,R);ctx.fillText(m,r[0]+6,r[1]);}
   poly(ctx,pre,BLUE,cx,cy,R);poly(ctx,post,RED,cx,cy,R);
   ctx.textBaseline="middle";
-  
   for(var a=0;a<n;a++){
     var ang=-Math.PI/2+a*2*Math.PI/n,lx=cx+(R+52)*Math.cos(ang),ly=cy+(R+52)*Math.sin(ang);
     var cs=Math.cos(ang);ctx.textAlign=Math.abs(cs)<0.2?"center":(cs>0?"left":"right");
     if(Math.abs(cs)>=0.2)lx=cx+(R+26)*Math.cos(ang);
     var none=pre[a]===null&&post[a]===null;
-    ctx.fillStyle=none?"#a3a0b8":"#262640";ctx.font="700 20px 'Noto Sans KR',sans-serif";ctx.fillText(AREAS[a],lx,ly-14);
-    ctx.font="500 16px 'Noto Sans KR',sans-serif";
+    ctx.fillStyle=none?"#a3a0b8":"#262640";ctx.font="700 22px 'Noto Sans KR',sans-serif";ctx.fillText(AREAS[a],lx,ly-14);
+    ctx.font="500 17px 'Noto Sans KR',sans-serif";
     ctx.fillStyle=none?"#a3a0b8":"#6b6b82";
     ctx.fillText(none?"(미입력)":"사전 "+(pre[a]===null?"-":pre[a])+" · 사후 "+(post[a]===null?"-":post[a]),lx,ly+14);
   }
@@ -200,76 +152,36 @@ function summary(){
   var enteredPre=pre.filter(function(v){return v!==null;}).length,enteredPost=post.filter(function(v){return v!==null;}).length;
   if(!enteredPre&&!enteredPost){L.push("점수를 입력하면 여기에 분석 요약이 나와요.");}
   else{
+    var missing=AREAS.filter(function(a,i){return pre[i]===null&&post[i]===null;});
+    if(missing.length)L.push(missing.length+"개 영역("+missing.join(", ")+")은 입력되지 않아 차트에서 제외했어요.");
     var both=[];AREAS.forEach(function(a,i){if(pre[i]!==null&&post[i]!==null)both.push({a:a,d:post[i]-pre[i]});});
     if(both.length){
       var avgPre=0,avgPost=0;AREAS.forEach(function(a,i){if(pre[i]!==null&&post[i]!==null){avgPre+=pre[i];avgPost+=post[i];}});
       avgPre/=both.length;avgPost/=both.length;
-      L.push("사전·사후를 모두 입력한 "+both.length+"개 영역 평균: "+avgPre.toFixed(1)+"점 → "+avgPost.toFixed(1)+"점 ("+(avgPost>=avgPre?"+": "")+(avgPost-avgPre).toFixed(1)+"점 변화)");
+      L.push("사전·사후를 모두 입력한 "+both.length+"개 영역의 평균은 "+avgPre.toFixed(1)+"점에서 "+avgPost.toFixed(1)+"점으로 "+(avgPost>avgPre?"올랐어요.":avgPost<avgPre?"내려갔어요.":"같아요."));
       var best=both.slice().sort(function(x,y){return y.d-x.d;})[0];
-      if(best.d>0)L.push("가장 큰 성장을 보인 영역: '"+best.a+"' (+" + best.d + "점)");
+      if(best.d>0)L.push("가장 많이 성장한 영역은 '"+best.a+"'예요 (+"+best.d+"점).");
+      var down=both.filter(function(x){return x.d<0;}).map(function(x){return x.a;});
+      if(down.length)L.push("점수가 낮아진 영역: "+down.join(", ")+" — 다시 살펴보면 좋아요.");
+    }else if(enteredPre&&enteredPost){L.push("같은 영역에 사전과 사후를 모두 입력하면 성장 정도를 비교할 수 있어요.");}
+    var base=enteredPost?post:pre,name=enteredPost?"사후":"사전",idx=[];
+    base.forEach(function(v,i){if(v!==null)idx.push(i);});
+    if(idx.length>=2){
+      var hi=idx.slice().sort(function(x,y){return base[y]-base[x];})[0],lo=idx.slice().sort(function(x,y){return base[x]-base[y];})[0];
+      if(base[hi]!==base[lo]){L.push(name+"평가 기준으로 강점은 '"+AREAS[hi]+"'("+base[hi]+"점), 보완할 영역은 '"+AREAS[lo]+"'("+base[lo]+"점)이에요.");}
+      else L.push(name+"평가 점수가 영역마다 비슷해요.");
     }
   }
   L.forEach(function(t){var li=document.createElement("li");li.textContent=t;ul.appendChild(li);});
-  
-  // 최종 보고서 내용 동적 렌더링
-  renderFinalReport(enteredPre, enteredPost);
 }
-
-function renderFinalReport(enteredPre, enteredPost){
-  var reportEl=$("finalReport");
-  var both=[];AREAS.forEach(function(a,i){if(pre[i]!==null&&post[i]!==null)both.push({a:a, pre:pre[i], post:post[i], d:post[i]-pre[i]});});
-  
-  if(!both.length){
-    reportEl.innerHTML="<p>사전·사후 평가 데이터를 모두 입력하면 상세한 최종 보고서가 작성됩니다.</p>";
-    return;
-  }
-
-  var avgPre=both.reduce(function(acc,cur){return acc+cur.pre;},0)/both.length;
-  var avgPost=both.reduce(function(acc,cur){return acc+cur.post;},0)/both.length;
-  var diff = avgPost - avgPre;
-
-  var sortedByGrowth = both.slice().sort(function(a,b){return b.d - a.d;});
-  var maxGrowth = sortedByGrowth[0];
-  var sortedByPost = both.slice().sort(function(a,b){return b.post - a.post;});
-  var highestPost = sortedByPost[0];
-  var lowestPost = sortedByPost[sortedByPost.length - 1];
-
-  var html = `
-    <h3>1. 종합 평가 개요</h3>
-    <p>본 평가는 학습자의 디지털 리터러시 역량 변화를 측정하기 위해 사전 및 사후에 걸쳐 진행되었습니다. 총 <strong>${both.length}개 지표</strong>를 분석한 결과, 전체 평균 점수가 사전 <strong>${avgPre.toFixed(1)}점</strong>에서 사후 <strong>${avgPost.toFixed(1)}점</strong>으로 <strong>${Math.abs(diff).toFixed(1)}점 ${diff >= 0 ? '상승' : '변화'}</strong>한 것으로 나타났습니다.</p>
-    
-    <h3>2. 영역별 성장 분석</h3>
-    <p>가장 두드러진 성장을 보인 영역은 <strong>'${maxGrowth.a}'</strong>로, 사전 ${maxGrowth.pre}점에서 사후 ${maxGrowth.post}점으로 <strong>+${maxGrowth.d}점</strong>의 큰 폭의 향상을 기록했습니다. 이는 학습 과정에서 해당 역량과 관련된 실습 및 탐구 활동이 효과적으로 작용했음을 시사합니다.</p>
-    
-    <h3>3. 최종 역량 프로파일 및 향후 제언</h3>
-    <p>사후 평가를 기준으로 가장 우수한 역량을 확보한 영역은 <strong>'${highestPost.a}'(${highestPost.post}점)</strong>이며, 상대적으로 보완이 필요한 영역은 <strong>'${lowestPost.a}'(${lowestPost.post}점)</strong>입니다. 향후 지속적인 디지털 역량 강화를 위해 상대적으로 취약한 영역에 대한 심화 학습과 실천 기회를 지속적으로 마련하는 것이 권장됩니다.</p>
-  `;
-  reportEl.innerHTML = html;
-}
-
 function refresh(){draw();summary();}
 
-$("addMetric").onclick=function(){addMetric();};
-$("sample").onclick=function(){
-  AREAS=["정보검색 능력","비판적 사고","디지털 도구 활용","협업 능력","창의적 문제해결"];
-  pre=[45, 38, 52, 60, 41];
-  post=[78, 71, 85, 80, 75];
-  buildRows();
-  $("warn").textContent="";
-  refresh();
-};
-$("clear").onclick=function(){
-  pre=pre.map(function(){return null;});
-  post=post.map(function(){return null;});
-  buildRows();
-  $("warn").textContent="";
-  refresh();
-};
+$("sample").onclick=function(){pre=SAMPLE_PRE.slice();post=SAMPLE_POST.slice();syncInputs();$("warn").textContent="";refresh();};
+$("clear").onclick=function(){pre=[null,null,null,null,null,null];post=pre.slice();syncInputs();$("warn").textContent="";refresh();};
 $("save").onclick=function(){
-  $("cv").toBlob(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="디지털리터러시_레이더차트_보고서용.png";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);});
+  $("cv").toBlob(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="디지털리터러시_레이더차트.png";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);});
 };
-
-buildRows();
+buildRows();pre=SAMPLE_PRE.slice();post=SAMPLE_POST.slice();syncInputs();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(refresh);
 refresh();
 </script>

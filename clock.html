@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시계 읽기 연습 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.wrapc{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:26px;align-items:center}
+.face{width:100%;max-width:340px;margin:0 auto;display:block;filter:drop-shadow(0 20px 24px rgba(80,60,160,.25))}
+.lv{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.lv button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px 14px;font-weight:700;color:var(--ink)}
+.lv button[aria-pressed=true]{border-color:var(--accent);background:var(--soft);color:var(--accent)}
+.q{font-size:1.2rem;font-weight:800;margin:0 0 10px}
+.inputs{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.inputs input{width:92px;font-size:2rem;font-weight:800;text-align:center;padding:8px}
+.inputs span{font-weight:800;font-size:1.3rem}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row .btn{font-size:1.05rem;padding:12px 22px}
+.fb{min-height:4.4em;margin:14px 0 6px;font-weight:700;line-height:1.55}
+.fb.ok{color:#237a4b;font-size:1.2rem}.fb.no{color:#c92a2a}
+.fb small{display:block;color:var(--sub);font-weight:500}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#fff;border:1px solid var(--line);border-radius:14px;padding:3px 14px;font-weight:700;font-size:.92rem}.chip b{color:var(--accent)}
+.balloons{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:30}
+.balloons span{position:absolute;bottom:-60px;font-size:2.4rem;animation:rise 2.2s ease-in forwards}
+@keyframes rise{to{transform:translateY(-110vh) rotate(18deg)}}
+@media (max-width:760px){.wrapc{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 14 · 11주차 · 중급 · 초등 수학 보조 교구</p><h1>시계 읽기 연습</h1><p class="sub">긴 바늘과 짧은 바늘을 잘 보고, 지금이 몇 시 몇 분인지 맞혀 보세요.</p></header>
+
+<section class="panel wrapc" aria-label="시계 읽기 연습">
+  <svg class="face" id="face" viewBox="-150 -150 300 300" role="img" aria-label="아날로그 시계"></svg>
+  <div>
+    <div class="lv" id="lv" role="group" aria-label="난이도">
+      <button type="button" data-l="1" aria-pressed="true">1단계 정시</button><button type="button" data-l="2" aria-pressed="false">2단계 30분</button>
+      <button type="button" data-l="3" aria-pressed="false">3단계 5분</button><button type="button" data-l="4" aria-pressed="false">4단계 1분</button>
+    </div>
+    <p class="q">지금은 몇 시 몇 분일까요?</p>
+    <div class="inputs"><input type="number" id="h" min="1" max="12" aria-label="시" inputmode="numeric"><span>시</span><input type="number" id="m" min="0" max="59" aria-label="분" inputmode="numeric"><span>분</span></div>
+    <div class="row"><button type="button" class="btn" id="check">정답 확인</button><button type="button" class="btn ghost" id="next" hidden>다음 문제 →</button></div>
+    <p class="fb" id="fb" role="status" aria-live="polite"></p>
+    <div class="stats"><span class="chip">총 문제 <b id="sT">0</b></span><span class="chip">맞힌 정답 <b id="sC">0</b></span><span class="chip">틀린 문제 <b id="sW">0</b></span></div>
+  </div>
+</section>
+<div class="balloons" id="balloons" aria-hidden="true"></div>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var NS="http://www.w3.org/2000/svg",face=$("face"),level=1,H=3,M=0,total=0,okN=0,badN=0,locked=false,curH=0,curM=0,anim=null;
+function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);(p||face).appendChild(e);return e;}
+el("circle",{r:142,fill:"#fff",stroke:"#6c4de6","stroke-width":8});
+el("circle",{r:132,fill:"none",stroke:"#efecfa","stroke-width":2});
+for(var i=0;i<60;i++){var a=i*6*Math.PI/180,big=i%5===0,r1=132,r2=big?116:124;
+  el("line",{x1:r1*Math.sin(a),y1:-r1*Math.cos(a),x2:r2*Math.sin(a),y2:-r2*Math.cos(a),stroke:big?"#1f1b3d":"#8d89ad","stroke-width":big?3.5:1.5,"stroke-linecap":"round"});}
+for(var n=1;n<=12;n++){var b=n*30*Math.PI/180;
+  var t=el("text",{x:98*Math.sin(b),y:-98*Math.cos(b),"text-anchor":"middle","dominant-baseline":"central","font-size":26,"font-weight":800,fill:"#1f1b3d","font-family":"Noto Sans KR,sans-serif"});t.textContent=n;}
+var hg=el("g",{}),mg=el("g",{});
+el("line",{x1:0,y1:10,x2:0,y2:-62,stroke:"#1f1b3d","stroke-width":10,"stroke-linecap":"round"},hg);
+el("line",{x1:0,y1:14,x2:0,y2:-98,stroke:"#ff4f9a","stroke-width":6,"stroke-linecap":"round"},mg);
+el("circle",{r:8,fill:"#6c4de6"});el("circle",{r:3,fill:"#fff"});
+
+function setAngles(h,m){hg.setAttribute("transform","rotate("+h+")");mg.setAttribute("transform","rotate("+m+")");}
+function moveTo(h,m){
+  var tH=(h%12)*30+m*0.5,tM=m*6;
+  var dH=((tH-curH)%360+360)%360,dM=((tM-curM)%360+360)%360;
+  var sH=curH,sM=curM,t0=performance.now(),dur=700;cancelAnimationFrame(anim);
+  function step(now){var t=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-t,3);setAngles(sH+dH*e,sM+dM*e);
+    if(t<1)anim=requestAnimationFrame(step);else{curH=tH;curM=tM;setAngles(tH,tM);}}
+  anim=requestAnimationFrame(step);
+}
+function pick(){
+  var h,m,tries=0;
+  do{
+    h=1+Math.floor(Math.random()*12);
+    if(level===1)m=0;else if(level===2)m=Math.random()<0.5?0:30;else if(level===3)m=5*Math.floor(Math.random()*12);else m=Math.floor(Math.random()*60);
+    tries++;
+  }while(h===H&&m===M&&tries<20);
+  H=h;M=m;
+}
+function newQ(){
+  pick();locked=false;moveTo(H,M);$("h").value="";$("m").value="";$("h").disabled=false;$("m").disabled=false;
+  $("fb").className="fb";$("fb").textContent="";$("check").hidden=false;$("next").hidden=true;$("h").focus();
+}
+function stats(){$("sT").textContent=total;$("sC").textContent=okN;$("sW").textContent=badN;}
+function balloons(){
+  var box=$("balloons"),E=["🎈","🎉","🎈","⭐","🎈","🎊"];
+  for(var i=0;i<14;i++){var s=document.createElement("span");s.textContent=E[i%E.length];s.style.left=(Math.random()*92)+"%";s.style.animationDelay=(Math.random()*0.5)+"s";box.appendChild(s);}
+  setTimeout(function(){box.innerHTML="";},3000);
+}
+function check(){
+  if(locked)return;var hs=$("h").value.trim(),ms=$("m").value.trim();
+  if(hs===""||(level>1&&ms==="")){$("fb").className="fb no";$("fb").textContent="시와 분을 모두 적어 주세요.";return;}
+  if(ms==="")ms="0";
+  var h=parseInt(hs,10),m=parseInt(ms,10);locked=true;total++;
+  var hOk=(h%12)===(H%12),mOk=m===M;
+  if(hOk&&mOk){
+    okN++;stats();$("fb").className="fb ok";$("fb").textContent="정답이에요! 정말 잘 읽었어요 🎉";balloons();seq([[784,0.12],[988,0.14],[1175,0.25]],120);
+    $("h").disabled=true;$("m").disabled=true;setTimeout(newQ,1600);
+  }else{
+    badN++;stats();tone(210,0.3,"sawtooth",0.05);
+    var hint="";
+    if(!hOk)hint+="짧은 바늘이 가리키는 숫자가 '시'예요. 분이 많이 지나면 짧은 바늘은 두 숫자 사이에 있고, 지나온 작은 숫자를 읽어요. ";
+    if(!mOk)hint+="긴 바늘이 가리키는 숫자가 '분'이에요. 숫자 1은 5분, 2는 10분, 3은 15분, 6은 30분이에요. 작은 눈금은 1분이에요.";
+    $("fb").className="fb no";$("fb").innerHTML="";
+    $("fb").appendChild(document.createTextNode("아쉬워요! 정답은 "+H+"시 "+M+"분이에요."));
+    var sm=document.createElement("small");sm.textContent="💡 힌트: "+hint;$("fb").appendChild(sm);
+    $("check").hidden=true;$("next").hidden=false;$("next").focus();
+  }
+}
+$("check").onclick=check;$("next").onclick=newQ;
+["h","m"].forEach(function(id){$(id).onkeydown=function(e){if(e.key==="Enter")check();};});
+document.querySelectorAll("#lv button").forEach(function(b){b.onclick=function(){
+  level=+b.dataset.l;document.querySelectorAll("#lv button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});
+  $("m").placeholder=level===1?"0":"";newQ();};});
+setAngles(0,0);newQ();stats();
+</script>
+</body>
+</html>

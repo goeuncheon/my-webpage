@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 캐치마인드 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.start{max-width:600px;margin:0 auto}
+.keybox{background:var(--soft);border-radius:18px;padding:14px 18px;margin:14px 0}
+.keybox label{display:block;font-weight:700;font-size:.9rem;margin-bottom:4px}
+.keybox input[type=password],.keybox input[type=text]{width:100%;margin-bottom:8px}
+.keybox .note{font-size:.82rem;color:var(--sub);margin:0}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
+.cats button{border:2px solid var(--line);background:#fff;border-radius:18px;padding:16px 10px;font-weight:800;font-size:1.05rem;color:var(--ink)}
+.cats button span{display:block;font-size:1.8rem}.cats button:hover{border-color:var(--accent);background:var(--soft)}
+.hud{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.word{font-size:1.5rem;font-weight:800}.word b{color:var(--accent)}
+.tb{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;margin-bottom:12px}.tb span{display:block;height:100%;width:100%;background:linear-gradient(90deg,#6c4de6,#ff7eb6);transition:width 1s linear}
+.cv{position:relative}
+canvas#pad{width:100%;height:auto;aspect-ratio:8/5;background:#fff;border:2px solid var(--line);border-radius:18px;touch-action:none;cursor:crosshair;display:block}
+.lock{position:absolute;inset:0;border-radius:18px;background:rgba(31,27,61,.35);display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.4rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.sw{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);padding:0}
+.sw[aria-pressed=true]{box-shadow:0 0 0 3px var(--ink)}
+.tools .btn{padding:8px 16px}
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center}
+.res div{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px}
+.res h3{margin:0 0 8px;font-size:.95rem;color:var(--sub)}
+.res img{width:100%;border-radius:12px;border:1px solid var(--line)}
+.res .big{font-size:1.8rem;font-weight:800;margin:8px 0;word-break:break-all}
+.verdict{text-align:center;font-weight:800;font-size:1.3rem;margin:16px 0}
+.verdict.ok{color:#237a4b}.verdict.no{color:#c92a2a}
+.err{color:#c92a2a;font-weight:700;text-align:center}
+@media (max-width:680px){.res{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 15 · 11주차 · 중급 · AI 비전 연동 앱</p><h1>AI 캐치마인드</h1><p class="sub">제시어를 그림으로 그리면 AI가 무엇인지 맞혀 봐요.</p></header>
+
+<section class="panel start" id="start">
+  <h2 style="margin:0 0 4px;text-align:center">🎨 카테고리를 골라 시작해요</h2>
+  <p class="sub" style="text-align:center">제시어를 보고 60초 안에 그림을 그리면, AI가 무엇인지 맞혀 봐요.</p>
+  <div class="keybox">
+    <label for="key">Gemini API 키 (선택)</label>
+    <input type="password" id="key" autocomplete="off" placeholder="AI 분석을 쓰려면 입력하세요">
+    <label for="model">모델 이름</label>
+    <input type="text" id="model" value="gemini-2.5-flash">
+    <label style="font-weight:500"><input type="checkbox" id="remember" style="width:auto;margin-right:6px">이 기기에 키 기억하기</label>
+    <p class="note">API 키는 Google AI Studio에서 무료로 만들 수 있어요(구글 로그인 필요). 키는 이 브라우저에서 Google로만 전송되고, 이 홈페이지 파일에는 저장되지 않아요. 다른 사람과 쓰는 컴퓨터에서는 기억하기를 끄세요. 키가 없어도 그림 그리기는 할 수 있어요.</p>
+  </div>
+  <div class="cats" id="cats"></div>
+</section>
+<section class="panel" id="game" hidden>
+  <div class="hud"><span class="word">제시어: <b id="word"></b></span><span class="chip" style="font-weight:700">남은 시간 <b id="left">60</b>초</span></div>
+  <div class="tb"><span id="tb"></span></div>
+  <div class="cv"><canvas id="pad" width="800" height="500" aria-label="그림 그리는 캔버스"></canvas><div class="lock" id="lock" hidden>⏰ 시간 끝! 그림이 잠겼어요</div></div>
+  <div class="tools" id="tools"></div>
+  <div class="tools"><button type="button" class="btn" id="submit">제출하기</button><button type="button" class="btn ghost" id="saveImg" hidden>그림 저장하기</button><button type="button" class="btn ghost" id="quit">처음으로</button></div>
+  <p class="verdict" id="thinking" hidden>🤖 AI가 생각 중입니다...</p>
+</section>
+<section class="panel" id="result" hidden aria-live="polite">
+  <p class="verdict" id="verdict"></p>
+  <div class="res"><div><h3>내가 그린 그림</h3><img id="rImg" alt="내가 그린 그림"></div><div><h3>AI의 추측</h3><p class="big" id="rAi"></p></div><div><h3>실제 정답</h3><p class="big" id="rAns"></p><p class="sub" id="rCat"></p></div></div>
+  <p class="err" id="rErr"></p>
+  <p style="text-align:center;margin-top:16px"><button type="button" class="btn" id="again">한 번 더 그리기</button> <button type="button" class="btn ghost" id="home">카테고리 바꾸기</button></p>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var CATS={"동물":["🐾",["강아지","고양이","토끼","코끼리","기린","펭귄","거북이","물고기","돼지","오리"]],
+"과일":["🍎",["사과","바나나","딸기","수박","포도","오렌지","복숭아","레몬","체리","파인애플"]],
+"채소":["🥕",["당근","오이","토마토","감자","양파","옥수수","가지","브로콜리","고추","마늘"]],
+"사물":["✏️",["우산","안경","시계","가위","의자","연필","열쇠","전구","모자","양말"]],
+"교통수단":["🚌",["자동차","자전거","비행기","기차","배","버스","헬리콥터","오토바이","지하철","로켓"]]};
+var cat="",word="",left=60,tick=null,drawing=false,locked=false,color="#1f1b3d",size=6,snap="",last=null;
+var pad=$("pad"),ctx=pad.getContext("2d");
+try{var k=localStorage.getItem("catchmind-key");if(k){$("key").value=k;$("remember").checked=true;}var m=localStorage.getItem("catchmind-model");if(m)$("model").value=m;}catch(e){}
+
+Object.keys(CATS).forEach(function(c){var b=document.createElement("button");b.type="button";b.innerHTML="<span>"+CATS[c][0]+"</span>"+c;b.onclick=function(){begin(c);};$("cats").appendChild(b);});
+var COL=["#1f1b3d","#e03131","#f08c00","#2f9e63","#1c7ed6","#ae3ec9"];
+COL.forEach(function(c){var b=document.createElement("button");b.type="button";b.className="sw";b.style.background=c;b.setAttribute("aria-label","색 "+c);b.setAttribute("aria-pressed",c===color);
+  b.onclick=function(){color=c;size=6;document.querySelectorAll(".sw").forEach(function(x){x.setAttribute("aria-pressed",x===b);});};$("tools").appendChild(b);});
+[["가늘게",3],["보통",6],["굵게",12]].forEach(function(s){var b=document.createElement("button");b.type="button";b.className="btn ghost";b.textContent=s[0];b.onclick=function(){size=s[1];};$("tools").appendChild(b);});
+var er=document.createElement("button");er.type="button";er.className="btn ghost";er.textContent="지우개";er.onclick=function(){color="#ffffff";size=22;document.querySelectorAll(".sw").forEach(function(x){x.setAttribute("aria-pressed","false");});};$("tools").appendChild(er);
+var cl=document.createElement("button");cl.type="button";cl.className="btn ghost";cl.textContent="전체 지우기";cl.onclick=function(){if(!locked)blank();};$("tools").appendChild(cl);
+
+function blank(){ctx.fillStyle="#fff";ctx.fillRect(0,0,pad.width,pad.height);}
+function pos(e){var r=pad.getBoundingClientRect();return {x:(e.clientX-r.left)*pad.width/r.width,y:(e.clientY-r.top)*pad.height/r.height};}
+pad.addEventListener("pointerdown",function(e){if(locked)return;e.preventDefault();pad.setPointerCapture(e.pointerId);drawing=true;last=pos(e);ctx.fillStyle=color;ctx.beginPath();ctx.arc(last.x,last.y,size/2,0,Math.PI*2);ctx.fill();});
+pad.addEventListener("pointermove",function(e){if(!drawing||locked)return;var p=pos(e);ctx.strokeStyle=color;ctx.lineWidth=size;ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;});
+["pointerup","pointercancel"].forEach(function(t){pad.addEventListener(t,function(){drawing=false;});});
+
+function show(id){["start","game","result"].forEach(function(x){$(x).hidden=x!==id;});}
+function begin(c){
+  if(c)cat=c;var list=CATS[cat][1],w;do{w=list[Math.floor(Math.random()*list.length)];}while(w===word&&list.length>1);word=w;
+  try{if($("remember").checked){localStorage.setItem("catchmind-key",$("key").value.trim());}else localStorage.removeItem("catchmind-key");localStorage.setItem("catchmind-model",$("model").value.trim());}catch(e){}
+  show("game");$("word").textContent=word;blank();locked=false;$("lock").hidden=true;$("saveImg").hidden=true;$("thinking").hidden=true;$("submit").disabled=false;
+  left=60;$("left").textContent=left;$("tb").style.width="100%";color="#1f1b3d";size=6;clearInterval(tick);
+  tick=setInterval(function(){left--;$("left").textContent=left;$("tb").style.width=(left/60*100)+"%";if(left<=0){clearInterval(tick);lockIt(true);}},1000);
+}
+function lockIt(timeout){locked=true;drawing=false;snap=pad.toDataURL("image/png");if(timeout){$("lock").hidden=false;$("saveImg").hidden=false;tone(300,0.4,"triangle");}}
+$("saveImg").onclick=function(){var a=document.createElement("a");a.href=snap;a.download="내_그림.png";document.body.appendChild(a);a.click();a.remove();};
+$("quit").onclick=function(){clearInterval(tick);show("start");};
+$("again").onclick=function(){begin();};$("home").onclick=function(){show("start");};
+
+function clean(s){return (s||"").replace(/[^가-힣A-Za-z0-9]/g,"");}
+async function askAI(png){
+  var key=$("key").value.trim();if(!key)return {skip:true};
+  var model=$("model").value.trim()||"gemini-2.5-flash";
+  var prompt="이 그림은 '"+cat+"' 카테고리에 속하는 것 하나를 그린 것입니다. 그림이 무엇인지 '"+cat+"' 카테고리에 속하는 한국어 명사 한 단어로만 대답하세요. 설명은 쓰지 마세요.";
+  var body={contents:[{parts:[{text:prompt},{inline_data:{mime_type:"image/png",data:png.split(",")[1]}}]}],generationConfig:{temperature:0.2,maxOutputTokens:512}};
+  var r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify(body)});
+  var d=await r.json();
+  if(!r.ok)throw new Error((d.error&&d.error.message)||("요청 실패 ("+r.status+")"));
+  var t=d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text;
+  if(!t)throw new Error("AI가 답을 주지 않았어요.");
+  return {text:t.trim().split("\n")[0]};
+}
+$("submit").onclick=async function(){
+  if(!locked){clearInterval(tick);lockIt(false);}
+  $("submit").disabled=true;$("thinking").hidden=false;
+  var ai="",err="";
+  try{var r=await askAI(snap);if(r.skip)err="API 키를 넣지 않아서 AI 분석은 건너뛰었어요. 키를 넣으면 AI가 그림을 맞혀 봐요.";else ai=r.text;}
+  catch(e){err="AI 호출에 실패했어요: "+e.message;}
+  $("thinking").hidden=true;show("result");
+  $("rImg").src=snap;$("rAns").textContent=word;$("rCat").textContent="카테고리: "+cat;$("rAi").textContent=ai||"—";$("rErr").textContent=err;
+  var v=$("verdict");
+  if(ai){var a=clean(ai),w=clean(word),ok=a===w||(a.length>=2&&(a.indexOf(w)>=0||w.indexOf(a)>=0));
+    v.className="verdict "+(ok?"ok":"no");v.textContent=ok?"🎉 AI가 맞혔어요! 그림 실력이 대단해요!":"아쉬워요! AI가 다르게 봤어요. 다시 도전해 볼까요?";seq(ok?[[784,0.12],[988,0.14],[1175,0.25]]:[[330,0.25],[262,0.3]],140);}
+  else{v.className="verdict";v.textContent="그림이 완성됐어요!";}
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공부 체크리스트 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.datebar{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.datebar strong{min-width:9.5em;text-align:center;font-size:1.1rem}
+.card{background:linear-gradient(135deg,#6c4de6,#9a7bff);color:#fff;border-radius:22px;padding:18px 22px;margin-bottom:16px}
+.card .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card .pct{font-size:2.2rem;font-weight:800;line-height:1}
+.pbar{height:12px;border-radius:7px;background:rgba(255,255,255,.28);overflow:hidden;margin:10px 0 6px}
+.pbar span{display:block;height:100%;width:0;background:#fff;transition:width .35s}
+.card p{margin:0;opacity:.95;font-weight:500}
+form.add{display:grid;grid-template-columns:1fr 160px 96px auto;gap:8px;margin-bottom:14px}
+form.add input{min-width:0}
+.tabs{display:flex;gap:6px;margin-bottom:10px}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 16px;font-weight:500;color:var(--sub)}
+.tabs button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+ul.list{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:8px}
+ul.list li{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 14px}
+ul.list li.done .t{text-decoration:line-through;color:#9a96b8}
+ul.list input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);padding:0}
+.t{flex:1;min-width:0;word-break:break-word;font-weight:500}
+.tag{font-size:.78rem;font-weight:700;color:var(--accent);background:var(--soft);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.min{font-size:.82rem;color:var(--sub);white-space:nowrap}
+ul.list button{border:1px solid #f0cbc7;background:#fff;color:#b42318;border-radius:8px;padding:2px 10px;font-size:.84rem}
+.empty{text-align:center;color:var(--sub);padding:20px 0}
+.subj{display:grid;gap:6px;margin:6px 0 16px}
+.subj div{display:grid;grid-template-columns:150px 1fr 54px;gap:8px;align-items:center;font-size:.88rem}
+.subj i{display:block;height:9px;border-radius:5px;background:var(--soft);overflow:hidden}.subj i span{display:block;height:100%;background:var(--mint)}
+.foot{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:640px){form.add{grid-template-columns:1fr 1fr}form.add input:first-child{grid-column:1/-1}.subj div{grid-template-columns:100px 1fr 46px}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 17 · 11주차 · 중상급 · 기록이 남는 앱</p><h1>공부 체크리스트</h1><p class="sub">오늘 공부할 것을 적고, 끝낸 것을 체크하며 하루의 진행 상황을 확인해요.</p></header>
+
+<section class="panel" aria-label="공부 체크리스트">
+  <div class="datebar"><button type="button" class="btn ghost" id="prev" aria-label="전날">◀</button><strong id="dateLabel"></strong><button type="button" class="btn ghost" id="next" aria-label="다음날">▶</button><button type="button" class="btn ghost" id="today">오늘</button></div>
+  <div class="card" aria-live="polite">
+    <div class="top"><span id="cnt" style="font-weight:700">완료 0 / 0</span><span class="pct" id="pct">0%</span></div>
+    <div class="pbar"><span id="bar"></span></div><p id="time"></p><p id="cheer" style="margin-top:4px"></p>
+  </div>
+  <form class="add" id="form">
+    <input type="text" id="title" placeholder="오늘 공부할 내용 (예: 4장 조기표 복습)" maxlength="60" required aria-label="공부 항목">
+    <input type="text" id="subject" list="subs" placeholder="과목" maxlength="20" aria-label="과목">
+    <input type="number" id="minutes" min="0" max="600" step="5" placeholder="목표 분" aria-label="목표 시간(분)">
+    <button type="submit" class="btn">추가</button>
+    <datalist id="subs"><option value="문헌정보분류론"><option value="디지털도서관론"><option value="정보검색론"><option value="장서관리론"><option value="바이브코딩"><option value="공동체와 어울림"><option value="기타"></datalist>
+  </form>
+  <div class="tabs" role="group" aria-label="목록 보기"><button type="button" data-f="all" aria-pressed="true">전체</button><button type="button" data-f="todo" aria-pressed="false">남은 공부</button><button type="button" data-f="done" aria-pressed="false">완료</button></div>
+  <ul class="list" id="list"></ul>
+  <div class="subj" id="subj" aria-label="과목별 진행"></div>
+  <div class="foot"><button type="button" class="btn ghost" id="carry">남은 공부 내일로 넘기기</button><button type="button" class="btn ghost" id="clear">이 날짜 목록 비우기</button></div>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var KEY="studycheck-v1",DB={},day=new Date(),filter="all";
+try{DB=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){DB={};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){}}
+function ymd(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+function items(){var k=ymd(day);if(!DB[k])DB[k]=[];return DB[k];}
+function fmt(m){var h=Math.floor(m/60),r=m%60;return h?(h+"시간"+(r?" "+r+"분":"")):r+"분";}
+function render(){
+  var L=items(),done=L.filter(function(x){return x.done;}),W=["일","월","화","수","목","금","토"];
+  $("dateLabel").textContent=(day.getMonth()+1)+"월 "+day.getDate()+"일 ("+W[day.getDay()]+")"+(ymd(day)===ymd(new Date())?" · 오늘":"");
+  var p=L.length?Math.round(done.length/L.length*100):0;
+  $("cnt").textContent="완료 "+done.length+" / "+L.length;$("pct").textContent=p+"%";$("bar").style.width=p+"%";
+  var goal=L.reduce(function(a,x){return a+(x.min||0);},0),dm=done.reduce(function(a,x){return a+(x.min||0);},0);
+  $("time").textContent=goal?"공부 시간 "+fmt(dm)+" / 목표 "+fmt(goal):"목표 시간을 적으면 공부 시간도 계산해 줘요.";
+  $("cheer").textContent=!L.length?"오늘 공부할 내용을 추가해 볼까요?":p===100?"🎉 오늘 목표를 모두 끝냈어요! 푹 쉬어요.":p>=50?"절반을 넘었어요. 조금만 더 힘내요!":p>0?"좋은 시작이에요! 하나씩 해 봐요.":"첫 번째 공부를 체크해 볼까요?";
+  var ul=$("list");ul.innerHTML="";
+  var shown=L.filter(function(x){return filter==="all"||(filter==="done"?x.done:!x.done);});
+  if(!shown.length){var e=document.createElement("li");e.className="empty";e.style.display="block";e.textContent=L.length?"이 목록에는 항목이 없어요.":"아직 공부 항목이 없어요.";ul.appendChild(e);}
+  shown.forEach(function(x){
+    var li=document.createElement("li");if(x.done)li.className="done";
+    var cb=document.createElement("input");cb.type="checkbox";cb.checked=x.done;cb.setAttribute("aria-label","완료 체크: "+x.t);
+    cb.onchange=function(){x.done=cb.checked;if(x.done)seq([[784,0.1],[988,0.14]]);save();render();};
+    var t=document.createElement("span");t.className="t";t.textContent=x.t;
+    li.appendChild(cb);li.appendChild(t);
+    if(x.sub){var g=document.createElement("span");g.className="tag";g.textContent=x.sub;li.appendChild(g);}
+    if(x.min){var m=document.createElement("span");m.className="min";m.textContent=fmt(x.min);li.appendChild(m);}
+    var d=document.createElement("button");d.type="button";d.textContent="삭제";d.setAttribute("aria-label","삭제: "+x.t);
+    d.onclick=function(){var a=items();a.splice(a.indexOf(x),1);save();render();};
+    li.appendChild(d);ul.appendChild(li);
+  });
+  var by={};L.forEach(function(x){var k=x.sub||"기타";(by[k]=by[k]||{d:0,t:0});by[k].t++;if(x.done)by[k].d++;});
+  var sb=$("subj");sb.innerHTML="";
+  Object.keys(by).forEach(function(k){var r=document.createElement("div");r.innerHTML="<span></span><i><span></span></i><span></span>";
+    r.children[0].textContent=k;r.children[1].firstChild.style.width=(by[k].d/by[k].t*100)+"%";r.children[2].textContent=by[k].d+"/"+by[k].t;sb.appendChild(r);});
+}
+$("form").onsubmit=function(e){
+  e.preventDefault();var t=$("title").value.trim();if(!t)return;
+  items().push({t:t,sub:$("subject").value.trim(),min:Math.max(0,parseInt($("minutes").value,10)||0),done:false});
+  save();$("title").value="";$("minutes").value="";$("title").focus();render();
+};
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){filter=b.dataset.f;document.querySelectorAll(".tabs button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});render();};});
+function shift(n){day=new Date(day.getFullYear(),day.getMonth(),day.getDate()+n);render();}
+$("prev").onclick=function(){shift(-1);};$("next").onclick=function(){shift(1);};$("today").onclick=function(){day=new Date();render();};
+$("carry").onclick=function(){
+  var L=items(),rest=L.filter(function(x){return !x.done;});if(!rest.length){alert("넘길 남은 공부가 없어요.");return;}
+  var nk=ymd(new Date(day.getFullYear(),day.getMonth(),day.getDate()+1));DB[nk]=(DB[nk]||[]).concat(rest.map(function(x){return {t:x.t,sub:x.sub,min:x.min,done:false};}));
+  DB[ymd(day)]=L.filter(function(x){return x.done;});save();render();alert(rest.length+"개를 내일로 넘겼어요.");
+};
+$("clear").onclick=function(){if(!items().length)return;if(confirm("이 날짜의 공부 목록을 모두 지울까요?")){DB[ymd(day)]=[];save();render();}};
+render();
+</script>
+</body>
+</html>

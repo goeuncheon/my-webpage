@@ -3,28 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KDC 주류 짝 맞추기 | 천고은</title>
+<title>카드 뒤집기 게임 | 천고은</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#262640;--sub:#6b6b82;--accent:#5b46c0;--line:#e6e4f2;--soft:#efecfa}
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
 *{box-sizing:border-box}
-body{margin:0;background:#f7f6fc;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7}
-.wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}
-.homelink{display:inline-block;margin-bottom:16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.92rem}
-header.top{text-align:center;margin-bottom:24px}
-.kicker{font-weight:800;font-size:.76rem;letter-spacing:.14em;color:var(--accent);margin:0 0 8px}
-h1{font-size:clamp(1.8rem,5.5vw,2.5rem);letter-spacing:-.04em;margin:0 0 6px}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{color:var(--sub);margin:0;font-weight:500}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 26px;box-shadow:0 24px 50px -32px rgba(70,60,140,.35)}
-.btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700}
-.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 select,input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
 footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
 [hidden]{display:none!important}
-@media(max-width:520px){.board{grid-template-columns:repeat(4,1fr);gap:8px}.panel{padding:18px 14px}.f-back.num{font-size:1.25rem}.f-back.name{font-size:.95rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
 .bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;margin-bottom:14px}
@@ -33,7 +35,7 @@ footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
 .chip{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 14px;font-weight:700;font-size:.92rem}
 .chip b{color:var(--accent)}
 .cap{text-align:center;color:var(--sub);margin:0 0 14px;font-weight:500}
-.board{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;max-width:700px;margin:0 auto}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:600px;margin:0 auto}
 .cardbtn{aspect-ratio:3/4;border:0;background:none;padding:0;perspective:700px}
 .inner{position:relative;display:block;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
 .cardbtn.flipped .inner,.cardbtn.matched .inner{transform:rotateY(180deg)}
@@ -49,16 +51,18 @@ footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
 .win h2{margin:0 0 6px;font-size:1.7rem}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:30}
 </style>
+
 </head>
 <body>
 <div class="wrap">
 <a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
-<header class="top"><p class="kicker">바이브코딩 실습 6 · 10주차 · KDC 학습 카드게임</p><h1>KDC 주류 짝 맞추기</h1><p class="sub">도서관 자료의 주류 명칭과 KDC 분류기호를 연결해 보세요.</p></header>
+<header class="top"><p class="kicker">바이브코딩 실습 6 · 10주차 · 초급 · 사용자 조작에 반응하는 앱</p><h1>카드 뒤집기 짝 맞추기</h1><p class="sub">같은 짝을 찾아 모든 카드를 뒤집어 보세요. 동물 친구들도, KDC 주류도 만나요.</p></header>
 
 <section class="panel" aria-label="카드 뒤집기 게임">
   <div class="bar">
     <div class="sel">
-      <span class="chip">전체 카드 <b>20장</b> · 10쌍</span>
+      <label>주제 <select id="theme"><option value="animal">동물 친구들</option><option value="kdc">KDC 주류 연결하기</option></select></label>
+      <label>난이도 <select id="level"><option value="4">쉬움 (4쌍)</option><option value="6" selected>보통 (6쌍)</option><option value="8">어려움 (8쌍)</option></select></label>
       <button type="button" class="btn" id="restart">다시 시작</button>
       <button type="button" class="btn ghost" id="mute" aria-pressed="false">소리 켜짐 🔊</button>
     </div>
@@ -85,20 +89,27 @@ function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||windo
 function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
-var KDC=[["000","총류"],["100","철학"],["200","종교"],["300","사회과학"],["400","자연과학"],["500","기술과학"],["600","예술"],["700","언어"],["800","문학"],["900","역사"]];
+var ANIMALS=["🐶","🐱","🐰","🦊","🐻","🐼","🐸","🦁","🐵","🐯","🐷","🐮"];
+var KDC=[["000","총류"],["100","철학"],["200","종교"],["300","사회과학"],["400","순수과학"],["500","기술과학"],["600","예술"],["700","언어"],["800","문학"],["900","역사"]];
 var first=null,lock=false,matchedN=0,attempts=0,score=0,totalPairs=0;
 var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function updateScore(){$("sMatch").textContent=matchedN+" / "+totalPairs;$("sTry").textContent=attempts;$("sScore").textContent=score;}
 
 function start(){
-  $("cap").textContent="분류기호 카드와 주류 명칭 카드를 짝지어 보세요. 예) 000 ↔ 총류";
-  var deck=[];
-  KDC.forEach(function(k,i){
-    deck.push({id:i,text:k[0],cls:"num",label:"KDC 분류기호 "+k[0]});
-    deck.push({id:i,text:k[1],cls:"name",label:"KDC 주류 "+k[1]});
-  });
-  deck=shuffle(deck);first=null;lock=false;matchedN=0;attempts=0;score=0;totalPairs=KDC.length;
+  var theme=$("theme").value,pairs=+$("level").value,deck=[];
+  if(theme==="animal"){
+    $("cap").textContent="같은 동물 두 장을 찾아 보세요.";
+    shuffle(ANIMALS).slice(0,pairs).forEach(function(a,i){
+      deck.push({id:i,text:a,cls:"animal",label:"동물 "+a});deck.push({id:i,text:a,cls:"animal",label:"동물 "+a});
+    });
+  }else{
+    $("cap").textContent="분류 번호 카드와 주제 카드를 짝지어 보세요. 예) 800 ↔ 문학";
+    shuffle(KDC).slice(0,pairs).forEach(function(k,i){
+      deck.push({id:i,text:k[0],cls:"num",label:"분류 번호 "+k[0]});deck.push({id:i,text:k[1],cls:"name",label:"주제 "+k[1]});
+    });
+  }
+  deck=shuffle(deck);first=null;lock=false;matchedN=0;attempts=0;score=0;totalPairs=pairs;
   $("win").hidden=true;
   var b=$("board");b.innerHTML="";
   deck.forEach(function(c,idx){
@@ -110,6 +121,7 @@ function start(){
   });
   updateScore();
 }
+
 function flip(btn,c,idx){
   if(lock||btn.classList.contains("flipped")||btn.classList.contains("matched"))return;
   btn.classList.add("flipped");btn.setAttribute("aria-label",(idx+1)+"번 카드, "+c.label);tone(620,0.08,"triangle");
@@ -167,7 +179,7 @@ function fireworks(){
 }
 
 $("restart").onclick=start;$("again").onclick=start;
-
+$("theme").onchange=start;$("level").onchange=start;
 $("mute").onclick=function(){muted=!muted;this.setAttribute("aria-pressed",muted);this.textContent=muted?"소리 꺼짐 🔇":"소리 켜짐 🔊";};
 start();
 </script>
