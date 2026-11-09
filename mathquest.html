@@ -114,8 +114,8 @@ function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
 var KEY="mathquest-v1",OPN={add:"덧셈",sub:"뺄셈",mul:"곱셈",div:"나눗셈",mix:"혼합"};
-function fresh(){var st={};Object.keys(OPN).forEach(function(k){st[k]={c:0,t:0};});return {xp:0,badges:{},stats:st,days:[]};}
-function load(){try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&s.stats&&s.badges){Object.keys(OPN).forEach(function(k){if(!s.stats[k])s.stats[k]={c:0,t:0};});return s;}}catch(e){}return fresh();}
+function fresh(){var st={};Object.keys(OPN).forEach(function(k){st[k]={c:0,t:0};});return {xp:0,badges:{},stats:st,days:[],totalCorrect:0,totalTried:0};}
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&s.stats&&s.badges){Object.keys(OPN).forEach(function(k){if(!s.stats[k])s.stats[k]={c:0,t:0};});if(typeof s.totalCorrect!=="number")s.totalCorrect=0;if(typeof s.totalTried!=="number")s.totalTried=0;if(!Array.isArray(s.days))s.days=[];return s;}}catch(e){}return fresh();}
 var S=load();function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 var BADGES={first:["🌱","첫 정답"],s5:["🔥","5연속 정답"],s10:["⚡","10연속 정답"],time15:["⏱","타임어택 15문제"],master:["👑","마스터전 클리어"],lv5:["🏅","레벨 5"],d3:["📅","3일 연속 학습"]};
 function ymd(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
@@ -215,6 +215,10 @@ $("start").onclick=begin;$("again").onclick=begin;
 $("menu").onclick=function(){$("res").hidden=true;$("home").hidden=false;renderHome();};
 $("quit").onclick=function(){finish();};
 $("go").onclick=submit;$("ans").onkeydown=function(e){if(e.key==="Enter")submit();};
+$("resetData").onclick=function(){
+  if(!confirm("저장된 경험치, 배지, 학습 통계를 모두 초기화할까요?"))return;
+  S=fresh();save();renderHome();
+};
 renderHome();
 </script>
 </body>
