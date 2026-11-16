@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리 반 생일 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input,textarea{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.banner{border-radius:16px;padding:8px 16px;font-size:.88rem;font-weight:700;margin-bottom:16px;text-align:center}
+.banner.demo{background:#fff7dc;color:#8a5a00}.banner.live{background:#e5f6f3;color:#1f7a66}
+h2.sec{font-size:1.1rem;margin:22px 0 10px}
+.hl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.hl .b{border-radius:22px;padding:16px 18px;color:#fff;background:linear-gradient(135deg,#6c4de6,#ff7eb6);position:relative;overflow:hidden}
+.hl .b:nth-child(2){background:linear-gradient(135deg,#2fc4a5,#6c4de6)}.hl .b:nth-child(3){background:linear-gradient(135deg,#ffa81c,#ff6fae)}
+.hl .d{font-family:"Plus Jakarta Sans",sans-serif;font-size:1.8rem;font-weight:800;line-height:1}
+.hl .n{font-weight:800;font-size:1.1rem;margin-top:6px}.hl .m{font-size:.84rem;opacity:.92}
+form.add{display:grid;grid-template-columns:1fr 1fr 90px 90px auto;gap:8px}
+form.add input,form.add select{min-width:0}
+.msg{min-height:1.6em;font-weight:700;margin:8px 0 0;font-size:.92rem}.msg.ok{color:#237a4b}.msg.no{color:#c92a2a}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 13px;font-weight:500;color:var(--sub);font-size:.88rem}
+.filters button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+ul.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ul.list li{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 16px}
+ul.list .nm{font-weight:800}.tag{font-size:.78rem;font-weight:700;color:var(--accent);background:var(--soft);border-radius:999px;padding:1px 10px;margin-left:6px}
+ul.list .dt{margin-left:auto;text-align:right;font-size:.9rem;color:var(--sub)}
+.dd{display:inline-block;min-width:64px;text-align:center;font-weight:800;border-radius:999px;padding:2px 12px;background:var(--soft);color:var(--accent)}
+.dd.today{background:#ff6fae;color:#fff}.empty{text-align:center;color:var(--sub);padding:22px 0}
+@media (max-width:700px){form.add{grid-template-columns:1fr 1fr}form.add button{grid-column:1/-1}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 21 · 12주차 · 중상급 · 구글 시트 연동 앱</p><h1>우리 반 생일 달력</h1><p class="sub">다가오는 생일을 한눈에! 월별로 보고 D-Day 순으로 정렬해요.</p></header>
+
+<section class="panel" aria-label="학급 생일 관리">
+  <p class="banner demo" id="banner"></p>
+  <h2 class="sec" style="margin-top:0">🎂 다가오는 생일</h2>
+  <div class="hl" id="hl"></div>
+  <h2 class="sec">생일 등록하기</h2>
+  <form class="add" id="form">
+    <input type="text" id="name" placeholder="이름" maxlength="20" required aria-label="이름">
+    <input type="text" id="memo" placeholder="소속·메모 (예: 1반, 동아리)" maxlength="30" aria-label="소속 또는 메모">
+    <select id="mon" aria-label="월" required></select><select id="day" aria-label="일" required></select>
+    <button type="submit" class="btn" id="save">등록</button>
+  </form>
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+  <h2 class="sec">생일 목록</h2>
+  <div class="filters" id="filters" role="group" aria-label="월별 조회"></div>
+  <div class="bar"><span class="sub" id="count"></span>
+    <label>정렬 <select id="sort"><option value="dday">다가오는 생일 순(D-Day)</option><option value="date">생일 순(월·일)</option><option value="name">이름 순</option></select></label></div>
+  <ul class="list" id="list"></ul>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var GAS=!!(window.google&&google.script&&google.script.run);
+if(GAS){var hl=document.querySelector(".homelink");if(hl)hl.hidden=true;}
+function call(fn){
+  var args=[].slice.call(arguments,1);
+  return new Promise(function(res,rej){
+    if(GAS){google.script.run.withSuccessHandler(res).withFailureHandler(function(e){rej(new Error((e&&e.message)||String(e)));})[fn].apply(null,args);}
+    else{try{Promise.resolve(DEMO[fn].apply(null,args)).then(res,rej);}catch(e){rej(e);}}
+  });
+}
+function lsGet(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v===null?d:v;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){throw new Error("브라우저 저장 공간이 부족해요.");}}
+
+var SAMPLE=[{name:"김하늘",memo:"1반",month:3,day:14},{name:"이도윤",memo:"1반",month:11,day:30},{name:"박서연",memo:"2반",month:12,day:5},{name:"김하늘",memo:"2반",month:7,day:21},{name:"최민준",memo:"1반",month:1,day:9}];
+var DEMO={
+  getBirthdays:function(){return lsGet("bday-demo-v1",SAMPLE);},
+  addBirthday:function(n,m,mo,d){var L=lsGet("bday-demo-v1",SAMPLE);
+    if(L.some(function(x){return x.name===n&&x.memo===m;}))throw new Error("같은 이름·소속의 친구가 이미 있어요.");
+    L.push({name:n,memo:m,month:mo,day:d});lsSet("bday-demo-v1",L);return {ok:true};}
+};
+var data=[],mon=0;
+function toast(t,ok){$("msg").textContent=t;$("msg").className="msg "+(ok?"ok":"no");}
+function dday(m,d){
+  var now=new Date(),t=new Date(now.getFullYear(),now.getMonth(),now.getDate()),b=new Date(t.getFullYear(),m-1,d);
+  if(b<t)b=new Date(t.getFullYear()+1,m-1,d);
+  return Math.round((b-t)/86400000);
+}
+function ddLabel(n){return n===0?"오늘 🎉":"D-"+n;}
+function render(){
+  var L=data.map(function(x){return {name:x.name,memo:x.memo,month:x.month,day:x.day,dd:dday(x.month,x.day)};});
+  var hl=L.slice().sort(function(a,b){return a.dd-b.dd;}).slice(0,3),h=$("hl");h.innerHTML="";
+  if(!hl.length)h.innerHTML='<p class="empty" style="grid-column:1/-1">아직 등록된 생일이 없어요.</p>';
+  hl.forEach(function(x){var b=document.createElement("div");b.className="b";b.innerHTML='<div class="d"></div><div class="n"></div><div class="m"></div>';
+    b.children[0].textContent=ddLabel(x.dd);b.children[1].textContent=x.name;b.children[2].textContent=(x.memo?x.memo+" · ":"")+x.month+"월 "+x.day+"일";h.appendChild(b);});
+  var s=$("sort").value,V=L.filter(function(x){return !mon||x.month===mon;});
+  V.sort(function(a,b){return s==="dday"?a.dd-b.dd:s==="name"?a.name.localeCompare(b.name,"ko"):(a.month-b.month||a.day-b.day);});
+  $("count").textContent=(mon?mon+"월 ":"전체 ")+V.length+"명";
+  var ul=$("list");ul.innerHTML="";
+  if(!V.length){ul.innerHTML='<li class="empty" style="display:block">이 달에는 생일인 친구가 없어요.</li>';return;}
+  V.forEach(function(x){var li=document.createElement("li");
+    li.innerHTML='<span><span class="nm"></span><span class="tag"></span></span><span class="dt"></span>';
+    li.querySelector(".nm").textContent=x.name;var tg=li.querySelector(".tag");if(x.memo)tg.textContent=x.memo;else tg.remove();
+    li.querySelector(".dt").innerHTML=x.month+"월 "+x.day+"일 &nbsp;<span class='dd"+(x.dd===0?" today":"")+"'>"+ddLabel(x.dd)+"</span>";ul.appendChild(li);});
+}
+function load(){
+  call("getBirthdays").then(function(r){data=r||[];render();}).catch(function(e){toast("목록을 불러오지 못했어요: "+e.message,false);});
+}
+var fl=$("filters");
+for(var i=0;i<=12;i++){(function(i){var b=document.createElement("button");b.type="button";b.textContent=i?i+"월":"전체";b.setAttribute("aria-pressed",i===0);
+  b.onclick=function(){mon=i;[].forEach.call(fl.children,function(x){x.setAttribute("aria-pressed",x===b);});render();};fl.appendChild(b);})(i);}
+for(var m=1;m<=12;m++){var o=document.createElement("option");o.value=m;o.textContent=m+"월";$("mon").appendChild(o);}
+for(var d=1;d<=31;d++){var o2=document.createElement("option");o2.value=d;o2.textContent=d+"일";$("day").appendChild(o2);}
+$("sort").onchange=render;
+$("form").onsubmit=function(e){
+  e.preventDefault();var n=$("name").value.trim(),mo=+$("mon").value,da=+$("day").value;
+  if(!n){toast("이름을 입력해 주세요.",false);return;}
+  var mx=new Date(2024,mo,0).getDate();if(da>mx){toast(mo+"월은 "+mx+"일까지 있어요.",false);return;}
+  $("save").disabled=true;
+  call("addBirthday",n,$("memo").value.trim(),mo,da).then(function(){toast("저장했어요! 🎉",true);$("name").value="";$("memo").value="";load();})
+   .catch(function(err){toast("저장하지 못했어요: "+err.message,false);}).then(function(){$("save").disabled=false;});
+};
+$("banner").className="banner "+(GAS?"live":"demo");
+$("banner").textContent=GAS?"✅ 구글 시트와 연결되어 있어요. 입력한 생일이 시트에 저장돼요.":"🧪 체험 모드: 구글 시트 연결 전이라 이 기기(브라우저)에만 저장돼요.";
+load();
+</script>
+</body>
+</html>

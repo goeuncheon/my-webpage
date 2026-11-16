@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>지출관리 가계부 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input,textarea{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+h2.sec{font-size:1.1rem;margin:0 0 10px}
+.block{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 20px;margin-bottom:16px}
+.keybox{background:var(--soft);border-radius:14px;padding:10px 14px;margin:8px 0}
+.keybox label{display:block;font-weight:700;font-size:.86rem;margin-bottom:2px}.keybox input[type=password],.keybox input[type=text]{width:100%;margin-bottom:6px}
+.note{font-size:.84rem;color:var(--sub);margin:4px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=file]{display:none}label.btn{cursor:pointer}
+.prog{font-weight:700;color:var(--accent);margin:8px 0}.err{color:#c92a2a;font-weight:700}
+.wide{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:640px}
+th{font-size:.8rem;color:var(--sub);padding:4px;text-align:left;white-space:nowrap}td{padding:3px;border-top:1px solid var(--line);font-size:.9rem}
+td input,td select{width:100%;min-width:0;padding:5px 6px;font-size:.88rem}td input.n{text-align:right}
+td .fail{color:#c92a2a;font-size:.8rem;font-weight:700}
+td button,.del{border:1px solid #f0cbc7;background:#fff;color:#b42318;border-radius:8px;padding:2px 9px;font-size:.8rem}
+form.add{display:grid;grid-template-columns:140px 1fr 120px 110px 130px auto;gap:8px}form.add input,form.add select{min-width:0}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:linear-gradient(135deg,#6c4de6,#9a7bff);color:#fff;border-radius:16px;padding:8px 16px;font-size:.84rem}.chip b{display:block;font-size:1.3rem}
+.chip.w{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.charts canvas{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:16px}
+.leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.84rem;margin-top:6px}.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}
+.empty{color:var(--sub);text-align:center;padding:14px 0}
+@media (max-width:820px){form.add{grid-template-columns:1fr 1fr}.charts{grid-template-columns:1fr}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 20 · 12주차 · 중상급 · 기록이 남고 공유할 수 있는 앱</p><h1>지출관리 가계부</h1><p class="sub">영수증을 모아 지출로 쌓고, 날짜별·항목별로 한눈에 확인해요.</p></header>
+
+<section class="panel" aria-label="지출 가계부">
+  <div class="block"><h2 class="sec">🧾 영수증으로 한 번에 등록하기</h2>
+    <p class="note">사진이나 ZIP 파일(여러 장)을 올리면 한 장씩 분석해요. 인식 결과는 아래 표에서 고친 뒤 등록해요.</p>
+    <details><summary style="cursor:pointer;font-weight:700">AI 분석 설정 (API 키)</summary><div class="keybox">
+      <label for="key">Anthropic API 키</label><input type="password" id="key" autocomplete="off" placeholder="영수증 이미지 분석에 필요해요">
+      <label for="model">모델 이름</label><input type="text" id="model" value="claude-sonnet-5-5">
+      <label style="font-weight:500"><input type="checkbox" id="remember" style="width:auto;margin-right:6px">이 기기에 키 기억하기</label>
+      <p class="note">⚠ 키 없이 만든 일반 웹앱만으로는 이미지 분석을 할 수 없어요. 키가 없으면 아래 '직접 입력'이나 '엑셀 불러오기'를 쓰세요. 공용 컴퓨터에서는 기억하기를 끄세요.</p></div></details>
+    <div class="row" style="margin-top:8px"><label class="btn" for="files">📂 영수증 이미지·ZIP 고르기</label><input type="file" id="files" accept="image/*,.zip,application/zip" multiple>
+      <button type="button" class="btn" id="run" disabled>분석 시작</button><span class="sub" id="fileInfo"></span></div>
+    <p class="prog" id="prog" role="status" aria-live="polite"></p><p class="err" id="runErr"></p>
+    <div id="pvBox" hidden><div class="wide"><table><thead><tr><th>파일</th><th>가맹점명</th><th>거래일시</th><th>총금액</th><th>부가세</th><th>공급가액</th><th>분류</th><th></th></tr></thead><tbody id="pv"></tbody></table></div>
+      <div class="row" style="margin-top:8px"><button type="button" class="btn" id="regAll">✅ 지출내역으로 등록</button><span class="sub" id="regMsg"></span></div></div>
+  </div>
+  <div class="block"><h2 class="sec">✏️ 직접 입력</h2>
+    <form class="add" id="form"><input type="date" id="fDate" required aria-label="날짜"><input type="text" id="fMerchant" placeholder="가맹점명" maxlength="30" required aria-label="가맹점명">
+      <input type="number" id="fTotal" placeholder="총금액" min="1" required aria-label="총금액"><input type="number" id="fVat" placeholder="부가세" min="0" aria-label="부가세"><select id="fCat" aria-label="분류"></select><button class="btn" type="submit">추가</button></form>
+    <p class="note">부가세를 비우면 0원, 공급가액은 총금액에서 부가세를 뺀 값으로 자동 계산돼요.</p></div>
+  <div class="block"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 class="sec" style="margin:0">📊 지출 흐름</h2><label>월 선택 <input type="month" id="month"></label></div>
+    <div class="chips"><div class="chip"><span>이달 총 지출</span><b id="cTotal">0원</b></div><div class="chip w"><span>건수</span><b id="cCnt">0건</b></div><div class="chip w"><span>하루 평균</span><b id="cAvg">0원</b></div></div>
+    <div class="charts"><div><canvas id="bar" width="700" height="300" aria-label="일별 지출 막대그래프"></canvas></div><div><canvas id="pie" width="360" height="300" aria-label="항목별 비중 도넛 그래프"></canvas><div class="leg" id="leg"></div></div></div></div>
+  <div class="block"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 class="sec" style="margin:0">📒 지출 내역</h2>
+    <div class="row"><button type="button" class="btn ghost" id="xlsx">⬇ 엑셀(.xlsx)</button><button type="button" class="btn ghost" id="csv">⬇ CSV</button><label class="btn ghost" for="imp">⬆ 엑셀·CSV 불러오기</label><input type="file" id="imp" accept=".xlsx,.xls,.csv"></div></div>
+    <p class="note" id="impMsg"></p>
+    <div class="wide"><table><thead><tr><th>날짜</th><th>가맹점명</th><th>분류</th><th style="text-align:right">총금액</th><th style="text-align:right">부가세</th><th style="text-align:right">공급가액</th><th></th></tr></thead><tbody id="list"></tbody></table></div>
+    <p class="empty" id="empty">아직 지출 내역이 없어요.</p></div>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var CATS=["식비","카페·간식","교통","생활용품","문화·여가","교육","의료","기타"];
+var COL=["#6c4de6","#ff7eb6","#2fc4a5","#ffa81c","#3d8bff","#9a7bff","#e03131","#8d89ad"];
+var GUESS=[["카페|커피|스타벅스|투썸|이디야|베이커리|빵|디저트|아이스크림","카페·간식"],["편의점|GS25|CU|세븐|마트|식당|치킨|피자|김밥|분식|음식|고기|밥|국수|식품","식비"],["택시|버스|지하철|주유|교통|철도|코레일|주차","교통"],["다이소|문구|생활|마켓|쿠팡|올리브영","생활용품"],["영화|CGV|메가박스|노래|게임|여행|서점|공연","문화·여가"],["학원|교육|도서|학교|강의","교육"],["약국|병원|의원|의료|치과","의료"]];
+var E=lsLoad();function lsLoad(){try{return JSON.parse(localStorage.getItem("ledger-v1"))||[];}catch(e){return [];}}
+function save(){try{localStorage.setItem("ledger-v1",JSON.stringify(E));}catch(e){$("impMsg").textContent="저장 공간이 부족해요.";}}
+try{var k=localStorage.getItem("ledger-key");if(k){$("key").value=k;$("remember").checked=true;}}catch(e){}
+function won(n){return Math.round(n).toLocaleString("ko-KR")+"원";}
+function num(v){v=parseFloat(String(v).replace(/[^\d.\-]/g,""));return isFinite(v)?Math.round(v):null;}
+function guess(m){for(var i=0;i<GUESS.length;i++){if(new RegExp(GUESS[i][0],"i").test(m||""))return GUESS[i][1];}return "기타";}
+function normDate(s){if(!s)return null;var m=String(s).match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);if(!m)return null;return m[1]+"-"+("0"+m[2]).slice(-2)+"-"+("0"+m[3]).slice(-2);}
+function today(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+function catSel(sel,v){CATS.forEach(function(c){var o=document.createElement("option");o.value=c;o.textContent=c;if(c===v)o.selected=true;sel.appendChild(o);});}
+catSel($("fCat"),"식비");$("fDate").value=today();
+function addExp(d,m,t,v,c,memo){E.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:d,merchant:m||"정보없음",total:t,vat:v||0,supply:t-(v||0),cat:c||guess(m),memo:memo||""});}
+
+/* ---- 영수증 분석 ---- */
+var queue=[],P=[];
+$("files").onchange=async function(){
+  $("runErr").textContent="";queue=[];var fs=[].slice.call(this.files);
+  for(var i=0;i<fs.length;i++){var f=fs[i];
+    if(/\.zip$/i.test(f.name)||f.type==="application/zip"){
+      if(!window.JSZip){$("runErr").textContent="ZIP 라이브러리를 불러오지 못했어요. 이미지를 직접 선택해 주세요.";continue;}
+      try{var z=await JSZip.loadAsync(f);var names=Object.keys(z.files).filter(function(n){return !z.files[n].dir&&/\.(jpe?g|png|webp|gif|bmp)$/i.test(n)&&n.indexOf("__MACOSX")<0;});
+        for(var j=0;j<names.length;j++){var b=await z.files[names[j]].async("blob");queue.push({name:names[j].split("/").pop(),blob:b});}
+      }catch(e){$("runErr").textContent="ZIP 파일을 열지 못했어요: "+f.name;}
+    }else if(/^image\//.test(f.type))queue.push({name:f.name,blob:f});
+  }
+  $("fileInfo").textContent=queue.length?("이미지 "+queue.length+"장 준비됨"):"";$("run").disabled=!queue.length;
+};
+function toJpeg(blob){return new Promise(function(res,rej){var im=new Image(),u=URL.createObjectURL(blob);im.onload=function(){var s=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",0.85).split(",")[1]);};im.onerror=function(){rej(new Error("이미지를 읽지 못했어요."));};im.src=u;});}
+var PROMPT='이 영수증 이미지에서 정보를 추출해 JSON만 출력하세요. 형식: {"merchant":"가맹점명","date":"YYYY-MM-DD","total":숫자,"vat":숫자}. 가맹점명은 (1) "(주)" 같은 법인명 표시가 있는 텍스트, (2) "매장명:", "상호명:", "가맹점:" 같은 레이블 뒤의 텍스트, (3) 주소나 대표자명 바로 앞의 고유명사, (4) 영수증 상단의 큰 글씨 순서로 판단하세요. 금액은 기호 없이 숫자만 쓰고, 읽을 수 없는 값은 null로 하세요.';
+async function analyze(blob){
+  var key=$("key").value.trim();if(!key)throw new Error("API 키가 필요해요.");
+  var b64=await toJpeg(blob);
+  var r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:$("model").value.trim()||"claude-sonnet-5-5",max_tokens:500,messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64}},{type:"text",text:PROMPT}]}]})});
+  var d=await r.json();if(!r.ok)throw new Error((d.error&&d.error.message)||("요청 실패 ("+r.status+")"));
+  var t=(d.content||[]).map(function(x){return x.text||"";}).join(""),m=t.match(/\{[\s\S]*\}/);if(!m)throw new Error("결과를 읽지 못했어요.");
+  return JSON.parse(m[0]);
+}
+$("run").onclick=async function(){
+  if(!$("key").value.trim()){$("runErr").textContent="AI 분석에는 API 키가 필요해요. 키 없이 쓰려면 직접 입력이나 엑셀 불러오기를 이용해 주세요.";return;}
+  try{if($("remember").checked)localStorage.setItem("ledger-key",$("key").value.trim());else localStorage.removeItem("ledger-key");}catch(e){}
+  $("run").disabled=true;$("runErr").textContent="";P=[];renderPV();
+  for(var i=0;i<queue.length;i++){
+    $("prog").textContent="분석 중... ("+(i+1)+" / "+queue.length+") "+queue[i].name;
+    var row={name:queue[i].name,merchant:"",date:"",total:null,vat:null,cat:"기타",fail:""};
+    try{var j=await analyze(queue[i].blob);
+      row.merchant=j.merchant?String(j.merchant):"";row.date=normDate(j.date)||"";row.total=num(j.total);row.vat=num(j.vat);row.cat=guess(row.merchant);
+      if(!row.merchant&&!row.date&&row.total===null)row.fail="인식에 실패했어요. 다시 올리거나 직접 입력해 주세요.";}
+    catch(e){row.fail="인식 실패: "+e.message+" — 다시 올리거나 직접 입력해 주세요.";}
+    P.push(row);renderPV();
+  }
+  $("prog").textContent="분석이 끝났어요. 표에서 확인하고 고친 뒤 등록해 주세요.";$("run").disabled=false;
+};
+function renderPV(){
+  $("pvBox").hidden=!P.length;var tb=$("pv");tb.innerHTML="";
+  P.forEach(function(r,i){
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td></td><td><input type="text" placeholder="정보없음"></td><td><input type="date"></td><td><input class="n" type="number" placeholder="정보없음"></td><td><input class="n" type="number" placeholder="정보없음"></td><td class="n" style="text-align:right"></td><td><select></select></td><td><button type="button">제외</button></td>';
+    var c=tr.children;c[0].textContent=r.name;if(r.fail){var f=document.createElement("div");f.className="fail";f.textContent=r.fail;c[0].appendChild(f);}
+    var ins=tr.querySelectorAll("input");ins[0].value=r.merchant;ins[1].value=r.date;ins[2].value=r.total===null?"":r.total;ins[3].value=r.vat===null?"":r.vat;
+    function sup(){c[5].textContent=(r.total!==null&&r.vat!==null)?r.total.toLocaleString("ko-KR"):"정보없음";}
+    ins[0].oninput=function(){r.merchant=this.value;};ins[1].onchange=function(){r.date=this.value;};
+    ins[2].oninput=function(){r.total=num(this.value);sup();};ins[3].oninput=function(){r.vat=num(this.value);sup();};
+    var sel=tr.querySelector("select");catSel(sel,r.cat);sel.onchange=function(){r.cat=this.value;};
+    tr.querySelector("button").onclick=function(){P.splice(i,1);renderPV();};sup();tb.appendChild(tr);
+  });
+}
+$("regAll").onclick=function(){
+  var ok=0,skip=0;P.forEach(function(r){if(r.date&&r.total>0){addExp(r.date,r.merchant||"정보없음",r.total,r.vat||0,r.cat,"영수증");ok++;}else skip++;});
+  if(ok){save();P=P.filter(function(r){return !(r.date&&r.total>0);});renderPV();render();}
+  $("regMsg").textContent=ok+"건 등록했어요."+(skip?" 날짜와 총금액이 없는 "+skip+"건은 직접 채워 주세요.":"");
+};
+
+/* ---- 직접 입력 ---- */
+$("form").onsubmit=function(e){e.preventDefault();var t=num($("fTotal").value),v=num($("fVat").value)||0;
+  if(!t||t<=0)return;if(v>t){alert("부가세가 총금액보다 클 수 없어요.");return;}
+  addExp($("fDate").value,$("fMerchant").value.trim(),t,v,$("fCat").value,"");save();$("fMerchant").value="";$("fTotal").value="";$("fVat").value="";render();};
+$("fMerchant").oninput=function(){var g=guess(this.value);if(g!=="기타")$("fCat").value=g;};
+
+/* ---- 차트·목록 ---- */
+var mon=$("month");
+function setMonth(){var ms=E.map(function(x){return x.date.slice(0,7);}).sort();mon.value=ms.length?ms[ms.length-1]:today().slice(0,7);}
+setMonth();mon.onchange=render;
+function drawBar(days,max,m){
+  var c=$("bar"),x=c.getContext("2d"),W=c.width,H=c.height,pl=46,pb=30,pt=14,bw=(W-pl-10)/days.length;
+  x.clearRect(0,0,W,H);x.fillStyle="#fff";x.fillRect(0,0,W,H);x.font="12px 'Noto Sans KR',sans-serif";x.textAlign="right";x.fillStyle="#6d6a8a";x.strokeStyle="#ece8fa";x.lineWidth=1;
+  for(var g=0;g<=4;g++){var y=pt+(H-pt-pb)*(1-g/4);x.beginPath();x.moveTo(pl,y);x.lineTo(W-6,y);x.stroke();x.fillText(max?Math.round(max*g/4/1000)+"천":"0",pl-6,y+4);}
+  x.textAlign="center";
+  days.forEach(function(v,i){var h=max?(H-pt-pb)*v/max:0,bx=pl+i*bw+bw*0.15;x.fillStyle=v?"#6c4de6":"#ece8fa";x.fillRect(bx,H-pb-h,bw*0.7,Math.max(h,v?2:1));
+    if((i+1)%5===1||i===days.length-1){x.fillStyle="#6d6a8a";x.fillText(i+1,bx+bw*0.35,H-10);}});
+}
+function drawPie(by,tot){
+  var c=$("pie"),x=c.getContext("2d"),W=c.width,H=c.height,cx=W/2,cy=H/2,R=110,r=64;x.clearRect(0,0,W,H);x.fillStyle="#fff";x.fillRect(0,0,W,H);
+  var a=-Math.PI/2;
+  if(!tot){x.fillStyle="#ece8fa";x.beginPath();x.arc(cx,cy,R,0,7);x.arc(cx,cy,r,0,7,true);x.fill();}
+  else CATS.forEach(function(k,i){var v=by[k]||0;if(!v)return;var s=v/tot*Math.PI*2;x.fillStyle=COL[i];x.beginPath();x.arc(cx,cy,R,a,a+s);x.arc(cx,cy,r,a+s,a,true);x.closePath();x.fill();a+=s;});
+  x.fillStyle="#1f1b3d";x.textAlign="center";x.font="bold 16px 'Noto Sans KR',sans-serif";x.fillText(tot?won(tot):"지출 없음",cx,cy+6);
+  var lg=$("leg");lg.innerHTML="";CATS.forEach(function(k,i){if(!by[k])return;var s=document.createElement("span");s.innerHTML="<i style='background:"+COL[i]+"'></i>";s.appendChild(document.createTextNode(k+" "+Math.round(by[k]/tot*100)+"%"));lg.appendChild(s);});
+}
+function render(){
+  var m=mon.value||today().slice(0,7),parts=m.split("-"),dim=new Date(+parts[0],+parts[1],0).getDate();
+  var cur=E.filter(function(x){return x.date.slice(0,7)===m;}),days=[],by={},tot=0;
+  for(var i=0;i<dim;i++)days.push(0);
+  cur.forEach(function(x){var d=+x.date.slice(8,10);if(d>=1&&d<=dim)days[d-1]+=x.total;by[x.cat]=(by[x.cat]||0)+x.total;tot+=x.total;});
+  $("cTotal").textContent=won(tot);$("cCnt").textContent=cur.length+"건";$("cAvg").textContent=won(tot/dim);
+  drawBar(days,Math.max.apply(null,days),m);drawPie(by,tot);
+  var tb=$("list");tb.innerHTML="";var L=E.slice().sort(function(a,b){return b.date.localeCompare(a.date);});
+  $("empty").hidden=L.length>0;
+  L.forEach(function(x){var tr=document.createElement("tr");tr.innerHTML="<td></td><td></td><td></td><td style='text-align:right'></td><td style='text-align:right'></td><td style='text-align:right'></td><td><button type='button'>삭제</button></td>";
+    var c=tr.children;c[0].textContent=x.date;c[1].textContent=x.merchant;c[2].textContent=x.cat;c[3].textContent=x.total.toLocaleString("ko-KR");c[4].textContent=x.vat.toLocaleString("ko-KR");c[5].textContent=x.supply.toLocaleString("ko-KR");
+    c[6].firstChild.onclick=function(){E=E.filter(function(y){return y!==x;});save();render();};tb.appendChild(tr);});
+}
+/* ---- 내보내기·불러오기 ---- */
+function rows(){return E.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).map(function(x){return {"거래일시":x.date,"가맹점명":x.merchant,"분류":x.cat,"총금액":x.total,"부가세":x.vat,"공급가액":x.supply,"메모":x.memo};});}
+function dl(blob,name){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);}
+function toCSV(R){var h=Object.keys(R[0]||{"거래일시":0,"가맹점명":0,"분류":0,"총금액":0,"부가세":0,"공급가액":0,"메모":0});return "\uFEFF"+[h.join(",")].concat(R.map(function(r){return h.map(function(k){return '"'+String(r[k]).replace(/"/g,'""')+'"';}).join(",");})).join("\n");}
+$("csv").onclick=function(){if(!E.length){$("impMsg").textContent="내보낼 내역이 없어요.";return;}dl(new Blob([toCSV(rows())],{type:"text/csv;charset=utf-8"}),"지출내역.csv");};
+$("xlsx").onclick=function(){
+  if(!E.length){$("impMsg").textContent="내보낼 내역이 없어요.";return;}
+  if(!window.XLSX){$("impMsg").textContent="엑셀 라이브러리를 불러오지 못해 CSV로 저장해요.";dl(new Blob([toCSV(rows())],{type:"text/csv;charset=utf-8"}),"지출내역.csv");return;}
+  var ws=XLSX.utils.json_to_sheet(rows());ws["!cols"]=[{wch:12},{wch:20},{wch:10},{wch:12},{wch:10},{wch:12},{wch:14}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"지출내역");XLSX.writeFile(wb,"지출내역.xlsx");
+};
+$("imp").onchange=function(){
+  var f=this.files[0];if(!f)return;if(!window.XLSX){$("impMsg").textContent="엑셀 라이브러리를 불러오지 못했어요.";return;}
+  var rd=new FileReader();rd.onload=function(){
+    try{var wb=XLSX.read(rd.result,{type:"array",cellDates:false}),R=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:""}),ok=0,dup=0,bad=0;
+      R.forEach(function(r){var g=function(){for(var i=0;i<arguments.length;i++){if(r[arguments[i]]!==undefined&&r[arguments[i]]!=="")return r[arguments[i]];}return "";};
+        var d=normDate(g("거래일시","거래일자","날짜","일시","date")),t=num(g("총금액","금액","합계","total")),v=num(g("부가세","VAT","vat"))||0,m=String(g("가맹점명","상호명","상호","가맹점","merchant")||"정보없음");
+        if(!d||!t){bad++;return;}
+        if(E.some(function(x){return x.date===d&&x.merchant===m&&x.total===t;})){dup++;return;}
+        addExp(d,m,t,v,CATS.indexOf(g("분류"))>=0?g("분류"):guess(m),String(g("메모")||""));ok++;});
+      save();setMonth();render();$("impMsg").textContent=ok+"건을 불러왔어요."+(dup?" (중복 "+dup+"건 제외)":"")+(bad?" (날짜·금액이 없는 "+bad+"건 제외)":"");
+    }catch(e){$("impMsg").textContent="파일을 읽지 못했어요: "+e.message;}
+  };rd.readAsArrayBuffer(f);this.value="";
+};
+render();
+</script>
+</body>
+</html>

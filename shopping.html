@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스마트 장보기 미션 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input,textarea{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.missions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.mission{text-align:center;border:2px solid var(--line);background:#fff;border-radius:24px;padding:22px 14px;color:var(--ink)}
+.mission:hover{border-color:var(--accent);background:var(--soft)}
+.mission .e{font-size:3rem;display:block}.mission b{display:block;font-size:1.1rem;margin:4px 0}.mission span{color:var(--accent);font-weight:800}
+.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;position:sticky;top:6px;z-index:5}
+.bar div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px 10px;text-align:center;box-shadow:0 10px 20px -16px rgba(80,60,160,.6)}
+.bar span{display:block;font-size:.76rem;color:var(--sub);font-weight:700}.bar b{font-size:1.1rem}
+.bar .left.bad b{color:#c92a2a}.bar .left b{color:#237a4b}
+.warn{border-radius:14px;background:#fff1f0;color:#c92a2a;font-weight:800;padding:8px 14px;margin-bottom:12px;text-align:center}
+.shop{display:grid;grid-template-columns:1fr 290px;gap:18px;align-items:start}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.item{background:#fff;border:2px solid var(--line);border-radius:20px;padding:10px;text-align:center}
+.item.on{border-color:var(--accent);background:var(--soft)}
+.item .e{font-size:2.2rem;display:block}.item .n{font-weight:700;font-size:.92rem}.item .p{color:var(--sub);font-size:.86rem;font-weight:700}
+.qty{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:800;font-size:1.1rem;line-height:1}
+.qty button:disabled{opacity:.35}.qty b{min-width:1.4em}
+.cart{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px 16px;position:sticky;top:90px}
+.cart h3{margin:0 0 8px}.cart ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px;font-size:.92rem}
+.cart li{display:flex;gap:6px;align-items:center}.cart li span.t{flex:1}.cart li button{border:1px solid #f0cbc7;background:#fff;color:#b42318;border-radius:8px;font-size:.76rem;padding:1px 8px}
+.cart .empty{color:var(--sub);font-size:.9rem}
+.receipt{max-width:520px;margin:0 auto;background:#fffdf7;border:1px dashed #b9ad8e;border-radius:6px;padding:22px 26px;font-family:"Noto Sans KR",monospace}
+.receipt h2{text-align:center;margin:0 0 4px}.receipt table{width:100%;border-collapse:collapse;margin:10px 0}
+.receipt td,.receipt th{padding:3px 4px;border-bottom:1px dotted #cfc5a8;font-size:.92rem}.receipt td:last-child,.receipt th:last-child{text-align:right}
+.receipt .sum td{border-bottom:0;font-weight:800}
+textarea{width:100%;min-height:110px;line-height:1.6;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}.cart{position:static}.bar{grid-template-columns:1fr 1fr}}
+@media print{
+  body *{visibility:hidden}#result,#result *{visibility:visible}#result{position:absolute;left:0;top:0;width:100%;box-shadow:none;border:0}
+  .noprint,.noprint *{display:none!important}textarea{border:1px solid #999}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 24 · 12주차 · 중상급 · 초등 경제·소비 교육 웹앱</p><h1>우리 반 스마트 장보기 미션</h1><p class="sub">예산 안에서 똑똑하게 고르고, 왜 골랐는지 스스로 돌아봐요.</p></header>
+
+<section class="panel" id="start" aria-label="미션 선택">
+  <h2 style="text-align:center;margin:0 0 4px">🛒 오늘의 미션을 골라요</h2>
+  <p class="sub" style="text-align:center;margin-bottom:18px">정해진 예산 안에서 꼭 필요한 물건을 골라 보세요.</p>
+  <div class="missions" id="missions"></div>
+</section>
+<section class="panel" id="shop" hidden aria-label="쇼핑">
+  <div class="bar" aria-live="polite"><div><span>예산</span><b id="bBudget"></b></div><div><span>사용 금액</span><b id="bUsed"></b></div><div class="left" id="bLeftBox"><span>남은 잔액</span><b id="bLeft"></b></div><div><span>담은 물건</span><b id="bCnt"></b></div></div>
+  <p class="warn" id="warn" role="alert" hidden>⚠ 예산을 넘었어요! 물건을 줄여 보세요.</p>
+  <div class="shop"><div class="items" id="items"></div>
+    <aside class="cart"><h3>🧺 장바구니</h3><ul id="cartList"></ul><p class="empty" id="cartEmpty">아직 담은 물건이 없어요.</p>
+      <button type="button" class="btn" id="submit" style="width:100%" disabled>제출하기</button>
+      <button type="button" class="btn ghost" id="clear" style="width:100%;margin-top:8px">장바구니 비우기</button>
+      <button type="button" class="btn ghost" id="back" style="width:100%;margin-top:8px">미션 다시 고르기</button></aside></div>
+</section>
+<section class="panel" id="result" hidden aria-label="결과">
+  <div class="receipt" id="receipt"></div>
+  <div style="max-width:520px;margin:18px auto 0"><label for="why" style="font-weight:800">이 물건들을 선택한 이유를 작성해 주세요</label>
+    <textarea id="why" placeholder="왜 이 물건들을 골랐나요? 꼭 필요한 것과 사고 싶은 것을 어떻게 나눴는지 적어 보세요."></textarea></div>
+  <div class="row noprint"><button type="button" class="btn" id="print">🖨 인쇄 · PDF로 저장</button><button type="button" class="btn ghost" id="copy">📋 결과 복사</button><button type="button" class="btn ghost" id="edit">← 장바구니로</button><button type="button" class="btn ghost" id="again">처음으로</button></div>
+  <p class="sub noprint" id="copyMsg" style="text-align:center;min-height:1.6em"></p>
+</section>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var M=[
+{name:"카레 만들기",e:"🍛",budget:15000,items:[["🥔","감자",3000],["🥕","당근",1500],["🧅","양파",2000],["🍗","닭고기",6000],["🍛","카레 가루",2500],["🍚","쌀",5000],["🥛","우유",2500],["🍪","과자",1500],["🍦","아이스크림",3000],["🥤","탄산음료",2000]]},
+{name:"여름 캠핑 준비하기",e:"⛺",budget:30000,items:[["🧺","돗자리",5000],["🦟","모기퇴치제",4000],["🔦","랜턴",8000],["💧","물 (6병)",3000],["🍜","라면 (5개)",4000],["🍡","마시멜로",3000],["🥩","고기",12000],["🧊","쿨러백",7000],["🧴","선크림",6000],["🪭","부채",1000]]},
+{name:"친구 생일파티 준비하기",e:"🎉",budget:25000,items:[["🎂","케이크",12000],["🎈","풍선 (10개)",3000],["🎩","파티 모자",2500],["🍿","과자 세트",4000],["🥤","음료수",2000],["🥛","종이컵 세트",1500],["🕯️","케이크 초",1000],["🎁","포장지",2000],["🍕","피자",15000],["🎆","폭죽",3500]]}
+];
+var cur=null,qty=[];
+function won(n){return n.toLocaleString("ko-KR")+"원";}
+function show(id){["start","shop","result"].forEach(function(x){$(x).hidden=x!==id;});window.scrollTo(0,0);}
+M.forEach(function(m,i){var b=document.createElement("button");b.type="button";b.className="mission";b.innerHTML='<span class="e"></span><b></b><span></span>';
+  b.children[0].textContent=m.e;b.children[1].textContent=m.name;b.children[2].textContent="예산 "+won(m.budget);b.onclick=function(){begin(i);};$("missions").appendChild(b);});
+function totals(){var used=0,cnt=0;cur.items.forEach(function(it,i){used+=it[2]*qty[i];cnt+=qty[i];});return {used:used,cnt:cnt,left:cur.budget-used};}
+function begin(i){cur=M[i];qty=cur.items.map(function(){return 0;});show("shop");build();update();}
+function build(){
+  var box=$("items");box.innerHTML="";
+  cur.items.forEach(function(it,i){
+    var d=document.createElement("div");d.className="item";d.id="it"+i;
+    d.innerHTML='<span class="e"></span><div class="n"></div><div class="p"></div><div class="qty"><button type="button" aria-label="빼기">−</button><b>0</b><button type="button" aria-label="더하기">＋</button></div>';
+    d.children[0].textContent=it[0];d.children[1].textContent=it[1];d.children[2].textContent=won(it[2]);
+    var bs=d.querySelectorAll("button");
+    bs[0].onclick=function(){if(qty[i]>0){qty[i]--;tone(330,0.06,"triangle");update();}};
+    bs[1].onclick=function(){if(qty[i]<20){qty[i]++;tone(560,0.06,"triangle");update();}};
+    box.appendChild(d);
+  });
+}
+function update(){
+  var t=totals();
+  $("bBudget").textContent=won(cur.budget);$("bUsed").textContent=won(t.used);$("bLeft").textContent=won(t.left);$("bCnt").textContent=t.cnt+"개";
+  $("bLeftBox").className="left"+(t.left<0?" bad":"");$("warn").hidden=t.left>=0;
+  $("submit").disabled=t.left<0||t.cnt===0;
+  cur.items.forEach(function(it,i){var d=$("it"+i);d.className="item"+(qty[i]?" on":"");d.querySelector(".qty b").textContent=qty[i];d.querySelectorAll("button")[0].disabled=!qty[i];});
+  var ul=$("cartList");ul.innerHTML="";
+  cur.items.forEach(function(it,i){if(!qty[i])return;var li=document.createElement("li");li.innerHTML='<span class="t"></span><button type="button">취소</button>';
+    li.firstChild.textContent=it[0]+" "+it[1]+" ×"+qty[i]+" = "+won(it[2]*qty[i]);li.lastChild.onclick=function(){qty[i]=0;update();};ul.appendChild(li);});
+  $("cartEmpty").hidden=t.cnt>0;
+}
+$("clear").onclick=function(){qty=qty.map(function(){return 0;});update();};
+$("back").onclick=function(){show("start");};
+$("submit").onclick=function(){
+  var t=totals();if(t.left<0)return;
+  var h='<h2>🧾 구매 영수증</h2><p style="text-align:center;margin:0;font-weight:700"></p><table><thead><tr><th style="text-align:left">품목</th><th>수량</th><th>금액</th></tr></thead><tbody>';
+  var rows="";cur.items.forEach(function(it,i){if(qty[i])rows+="<tr><td></td><td style='text-align:center'>"+qty[i]+"</td><td>"+won(it[2]*qty[i])+"</td></tr>";});
+  var r=$("receipt");r.innerHTML=h+rows+'<tr class="sum"><td colspan="2">사용 금액</td><td>'+won(t.used)+'</td></tr><tr class="sum"><td colspan="2">예산</td><td>'+won(cur.budget)+'</td></tr><tr class="sum"><td colspan="2">남은 잔액</td><td>'+won(t.left)+'</td></tr></tbody></table>';
+  r.querySelector("p").textContent="미션: "+cur.name;
+  var k=0,tds=r.querySelectorAll("tbody tr:not(.sum) td:first-child");cur.items.forEach(function(it,i){if(qty[i]){tds[k++].textContent=it[0]+" "+it[1];}});
+  $("copyMsg").textContent="";show("result");seq([[659,0.12],[880,0.2]]);
+};
+$("edit").onclick=function(){show("shop");};$("again").onclick=function(){$("why").value="";show("start");};
+$("print").onclick=function(){window.print();};
+$("copy").onclick=function(){
+  var t=totals(),L=["[구매 영수증] "+cur.name];
+  cur.items.forEach(function(it,i){if(qty[i])L.push("- "+it[1]+" ×"+qty[i]+" = "+won(it[2]*qty[i]));});
+  L.push("사용 금액: "+won(t.used)+" / 예산: "+won(cur.budget)+" / 남은 잔액: "+won(t.left),"","[선택한 이유]",$("why").value.trim()||"(작성하지 않았어요)");
+  var txt=L.join("\n");
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){$("copyMsg").textContent="복사했어요!";},function(){
+    var ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("copyMsg").textContent="복사했어요!";}catch(e){$("copyMsg").textContent="복사하지 못했어요. 인쇄 기능을 써 주세요.";}ta.remove();});
+};
+</script>
+</body>
+</html>

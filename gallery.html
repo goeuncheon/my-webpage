@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가상 미술관 | 천고은</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f1b3d;--sub:#6d6a8a;--accent:#6c4de6;--accent2:#ff7eb6;--mint:#2fc4a5;--sun:#ffc857;--line:#e9e5fb;--soft:#f1edff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;background:radial-gradient(900px 520px at 8% -8%,#e6dcff 0,transparent 62%),radial-gradient(700px 440px at 100% 2%,#ffe2f0 0,transparent 58%),#faf9ff;background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:22px 20px 60px}
+.homelink{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;color:var(--accent);font-weight:700;text-decoration:none;font-size:.9rem;box-shadow:0 6px 16px -10px rgba(108,77,230,.6)}
+.homelink:hover{background:var(--soft)}
+header.top{text-align:center;margin-bottom:26px}
+.kicker{display:inline-block;font-weight:800;font-size:.74rem;letter-spacing:.1em;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);letter-spacing:-.045em;margin:0 0 8px;line-height:1.25;background:linear-gradient(90deg,var(--ink) 35%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--sub);margin:0;font-weight:500}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 30px 60px -36px rgba(80,60,160,.45)}
+.btn{border:0;background:linear-gradient(135deg,#6c4de6,#8e6cf7);color:#fff;border-radius:999px;padding:11px 22px;font-weight:700;box-shadow:0 10px 20px -12px rgba(108,77,230,.9);transition:transform .15s,filter .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+select,input,textarea{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+footer{text-align:center;color:var(--sub);font-size:.88rem;margin-top:30px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.banner{border-radius:16px;padding:8px 16px;font-size:.88rem;font-weight:700;margin-bottom:14px;text-align:center}
+.banner.demo{background:#fff7dc;color:#8a5a00}.banner.live{background:#e5f6f3;color:#1f7a66}
+.hall{position:relative}
+canvas#hall{width:100%;height:auto;aspect-ratio:16/9;border-radius:22px;border:1px solid var(--line);display:block;background:#efe9ff;cursor:pointer;touch-action:manipulation}
+.hint{text-align:center;color:var(--sub);font-weight:500;font-size:.92rem;margin:10px 0}
+.pad{display:flex;justify-content:center;gap:8px;margin:6px 0 4px;user-select:none}
+.pad button{width:54px;height:54px;border-radius:16px;border:1px solid var(--line);background:#fff;font-size:1.3rem;touch-action:none}
+.pad button:active{background:var(--soft)}
+details{margin-top:18px;border:1px solid var(--line);border-radius:18px;padding:4px 18px;background:#fff}
+summary{cursor:pointer;font-weight:800;padding:12px 0}
+.up{display:grid;gap:10px;padding-bottom:14px}.up .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.up input{min-width:0;width:100%}
+.msg{min-height:1.5em;font-weight:700;margin:0;font-size:.9rem}.msg.ok{color:#237a4b}.msg.no{color:#c92a2a}
+dialog{border:0;border-radius:26px;padding:0;width:min(94vw,560px);box-shadow:0 30px 70px -20px rgba(30,20,80,.5)}
+dialog::backdrop{background:rgba(38,38,64,.55)}
+.dlg{padding:22px 24px}
+.dlg img{width:100%;max-height:48vh;object-fit:contain;border-radius:14px;background:#f6f4fb;display:block}
+.dlg h2{margin:12px 0 0;font-size:1.3rem}.dlg .by{color:var(--sub);font-weight:700;margin:0 0 10px}
+.cm{max-height:150px;overflow:auto;display:grid;gap:6px;margin:8px 0}
+.cm div{background:var(--soft);border-radius:12px;padding:6px 12px;font-size:.92rem}.cm b{color:var(--accent)}
+.cf{display:grid;grid-template-columns:110px 1fr auto;gap:8px;margin-top:8px}.cf input{min-width:0}
+.dlg .top{display:flex;justify-content:flex-end}
+@media (max-width:560px){.cf{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<a class="homelink" href="index.html#projects">← 천고은의 홈페이지</a>
+<header class="top"><p class="kicker">바이브코딩 실습 23 · 12주차 · 중상급 · 구글 시트 연동 앱</p><h1>우리 반 가상 미술관</h1><p class="sub">캐릭터를 움직여 친구들의 작품을 감상하고 감상평을 남겨요.</p></header>
+
+<section class="panel" aria-label="가상 미술관">
+  <p class="banner demo" id="banner"></p>
+  <div class="hall"><canvas id="hall" width="960" height="540" aria-label="가상 미술관 화면. 방향키로 캐릭터를 움직여요"></canvas></div>
+  <p class="hint" id="hint">방향키(←→↑↓)로 걸어 다니고, 작품을 클릭하거나 Space·Enter를 눌러 보세요.</p>
+  <div class="pad" aria-label="이동 버튼"><button type="button" data-k="ArrowLeft" aria-label="왼쪽">◀</button><button type="button" data-k="ArrowUp" aria-label="위">▲</button><button type="button" data-k="ArrowDown" aria-label="아래">▼</button><button type="button" data-k="ArrowRight" aria-label="오른쪽">▶</button><button type="button" id="openNear" class="btn" style="border-radius:16px">🔍 보기</button></div>
+  <details><summary>🖼️ 작품 전시하기 (선생님)</summary>
+    <form class="up" id="upForm">
+      <div class="two"><input type="text" id="aTitle" placeholder="작품 제목" maxlength="30" required aria-label="작품 제목"><input type="text" id="aArtist" placeholder="작가 이름" maxlength="20" required aria-label="작가 이름"></div>
+      <div class="two"><input type="file" id="aFile" accept="image/*" required aria-label="작품 이미지"><input type="password" id="aPw" placeholder="업로드 비밀번호" required aria-label="업로드 비밀번호" autocomplete="off"></div>
+      <p class="sub" style="font-size:.84rem">이미지는 1MB 이하로 자동 압축돼요. 비밀번호를 아는 사람만 전시할 수 있어요.</p>
+      <div><button type="submit" class="btn" id="upBtn">전시하기</button></div><p class="msg" id="upMsg" role="status" aria-live="polite"></p>
+    </form>
+  </details>
+</section>
+<dialog id="dlg" aria-labelledby="dTitle"><div class="dlg">
+  <div class="top"><button type="button" class="btn ghost" id="dClose" style="padding:4px 14px">닫기 ✕</button></div>
+  <img id="dImg" alt=""><h2 id="dTitle"></h2><p class="by" id="dBy"></p>
+  <div class="cm" id="cm" aria-live="polite"></div>
+  <form class="cf" id="cf"><input type="text" id="cName" placeholder="내 이름" maxlength="15" aria-label="내 이름"><input type="text" id="cText" placeholder="감상평을 남겨 주세요" maxlength="100" required aria-label="감상평"><button type="submit" class="btn" style="padding:8px 18px">등록</button></form>
+  <p class="msg" id="cMsg"></p>
+</div></dialog>
+
+<footer>만든 사람 천고은 · 컴퓨터교육 × 문헌정보</footer>
+</div>
+<script>
+var AC=null,muted=false;
+function $(id){return document.getElementById(id);}
+function tone(f,d,t,v){if(muted)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||"sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(v||0.09,n);g.gain.exponentialRampToValueAtTime(0.0001,n+d);o.start(n);o.stop(n+d);}catch(e){}}
+function seq(list){list.forEach(function(x,i){setTimeout(function(){tone(x[0],x[1]||0.16,x[2]);},i*(x[3]||130));});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var GAS=!!(window.google&&google.script&&google.script.run);
+if(GAS){var hl=document.querySelector(".homelink");if(hl)hl.hidden=true;}
+function call(fn){
+  var args=[].slice.call(arguments,1);
+  return new Promise(function(res,rej){
+    if(GAS){google.script.run.withSuccessHandler(res).withFailureHandler(function(e){rej(new Error((e&&e.message)||String(e)));})[fn].apply(null,args);}
+    else{try{Promise.resolve(DEMO[fn].apply(null,args)).then(res,rej);}catch(e){rej(e);}}
+  });
+}
+function lsGet(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v===null?d:v;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){throw new Error("브라우저 저장 공간이 부족해요.");}}
+
+function svgArt(c1,c2,c3,shape){
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="'+c1+'"/>'+shape.replace(/C2/g,c2).replace(/C3/g,c3)+'</svg>';
+  return "data:image/svg+xml;utf8,"+encodeURIComponent(s);
+}
+var SAMPLE=[
+ {id:"s1",title:"노란 해바라기 언덕",artist:"샘플 작가",url:svgArt("#bfe3ff","#ffd43b","#37b24d",'<circle cx="320" cy="60" r="36" fill="C2"/><path d="M0 220 Q100 150 200 210 T400 190 V300 H0Z" fill="C3"/>')},
+ {id:"s2",title:"보라색 바다",artist:"샘플 작가",url:svgArt("#f3e8ff","#7c5cf0","#ff8fc2",'<path d="M0 160 Q50 120 100 160 T200 160 T300 160 T400 160 V300 H0Z" fill="C2"/><circle cx="90" cy="70" r="30" fill="C3"/>')},
+ {id:"s3",title:"도형 친구들",artist:"샘플 작가",url:svgArt("#fff4d6","#ff6fae","#3d8bff",'<rect x="60" y="90" width="110" height="110" fill="C2"/><circle cx="270" cy="150" r="60" fill="C3"/>')}
+];
+var DEMO={
+  getArtworks:function(){return SAMPLE.concat(lsGet("gal-demo-art",[]));},
+  addArtwork:function(t,a,url,pw){if(pw!=="1234")throw new Error("비밀번호가 맞지 않아요. (체험 모드 비밀번호는 1234)");var L=lsGet("gal-demo-art",[]);L.push({id:"u"+Date.now(),title:t,artist:a,url:url});lsSet("gal-demo-art",L);return {ok:true};},
+  getComments:function(id){return lsGet("gal-demo-c-"+id,[]);},
+  addComment:function(id,au,tx){var L=lsGet("gal-demo-c-"+id,[]);L.push({author:au||"익명",text:tx});lsSet("gal-demo-c-"+id,L);return {ok:true};}
+};
+$("banner").className="banner "+(GAS?"live":"demo");
+$("banner").textContent=GAS?"✅ 구글 시트·드라이브와 연결되어 있어요. 작품과 감상평이 저장돼요.":"🧪 체험 모드: 이 기기에만 저장돼요. (업로드 비밀번호 1234)";
+
+var cv=$("hall"),ctx=cv.getContext("2d"),VW=960,VH=540,arts=[],imgs={},cam=0,W=960,keys={},av={x:120,y:440,face:1,step:0},near=-1,cur=null;
+var FX=function(i){return 170+i*290;},FW=210,FH=165,FY=95;
+function loadArts(){
+  call("getArtworks").then(function(L){
+    arts=L||[];W=Math.max(VW,FX(arts.length)+60);
+    arts.forEach(function(a){if(!imgs[a.id]){var im=new Image();im.src=a.url;imgs[a.id]=im;}});
+  }).catch(function(e){$("hint").textContent="작품을 불러오지 못했어요: "+e.message;});
+}
+function wall(){
+  var g=ctx.createLinearGradient(0,0,0,380);g.addColorStop(0,"#f6f1ff");g.addColorStop(1,"#e6defa");ctx.fillStyle=g;ctx.fillRect(0,0,VW,380);
+  ctx.fillStyle="#e2d5bd";ctx.fillRect(0,380,VW,160);ctx.fillStyle="#cdbd9d";ctx.fillRect(0,376,VW,8);
+  ctx.strokeStyle="rgba(120,100,70,.18)";ctx.lineWidth=2;for(var x=-((cam)%120);x<VW;x+=120){ctx.beginPath();ctx.moveTo(x,384);ctx.lineTo(x-40,540);ctx.stroke();}
+}
+function frame(a,i){
+  var x=FX(i)-cam;if(x>VW+20||x+FW<-20)return;
+  var hot=i===near;
+  ctx.fillStyle="rgba(0,0,0,.12)";ctx.fillRect(x+8,FY+10,FW,FH);
+  ctx.fillStyle=hot?"#ffb800":"#c89b3c";ctx.fillRect(x-10,FY-10,FW+20,FH+20);
+  ctx.fillStyle="#fff";ctx.fillRect(x,FY,FW,FH);
+  var im=imgs[a.id];
+  if(im&&im.complete&&im.naturalWidth){var r=Math.min((FW-16)/im.naturalWidth,(FH-16)/im.naturalHeight),w=im.naturalWidth*r,h=im.naturalHeight*r;ctx.drawImage(im,x+(FW-w)/2,FY+(FH-h)/2,w,h);}
+  else{ctx.fillStyle="#999";ctx.font="14px sans-serif";ctx.textAlign="center";ctx.fillText("불러오는 중",x+FW/2,FY+FH/2);}
+  ctx.fillStyle="#fff";ctx.fillRect(x+FW/2-80,FY+FH+22,160,36);ctx.strokeStyle="#c89b3c";ctx.lineWidth=2;ctx.strokeRect(x+FW/2-80,FY+FH+22,160,36);
+  ctx.fillStyle="#1f1b3d";ctx.textAlign="center";ctx.font="bold 15px 'Noto Sans KR',sans-serif";ctx.fillText(a.title.length>11?a.title.slice(0,10)+"…":a.title,x+FW/2,FY+FH+37);
+  ctx.fillStyle="#6d6a8a";ctx.font="12px 'Noto Sans KR',sans-serif";ctx.fillText(a.artist,x+FW/2,FY+FH+52);
+}
+function avatar(){
+  var x=av.x-cam,bob=Math.sin(av.step/4)*3;
+  ctx.fillStyle="rgba(0,0,0,.18)";ctx.beginPath();ctx.ellipse(x,av.y+26,26,8,0,0,Math.PI*2);ctx.fill();
+  ctx.font="52px sans-serif";ctx.textAlign="center";ctx.textBaseline="alphabetic";
+  ctx.save();ctx.translate(x,av.y+bob);ctx.scale(av.face,1);ctx.fillText("🧑‍🎨",0,20);ctx.restore();
+}
+function tick(){
+  var dx=0,dy=0;
+  if(keys.ArrowLeft||keys.a)dx-=1;if(keys.ArrowRight||keys.d)dx+=1;if(keys.ArrowUp||keys.w)dy-=1;if(keys.ArrowDown||keys.s)dy+=1;
+  if(dx||dy){av.x=Math.max(40,Math.min(W-40,av.x+dx*5));av.y=Math.max(410,Math.min(500,av.y+dy*4));if(dx)av.face=dx<0?-1:1;av.step++;}
+  cam=Math.max(0,Math.min(W-VW,av.x-VW/2));
+  near=-1;var best=1e9;arts.forEach(function(a,i){var d=Math.abs(av.x-(FX(i)+FW/2));if(d<130&&d<best){best=d;near=i;}});
+  ctx.clearRect(0,0,VW,VH);ctx.textBaseline="alphabetic";wall();arts.forEach(frame);avatar();
+  if(near>=0){ctx.fillStyle="rgba(31,27,61,.85)";var tx=av.x-cam;ctx.fillRect(tx-92,av.y-88,184,28);ctx.fillStyle="#fff";ctx.font="bold 14px 'Noto Sans KR',sans-serif";ctx.textAlign="center";ctx.fillText("Space · 클릭으로 보기",tx,av.y-69);}
+  if(!arts.length){ctx.fillStyle="#6d6a8a";ctx.font="bold 20px 'Noto Sans KR',sans-serif";ctx.textAlign="center";ctx.fillText("전시된 작품이 아직 없어요. 선생님이 작품을 올려 주세요!",VW/2,220);}
+  requestAnimationFrame(tick);
+}
+document.addEventListener("keydown",function(e){
+  var t=document.activeElement&&document.activeElement.tagName;if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||$("dlg").open)return;
+  if(e.key.indexOf("Arrow")===0){keys[e.key]=true;e.preventDefault();}
+  else if("wasdWASD".indexOf(e.key)>=0&&e.key.length===1)keys[e.key.toLowerCase()]=true;
+  else if((e.key===" "||e.key==="Enter")&&t!=="BUTTON"){openNear();e.preventDefault();}
+});
+document.addEventListener("keyup",function(e){delete keys[e.key];delete keys[e.key.toLowerCase()];});
+document.querySelectorAll(".pad [data-k]").forEach(function(b){
+  var k=b.dataset.k;b.addEventListener("pointerdown",function(e){e.preventDefault();keys[k]=true;});
+  ["pointerup","pointerleave","pointercancel"].forEach(function(t){b.addEventListener(t,function(){delete keys[k];});});
+});
+cv.addEventListener("click",function(e){
+  var r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*VW/r.width+cam,y=(e.clientY-r.top)*VH/r.height;
+  for(var i=0;i<arts.length;i++){var fx=FX(i);if(x>=fx-10&&x<=fx+FW+10&&y>=FY-10&&y<=FY+FH+10){openArt(i);return;}}
+});
+function openNear(){if(near>=0)openArt(near);else $("hint").textContent="작품 앞으로 걸어가 보세요!";}
+$("openNear").onclick=openNear;
+
+function openArt(i){
+  cur=arts[i];$("dImg").src=cur.url;$("dImg").alt=cur.title;$("dTitle").textContent=cur.title;$("dBy").textContent="작가: "+cur.artist;$("cMsg").textContent="";
+  keys={};loadComments();var d=$("dlg");if(d.showModal)d.showModal();else d.setAttribute("open","");
+}
+function loadComments(){
+  var box=$("cm");box.innerHTML="";
+  call("getComments",cur.id).then(function(L){
+    if(!L||!L.length){box.innerHTML='<div class="sub">첫 번째 감상평을 남겨 주세요!</div>';return;}
+    L.forEach(function(c){var d=document.createElement("div");var b=document.createElement("b");b.textContent=c.author+" ";d.appendChild(b);d.appendChild(document.createTextNode(c.text));box.appendChild(d);});
+    box.scrollTop=box.scrollHeight;
+  }).catch(function(e){box.textContent="감상평을 불러오지 못했어요: "+e.message;});
+}
+$("cf").onsubmit=function(e){
+  e.preventDefault();var t=$("cText").value.trim();if(!t)return;
+  call("addComment",cur.id,$("cName").value.trim(),t).then(function(){$("cText").value="";$("cMsg").textContent="";loadComments();})
+   .catch(function(er){$("cMsg").className="msg no";$("cMsg").textContent="저장하지 못했어요: "+er.message;});
+};
+$("dClose").onclick=function(){var d=$("dlg");if(d.close)d.close();else d.removeAttribute("open");};
+$("dlg").addEventListener("click",function(e){if(e.target===this&&this.close)this.close();});
+
+/* 1MB 이하로 압축해서 올리기 */
+function compress(file){
+  return new Promise(function(res,rej){
+    var img=new Image(),u=URL.createObjectURL(file);
+    img.onerror=function(){rej(new Error("이미지를 읽지 못했어요."));};
+    img.onload=function(){
+      var s=Math.min(1,1200/Math.max(img.width,img.height)),out="";
+      for(var n=0;n<8;n++){
+        var c=document.createElement("canvas");c.width=Math.max(1,Math.round(img.width*s));c.height=Math.max(1,Math.round(img.height*s));
+        var g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);
+        for(var q=0.85;q>=0.4;q-=0.15){out=c.toDataURL("image/jpeg",q);if(out.length<1.3e6)break;}
+        if(out.length<1.3e6)break;s*=0.8;
+      }
+      URL.revokeObjectURL(u);out.length<1.3e6?res(out):rej(new Error("이미지를 1MB 이하로 줄이지 못했어요."));
+    };
+    img.src=u;
+  });
+}
+function upMsg(t,ok){$("upMsg").textContent=t;$("upMsg").className="msg "+(ok?"ok":"no");}
+$("upForm").onsubmit=function(e){
+  e.preventDefault();var f=$("aFile").files[0];if(!f)return;$("upBtn").disabled=true;upMsg("압축하고 올리는 중...",true);
+  compress(f).then(function(d){return call("addArtwork",$("aTitle").value.trim(),$("aArtist").value.trim(),d,$("aPw").value);})
+   .then(function(){upMsg("전시 완료! 🎨",true);$("upForm").reset();loadArts();})
+   .catch(function(er){upMsg("올리지 못했어요: "+er.message,false);}).then(function(){$("upBtn").disabled=false;});
+};
+loadArts();tick();
+</script>
+</body>
+</html>
