@@ -1,0 +1,21 @@
+{
+  "id": "move-workout-pwa",
+  "name": "운동 기록 - MOVE",
+  "short_name": "운동 기록",
+  "description": "운동 루틴을 기록하고 휴식 시간을 관리해요.",
+  "lang": "ko-KR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101510",
+  "theme_color": "#101510",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
