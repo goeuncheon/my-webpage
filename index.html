@@ -30,8 +30,8 @@
     /* 히어로 */
     #hero{padding:34px 0 10px}
     .hero-card{position:relative;overflow:hidden;border-radius:40px;padding:72px 64px 60px;color:#fff;
-      background:radial-gradient(520px 320px at 85% 10%,rgba(255,126,182,.65),transparent 65%),radial-gradient(480px 360px at 0% 100%,rgba(47,196,165,.45),transparent 60%),linear-gradient(135deg,#5a4fe8,#7a68ea 52%,#ff7eb6);box-shadow:0 40px 80px -40px rgba(90,63,214,.8)}
-    .kicker{display:inline-block;font-family:var(--latin);font-weight:800;font-size:.76rem;letter-spacing:.16em;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 16px}
+      background:radial-gradient(520px 320px at 85% 10%,rgba(255,126,182,.65),transparent 65%),radial-gradient(480px 360px at 0% 100%,rgba(47,196,165,.45),transparent 60%),linear-gradient(135deg,#2b2552 0%,#4a3fb0 42%,#6d4dd7 100%)}
+    .kicker{display:inline-block;font-family:var(--latin);font-weight:800;font-size:.76rem;letter-spacing:.16em;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:8px 16px}
     .hero-card h1{font-size:clamp(2.5rem,8.5vw,4.8rem);line-height:1.12;letter-spacing:-.05em;margin:0 0 20px;font-weight:800}
     .hero-card h1 span{background:linear-gradient(90deg,#ffe58a,#ffb3d6);-webkit-background-clip:text;background-clip:text;color:transparent}
     .lead{max-width:34em;font-size:1.1rem;font-weight:500;opacity:.95;margin:0 0 28px}
@@ -80,7 +80,7 @@
     .fchip:hover{border-color:var(--accent);color:var(--accent)}
     .fchip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
     .project-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-    .project-item{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 24px 50px -38px rgba(80,60,160,.55);transition:transform .2s ease,box-shadow .2s ease}
+    .project-item{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 24px 50px -38px rgba(80,60,160,.55);transition:transform .2s ease, box-shadow .2s ease}
     .project-item:hover{transform:translateY(-5px);box-shadow:0 30px 56px -30px rgba(80,60,160,.55)}
     .cover{position:relative;height:118px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c1),var(--c2))}
     .cover .emoji{font-size:3rem;filter:drop-shadow(0 8px 10px rgba(0,0,0,.2))}
@@ -93,7 +93,7 @@
     .open-link:hover{background:var(--accent);color:#fff}
 
     /* 연락처 */
-    .contact-card{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;border-radius:32px;padding:34px 38px;color:#fff;background:linear-gradient(135deg,#2b2552,#5a3dba)}
+    .contact-card{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;border-radius:32px;padding:34px 38px;color:#fff;background:linear-gradient(135deg,#2b2552,#5d4fc7)}
     .contact-card h3{margin:0 0 4px;font-size:1.4rem}
     .contact-card p{margin:0;opacity:.85}
     .contact-card a{background:#fff;color:#4b32c4;text-decoration:none;font-weight:800;border-radius:999px;padding:12px 26px}
@@ -136,9 +136,13 @@
       <div class="stickers" aria-hidden="true"><span>📚</span><span>💻</span><span>✨</span></div>
       <p class="kicker">DIGITAL LIBRARY · 2026</p>
       <h1>안녕하세요,<br><span>천고은</span>입니다.</h1>
-      <p class="lead">컴퓨터교육을 전공하고 문헌정보교육을 함께 공부하고 있어요. 정보를 정리하고, 학생들이 쉽게 쓸 수 있는 교육 도구를 직접 만드는 데 관심이 많습니다.</p>
+      <p class="lead">컴퓨터교육을 전공하고 문헌정보교육을 함께 공부하고 있어요. 정보를 정리하고, 학생들이 쉽게 쓸 수 있는 교육 도구를 직접 만들고 있습니다.</p>
       <ul class="chips"><li>컴퓨터교육</li><li>문헌정보</li><li>바이브코딩</li></ul>
-      <div class="cta"><a class="main" href="#projects">프로젝트 구경하기</a><a class="sub" href="#contact">연락하기</a></div>
+      <div class="cta">
+        <a class="main" href="#projects">프로젝트 구경하기</a>
+        <a class="sub" href="https://script.google.com/macros/s/AKfycbx8nuCow3MbzGKtG_MYuPL4dz0duQFeUJiJHeGTfY-r6tDXaZRFW1zEattt8LnYwi3p/exec" target="_blank" rel="noopener">가상 미술관 바로가기 ↗</a>
+        <a class="sub" href="#contact">연락하기</a>
+      </div>
     </div>
     <div class="stats" aria-label="요약">
       <div class="stat"><b>21</b><span>만든 앱</span></div>
@@ -152,11 +156,11 @@
     <div class="about">
       <article class="card">
         <h3>컴퓨터교육 × 문헌정보</h3>
-        <p>컴퓨터교육과에서 문헌정보교육을 복수전공하고 있는 천고은입니다. 교육과 정보 정리, 그리고 AI 도구를 활용해 필요한 것을 직접 만들어 보는 과정을 좋아합니다.</p>
+        <p>컴퓨터교육과에서 문헌정보교육을 복수전공하고 있는 천고은입니다. 교육과 정보 정리, 그리고 AI 도구를 활용해 필요한 것을 직접 만들어 보는 일을 좋아합니다.</p>
       </article>
       <aside class="catalog" aria-label="서가 카드">
         <strong style="font-family:var(--latin);letter-spacing:.1em">CHEON GOEUN</strong>
-        <dl><dt>전공</dt><dd>컴퓨터교육 · 문헌정보교육</dd><dt>주제 분류</dt><dd>004 컴퓨터과학 / 020 문헌정보학</dd><dt>목표</dt><dd>학교 현장에서 쓸 수 있는 인터랙티브한 학습 도구를 만들기</dd></dl>
+        <dl><dt>전공</dt><dd>컴퓨터교육 · 문헌정보교육</dd><dt>주제 분류</dt><dd>004 컴퓨터과학 / 020 문헌정보학</dd><dt>목표</dt><dd>학교 현장에서 쓰는 교육 도구와 체험형 서비스 제작</dd></dl>
       </aside>
     </div>
   </section>
@@ -165,8 +169,8 @@
     <div class="sec-head"><p class="eyebrow">INTERESTS</p><h2>관심사</h2><p class="desc">평소 관심을 가지고 탐색하는 분야예요.</p></div>
     <div class="grid">
       <article class="card"><div class="ico" aria-hidden="true">💻</div><h3>컴퓨터 교육</h3><p>학교 현장에서 쓸 수 있는 교육용 앱과 콘텐츠를 만들어 보는 것을 좋아합니다.</p></article>
-      <article class="card"><div class="ico" aria-hidden="true">🏷️</div><h3>문헌정보와 메타데이터</h3><p>자료를 분류하고 설명하는 방법을 공부하며 교육용 메타데이터를 설계해 봅니다.</p></article>
-      <article class="card"><div class="ico" aria-hidden="true">✨</div><h3>바이브코딩</h3><p>생성형 AI와 함께 아이디어를 구체화해 웹 페이지와 작은 앱을 만들어 보며 도전합니다.</p></article>
+      <article class="card"><div class="ico" aria-hidden="true">🏷️</div><h3>문헌정보와 메타데이터</h3><p>자료를 분류하고 설명하는 방법을 공부하며 교육용 메타데이터를 설계해 보고 있습니다.</p></article>
+      <article class="card"><div class="ico" aria-hidden="true">✨</div><h3>바이브코딩</h3><p>생성형 AI와 함께 아이디어를 구체화해 웹 페이지와 작은 앱을 만들어 보는 재미를 좋아합니다.</p></article>
     </div>
   </section>
 
@@ -332,7 +336,7 @@
         <div class="body">
           <span class="cat">생활·기록</span>
           <h3>지출관리 가계부</h3>
-          <p>영수증을 지출로 쌓고, 날짜별 흐름과 항목별 비중을 차트로 확인해요. 엑셀로 내려받을 수 있어요.</p>
+          <p>영수증을 지출로 쌓고, 날짜별 흐름과 항목별 비중을 차트로 확인해요. 엑셀로 내려받을 수 있어��.</p>
           <a class="open-link" href="ledger.html" target="_blank" rel="noopener">열어보기 ↗</a>
         </div>
       </article>
@@ -369,7 +373,7 @@
           <span class="cat">구글 연동</span>
           <h3>가상 미술관</h3>
           <p>캐릭터를 방향키로 움직여 작품을 감상하고, 작품 업로드와 감상평을 남기는 2D 미술관이에요.</p>
-          <a class="open-link" href="gallery.html" target="_blank" rel="noopener">열어보기 ↗</a>
+          <a class="open-link" href="https://script.google.com/macros/s/AKfycbx8nuCow3MbzGKtG_MYuPL4dz0duQFeUJiJHeGTfY-r6tDXaZRFW1zEattt8LnYwi3p/exec" target="_blank" rel="noopener">열어보기 ↗</a>
         </div>
       </article>
       <article class="project-item" data-cat="game" style="--c1:#ff6fae;--c2:#ffa8cf">
