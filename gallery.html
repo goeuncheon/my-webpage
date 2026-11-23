@@ -124,20 +124,19 @@ function lsGet(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v===nul
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){throw new Error("브라우저 저장 공간이 부족해요.");}}
 function lsTry(k,v){try{lsSet(k,v);}catch(e){}}
 
-/* ---------- 예시 작품 (퍼블릭 도메인 명화 · 위키미디어 커먼즈) ----------
-   내 이미지를 쓰려면 MY_IMAGES에 GitHub 이미지 주소를 추가하세요.
-   예) {title:"우리 반 그림",artist:"홍길동",url:"https://raw.githubusercontent.com/아이디/저장소/main/art1.jpg"} */
-function wm(f){return "https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f)+"?width=700";}
+/* ---------- 예시 작품 (GitHub 저장소에 올린 이미지) ----------
+   이미지들은 저장소 최상위에 있어 raw.githubusercontent.com 주소로 불러옵니다. */
+function ghImage(file){return "https://raw.githubusercontent.com/goeuncheon/my-webpage/main/"+file.split("/").map(encodeURIComponent).join("/");}
 var MY_IMAGES=[];
 var EXAMPLES=[
- {title:"별이 빛나는 밤",artist:"빈센트 반 고흐",url:wm("Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg")},
- {title:"가나가와의 큰 파도",artist:"가쓰시카 호쿠사이",url:wm("Tsunami_by_hokusai_19th_century.jpg")},
- {title:"인상, 해돋이",artist:"클로드 모네",url:wm("Monet_-_Impression,_Sunrise.jpg")},
- {title:"모나리자",artist:"레오나르도 다 빈치",url:wm("Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg")},
- {title:"절규",artist:"에드바르 뭉크",url:wm("The_Scream.jpg")},
- {title:"그랑드 자트 섬의 일요일",artist:"조르주 쇠라",url:wm("A_Sunday_on_La_Grande_Jatte_--_Georges_Seurat_--_Google_Art_Project.jpg")},
- {title:"진주 귀걸이를 한 소녀",artist:"요하네스 페르메이르",url:wm("1665_Girl_with_a_Pearl_Earring.jpg")},
- {title:"해바라기",artist:"빈센트 반 고흐",url:wm("Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg")}
+ {title:"별이 빛나는 밤",artist:"빈센트 반 고흐",url:ghImage("별이 빛나는 밤.jpg")},
+ {title:"가나가와의 큰 파도",artist:"가쓰시카 호쿠사이",url:ghImage("가나가와 해변의 높은 파도 아래.jpg")},
+ {title:"인상, 해돋이",artist:"클로드 모네",url:ghImage("인상, 해돋이.jpg")},
+ {title:"모나리자",artist:"레오나르도 다 빈치",url:ghImage("모나리자.jpg")},
+ {title:"절규",artist:"에드바르 뭉크",url:ghImage("절규.jpg")},
+ {title:"그랑드 자트 섬의 일요일",artist:"조르주 쇠라",url:ghImage("그랑드 자트 섬의 일요일.jpg")},
+ {title:"진주 귀걸이를 한 소녀",artist:"요하네스 페르메이르",url:ghImage("진주 귀걸이를 한 소녀.jpg")},
+ {title:"해바라기",artist:"빈센트 반 고흐",url:ghImage("해바라기.jpg")}
 ].concat(MY_IMAGES).map(function(a,i){a.id="ex"+i;a.ex=true;return a;});
 function fallback(a){var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#e9e3fb"/><circle cx="130" cy="110" r="34" fill="#ffc94a"/><path d="M0 250 L130 160 L230 230 L310 170 L400 250 V300 H0Z" fill="#8e6cf7"/></svg>';return "data:image/svg+xml;utf8,"+encodeURIComponent(s);}
 
