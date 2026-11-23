@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko"><head><base target="_top"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>티셔츠 주문 현황</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--ink:#1f2a44;--ac:#4f6df5;--soft:#eef1ff;--ok:#1f9d6b;--no:#d6455d;--line:#dfe4f5}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:#f6f7fd;line-height:1.6}
+.w{max-width:860px;margin:0 auto;padding:18px 16px 50px}h1{font-size:1.5rem;margin:6px 0}.s{color:#6b7494;margin:0 0 10px}
+.c{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}
+input{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.b{font:inherit;border:0;background:var(--ac);color:#fff;border-radius:12px;padding:10px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}.b.g{background:var(--soft);color:var(--ink)}
+.m{font-weight:700;color:var(--no);min-height:1.4em}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}.k div{background:var(--soft);border-radius:14px;padding:10px;text-align:center}.k b{display:block;font-size:1.5rem}
+table{width:100%;border-collapse:collapse}td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}.miss{color:var(--no)}
+</style></head><body><div class="w">
+<h1>📊 티셔츠 주문 현황 (교사용)</h1>
+<div class="c" id="gate" hidden><p class="s">교사 비밀번호를 입력해 주세요.</p><input id="pw" type="password" autocomplete="off"> <button class="b" id="ok">확인</button></div>
+<p class="m" id="m" role="status"></p>
+<div id="main" hidden>
+ <div class="c"><div class="k" id="k"></div><p style="margin:12px 0 0"><button class="b" id="dl">⬇️ 엑셀(.xlsx) 다운로드</button> <a class="b g" id="alt" target="_blank" rel="noopener">구글 시트에서 받기</a></p></div>
+ <div class="c"><b>미제출 번호</b><p id="miss" style="margin:4px 0 0"></p></div>
+ <div class="c"><table id="t"></table></div>
+</div></div>
+<script>
+function run(fn){var a=[].slice.call(arguments,1);return new Promise(function(ok,no){google.script.run.withSuccessHandler(ok).withFailureHandler(function(e){no(new Error(e&&e.message||e))})[fn].apply(null,a)})}
+var $=function(i){return document.getElementById(i)},pw="",D=null;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function load(){run("getSummary",pw).then(function(d){D=d;$("gate").hidden=true;$("main").hidden=false;$("m").textContent="";render()}).catch(function(e){$("m").textContent=e.message;$("gate").hidden=false})}
+function render(){var d=D,by={};d.rows.forEach(function(r){by[r.num]=r});
+ $("k").innerHTML='<div>전체<b>'+d.total+'</b></div>'+d.sizes.map(function(s){return '<div>'+s+'<b>'+d.counts[s]+'</b></div>'}).join("");
+ var miss=[],h="<tr><th>번호</th><th>이름</th><th>사이즈</th><th>제출</th></tr>";
+ for(var i=1;i<=d.max;i++){var r=by[i];if(r)h+="<tr><td>"+i+"</td><td>"+esc(r.name)+"</td><td><b>"+esc(r.size)+"</b></td><td>"+r.at+"</td></tr>";else{miss.push(i);h+='<tr class="miss"><td>'+i+"</td><td colspan=3>미제출</td></tr>"}}
+ $("t").innerHTML=h;$("miss").textContent=miss.length?miss.join(", ")+"번":"모두 제출했어요 🎉";$("alt").href=d.exportUrl;}
+$("dl").onclick=function(){
+ if(!window.XLSX){$("m").textContent="엑셀 도구를 불러오지 못했어요. '구글 시트에서 받기'를 써 주세요.";return}
+ var d=D,a=[["번호","이름","사이즈","제출시각"]];for(var i=1;i<=d.max;i++){var r=d.rows.filter(function(x){return x.num===i})[0];a.push(r?[i,r.name,r.size,r.at]:[i,"","미제출",""])}
+ var c=[["사이즈","수량"]].concat(d.sizes.map(function(s){return[s,d.counts[s]]})).concat([["합계",d.total]]);
+ var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(a),"명단");XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(c),"사이즈별 집계");
+ try{XLSX.writeFile(wb,"티셔츠_주문현황.xlsx")}catch(e){$("m").textContent="다운로드가 막혔어요. '구글 시트에서 받기'를 써 주세요."}};
+$("ok").onclick=function(){pw=$("pw").value;load()};
+run("needsPassword").then(function(n){if(n)$("gate").hidden=false;else load()}).catch(function(e){$("m").textContent=e.message});
+setInterval(function(){if(D)load()},15000);
+</script></body></html>

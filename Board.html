@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko"><head><base target="_top"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>우리 반 스마트 학급 게시판</title>
+<style>
+:root{--ink:#2a2f45;--ac:#2f7cf6;--soft:#eaf2ff;--ok:#1f9d6b;--no:#d6455d;--line:#dde6f7;--warm:#fff4d6}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:#f4f7fd;line-height:1.6}
+.w{max-width:760px;margin:0 auto;padding:14px 14px 60px}h1{font-size:1.45rem;margin:0}.s{color:#6b7494;font-size:.88rem}
+.top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.top h1{flex:1}
+.c{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0}.c.must{background:var(--warm);border-color:#f2d98a}
+input,select,textarea{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:0}textarea{width:100%}
+button{font:inherit;cursor:pointer}.b{border:0;background:var(--ac);color:#fff;border-radius:10px;padding:8px 14px;font-weight:700}.b.g{background:var(--soft);color:var(--ink)}.b.x{background:#ffe8ec;color:var(--no);padding:4px 10px;font-size:.82rem}.b:disabled{opacity:.5;cursor:default}
+.tabs{display:flex;gap:6px;margin:8px 0}.tabs button{flex:1;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px;font-weight:700}.tabs button.on{border-color:var(--ac);background:var(--soft)}
+.badge{display:inline-block;background:#ff7a59;color:#fff;border-radius:99px;padding:0 10px;font-size:.78rem;font-weight:700;margin-right:6px}
+.nt h3{margin:2px 0}.nt .body{white-space:pre-wrap;margin:6px 0}.rp{background:#f4f7fd;border-radius:10px;padding:4px 10px;margin:4px 0;font-size:.9rem}.rp b{color:var(--ac)}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}.row input{flex:1}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal .h{text-align:center;font-weight:700;font-size:.82rem;color:#6b7494}
+.d{min-height:78px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px;font-size:.78rem;cursor:default}.d.t{border:2px solid var(--ac)}.d.o{opacity:.4}.d>span{font-weight:700}
+.ev{display:block;width:100%;text-align:left;border:0;border-radius:6px;padding:1px 5px;margin-top:2px;font-size:.72rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#fff}
+.k-수행평가{background:#e5484d}.k-체험학습{background:#1f9d6b}.k-행사{background:#2f7cf6}.k-생일{background:#e0529c}.k-기타{background:#7b8099}
+dialog{border:0;border-radius:18px;padding:18px;width:min(92vw,420px);box-shadow:0 20px 50px -10px rgba(20,30,80,.5)}dialog::backdrop{background:rgba(20,30,80,.5)}
+#tp{background:#fffbe9;border:1px dashed #e8c75a}.fm{display:grid;gap:6px;margin-bottom:12px}
+@media(max-width:520px){.d{min-height:62px}.ev{font-size:.66rem}}
+</style></head><body><div class="w">
+<div class="top"><h1>📣 우리 반 학급 게시판</h1><input id="nm" placeholder="내 이름" maxlength="15" style="width:110px" aria-label="내 이름"><button class="b g" id="tg" aria-label="교사 모드">🔒</button></div>
+<div class="c" id="tp" hidden>
+ <b>교사 모드</b>
+ <form class="fm" id="nf"><input id="nt" placeholder="공지 제목" maxlength="60" required><textarea id="nb" rows="3" placeholder="내용 (준비물, 제출 기한 등)"></textarea><label><input type="checkbox" id="nmst"> 📌 필독 공지로 고정</label><button class="b">공지 올리기</button></form>
+ <form class="fm" id="ef"><div class="row"><input type="date" id="ed" required><select id="ek"><option>수행평가</option><option>체험학습</option><option>행사</option><option>생일</option><option>기타</option></select></div><input id="et" placeholder="일정 제목" maxlength="60" required><input id="ep" placeholder="준비물 (선택)" maxlength="200"><textarea id="edsc" rows="2" placeholder="상세 안내 (선택)"></textarea><button class="b">일정 추가</button></form>
+</div>
+<p class="s" id="m" role="status"></p>
+<div class="tabs" role="tablist"><button class="on" id="t1">📝 알림장·공지</button><button id="t2">📅 학급 달력</button></div>
+<section id="v1"></section>
+<section id="v2" hidden><div class="top"><button class="b g" id="pv">◀</button><h1 id="mo" style="text-align:center;font-size:1.2rem"></h1><button class="b g" id="nx">▶</button></div><div class="cal" id="cal"></div></section>
+<dialog id="dg"><div id="dgb"></div><p style="text-align:right;margin:10px 0 0"><button class="b g" id="dc">닫기</button></p></dialog>
+</div>
+<script>
+function run(fn){var a=[].slice.call(arguments,1);return new Promise(function(ok,no){google.script.run.withSuccessHandler(ok).withFailureHandler(function(e){no(new Error(e&&e.message||e))})[fn].apply(null,a)})}
+var $=function(i){return document.getElementById(i)},D={notices:[],events:[]},TP="",ym=new Date(),busy=false;ym.setDate(1);
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+try{$("nm").value=localStorage.getItem("cb-name")||""}catch(e){}
+$("nm").onchange=function(){try{localStorage.setItem("cb-name",$("nm").value.trim())}catch(e){}};
+function msg(t,bad){$("m").textContent=t||"";$("m").style.color=bad?"#d6455d":""}
+function me(){return $("nm").value.trim()}
+function load(){return run("getBoard").then(function(d){D=d;draw()}).catch(function(e){msg(e.message,1)})}
+function draw(){
+ var N=D.notices.slice().sort(function(a,b){return (b.must-a.must)||(b.ts-a.ts)});
+ $("v1").innerHTML=N.length?N.map(function(n){var mine=n.confirms.indexOf(me())>=0;
+  return '<article class="c nt'+(n.must?" must":"")+'" data-id="'+esc(n.id)+'">'+(n.must?'<span class="badge">📌 필독</span>':"")+'<span class="s">'+esc(n.at)+' · '+esc(n.author)+'</span><h3>'+esc(n.title)+'</h3><div class="body">'+esc(n.body)+'</div>'
+  +'<div class="row"><button class="b'+(mine?" g":"")+'" data-a="ok" '+(mine?"disabled":"")+'>'+(mine?"✅ 확인했어요":"👍 확인했어요")+'</button><span class="s" title="'+esc(n.confirms.join(", "))+'">확인 '+n.confirms.length+'명</span>'+(TP?'<button class="b x" data-a="dn">삭제</button>':"")+'</div>'
+  +n.replies.map(function(r){return '<div class="rp"><b>'+esc(r.name)+'</b> '+esc(r.text)+'</div>'}).join("")
+  +'<div class="row"><input placeholder="댓글을 남겨요" maxlength="200" aria-label="댓글"><button class="b g" data-a="rp">등록</button></div></article>'}).join(""):'<div class="c s">아직 공지가 없어요.</div>';
+ cal();}
+$("v1").onclick=function(e){var b=e.target.closest("button[data-a]");if(!b)return;var art=b.closest("article"),id=art.dataset.id,a=b.dataset.a;
+ if(a==="ok"){if(!me())return msg("이름을 먼저 적어 주세요.",1);run("confirmNotice",id,me()).then(load).catch(function(x){msg(x.message,1)})}
+ if(a==="rp"){var i=art.querySelector("input"),t=i.value.trim();if(!me())return msg("이름을 먼저 적어 주세요.",1);if(!t)return;run("addReply",id,me(),t).then(load).catch(function(x){msg(x.message,1)})}
+ if(a==="dn"&&confirm("이 공지를 삭제할까요?"))run("deleteNotice",TP,id).then(load).catch(function(x){msg(x.message,1)})};
+function cal(){var y=ym.getFullYear(),mo=ym.getMonth(),first=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate(),t=new Date(),ts=t.getFullYear()+"-"+("0"+(t.getMonth()+1)).slice(-2)+"-"+("0"+t.getDate()).slice(-2);
+ $("mo").textContent=y+"년 "+(mo+1)+"월";var h="일월화수목금토".split("").map(function(d){return '<div class="h">'+d+'</div>'}).join("");
+ for(var i=0;i<first;i++)h+='<div></div>';
+ for(var d=1;d<=days;d++){var ds=y+"-"+("0"+(mo+1)).slice(-2)+"-"+("0"+d).slice(-2),ev=D.events.filter(function(e){return e.date===ds});
+  h+='<div class="d'+(ds===ts?" t":"")+'" data-d="'+ds+'"><span>'+d+'</span>'+ev.map(function(e){return '<button class="ev k-'+esc(e.kind)+'" data-e="'+esc(e.id)+'">'+esc(e.title)+'</button>'}).join("")+'</div>';}
+ $("cal").innerHTML=h;}
+$("cal").onclick=function(e){var b=e.target.closest("button[data-e]");if(b){var v=D.events.filter(function(x){return x.id===b.dataset.e})[0];if(!v)return;
+  $("dgb").innerHTML='<h3 style="margin:0">'+esc(v.title)+'</h3><p class="s" style="margin:2px 0 8px">'+esc(v.date)+' · '+esc(v.kind)+'</p>'+(v.desc?'<p style="white-space:pre-wrap">'+esc(v.desc)+'</p>':"")+(v.prep?'<p><b>🎒 준비물</b><br>'+esc(v.prep)+'</p>':"")+(TP?'<button class="b x" id="de" data-id="'+esc(v.id)+'">일정 삭제</button>':"");$("dg").showModal();return}
+ var d=e.target.closest(".d");if(d&&TP)$("ed").value=d.dataset.d};
+$("dgb").onclick=function(e){var b=e.target.closest("#de");if(b&&confirm("이 일정을 삭제할까요?"))run("deleteEvent",TP,b.dataset.id).then(function(){$("dg").close();load()}).catch(function(x){msg(x.message,1)})};
+$("dc").onclick=function(){$("dg").close()};
+$("pv").onclick=function(){ym.setMonth(ym.getMonth()-1);cal()};$("nx").onclick=function(){ym.setMonth(ym.getMonth()+1);cal()};
+function tab(n){$("v1").hidden=n!==1;$("v2").hidden=n!==2;$("t1").className=n===1?"on":"";$("t2").className=n===2?"on":""}
+$("t1").onclick=function(){tab(1)};$("t2").onclick=function(){tab(2)};
+$("tg").onclick=function(){if(TP){TP="";$("tp").hidden=true;$("tg").textContent="🔒";draw();return}
+ var p=prompt("교사 암호를 입력해 주세요.");if(!p)return;run("teacherCheck",p).then(function(){TP=p;$("tp").hidden=false;$("tg").textContent="🔓";draw()}).catch(function(e){msg(e.message,1)})};
+$("nf").onsubmit=function(e){e.preventDefault();run("addNotice",TP,$("nt").value,$("nb").value,$("nmst").checked).then(function(){$("nf").reset();msg("공지를 올렸어요.");load()}).catch(function(x){msg(x.message,1)})};
+$("ef").onsubmit=function(e){e.preventDefault();run("addEvent",TP,$("ed").value,$("et").value,$("ek").value,$("edsc").value,$("ep").value).then(function(){$("ef").reset();msg("일정을 추가했어요.");load()}).catch(function(x){msg(x.message,1)})};
+load();setInterval(function(){var t=document.activeElement&&document.activeElement.tagName;if(t!=="INPUT"&&t!=="TEXTAREA"&&t!=="SELECT"&&!$("dg").open)load()},30000);
+</script></body></html>

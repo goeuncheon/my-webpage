@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko"><head><base target="_top"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>나의 활동성향 알아보기</title>
+<style>
+:root{--ink:#27304d;--ac:#7c5cf0;--soft:#f1edff;--ok:#1f9d6b;--no:#d6455d;--line:#e3dcfa}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:#f8f6ff;line-height:1.6}
+.w{max-width:680px;margin:0 auto;padding:18px 16px 60px}h1{font-size:1.6rem;margin:6px 0}.s{color:#6f6a94;margin:0 0 10px}
+.c{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}
+label{display:grid;gap:4px;font-weight:700;margin-bottom:12px}input{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;width:100%}
+.b{font:inherit;border:0;background:var(--ac);color:#fff;border-radius:12px;padding:11px 22px;font-weight:700;cursor:pointer}.b:disabled{opacity:.4;cursor:not-allowed}.b.g{background:var(--soft);color:var(--ink)}
+.m{min-height:1.4em;font-weight:700;font-size:.92rem}.no{color:var(--no)}
+.q{padding:14px 0;border-bottom:1px solid var(--line)}.q p{margin:0 0 8px;font-weight:700}.o{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.o label{display:block;margin:0;font-weight:500;font-size:.82rem;text-align:center}.o input{display:none}.o span{display:block;padding:8px 2px;border:2px solid var(--line);border-radius:12px;cursor:pointer}.o input:checked+span{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:700}
+.chips{position:sticky;top:0;background:#f8f6ff;padding:8px 0;display:flex;gap:6px;flex-wrap:wrap;z-index:3}.chip{border-radius:99px;padding:3px 12px;font-size:.85rem;font-weight:700;background:#fff;border:1px solid var(--line)}.chip.d{background:var(--ok);color:#fff;border-color:var(--ok)}
+.bar{display:grid;grid-template-columns:70px 1fr 36px;gap:8px;align-items:center;margin:6px 0}.t{height:14px;background:var(--soft);border-radius:99px;overflow:hidden}.t i{display:block;height:100%;border-radius:99px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media print{.np{display:none!important}body{background:#fff}.c{border:0;box-shadow:none}}
+</style></head><body><div class="w">
+<section id="s1"><h1>🌈 나의 활동성향 알아보기</h1><p class="s">나는 어떤 활동을 좋아할까? 정답은 없어요. 솔직하게 골라 보세요.</p>
+ <form class="c" id="lf"><label>이름<input id="nm" maxlength="10" required autocomplete="off"></label><label>암호<input id="pw" type="password" required autocomplete="off" placeholder="선생님이 알려 준 암호"></label><button class="b">시작하기</button><p class="m no" id="lm" role="status"></p></form></section>
+<section id="s2" hidden><h1>어떤 모습이 나와 가장 닮았나요?</h1><p class="s">4칸 중에서 하나를 골라요.</p>
+ <div class="chips" id="chips"></div><div class="c" id="qs" style="padding:4px 18px"></div>
+ <div class="row"><button class="b" id="go" disabled>결과 보기</button></div><p class="m no" id="sm"></p></section>
+<section id="s3" hidden><div id="rep"></div><div class="row np"><button class="b" id="pdf">📄 리포트 PDF로 저장</button><button class="b g" id="again">처음으로</button></div></section>
+</div>
+<script>
+function run(fn){var a=[].slice.call(arguments,1);return new Promise(function(ok,no){google.script.run.withSuccessHandler(ok).withFailureHandler(function(e){no(new Error(e&&e.message||e))})[fn].apply(null,a)})}
+var $=function(i){return document.getElementById(i)};
+// 탐구·표현·협력·계획 4영역(홀랜드 흥미 유형을 쉽게 바꾼 것), 문항 5개씩 — 일부는 학습·생활 습관 문항
+var A=[{n:"탐구",e:"🔍",c:"#5b7cfa",d:"궁금한 것을 파고들고 실험하며 배우는 걸 좋아해요.",t:["궁금한 점을 '질문 노트'에 적고 하나씩 찾아보세요.","실험이나 만들기 활동에 먼저 손을 들어 보세요."]},
+{n:"표현",e:"🎨",c:"#ee5c9b",d:"생각과 느낌을 그림·글·말로 나타내는 걸 좋아해요.",t:["배운 내용을 그림이나 만화로 정리해 보세요.","하루 한 줄 일기로 내 마음을 표현해 보세요."]},
+{n:"협력",e:"🤝",c:"#22a97a",d:"친구와 함께 일하고 서로 돕는 걸 좋아해요.",t:["모둠 활동에서 역할 하나를 맡아 책임져 보세요.","친구 의견을 듣고 한 줄로 정리해 주는 연습을 해 보세요."]},
+{n:"계획",e:"📅",c:"#e9961f",d:"할 일을 미리 정하고 차근차근 해내는 걸 좋아해요.",t:["아침에 오늘 할 일 3가지를 적어 보세요.","전날 저녁에 준비물과 숙제를 체크해 보세요."]}];
+var Q=[["나는 궁금한 것이 생기면 끝까지 알아보는 게 좋아.","나는 새로운 것을 실험하거나 만들어 보는 게 재미있어.","나는 '왜 그럴까?' 하고 이유를 생각해 보는 게 좋아.","나는 모르는 내용을 책이나 인터넷에서 찾아봐.","나는 공부하다 모르는 게 나오면 그냥 넘기지 않고 다시 확인해."],
+["나는 그림, 노래, 글쓰기로 내 생각을 나타내는 게 즐거워.","나는 발표할 때 내 생각을 말하는 게 괜찮아.","나는 새로운 아이디어를 떠올리는 게 좋아.","나는 만들기나 꾸미기를 할 때 시간이 빨리 가.","나는 내 느낌을 친구에게 잘 이야기하는 편이야."],
+["나는 친구들과 함께할 때 더 힘이 나.","나는 친구가 어려워하면 도와주고 싶어.","나는 모둠 활동에서 친구 의견을 잘 들어줘.","나는 청소나 당번 같은 학급 일을 함께하는 게 좋아.","나는 친구와 생각이 다르면 이야기로 풀려고 해."],
+["나는 해야 할 일을 미리 정해 두는 게 편해.","나는 숙제와 준비물을 미리 챙기는 편이야.","나는 하루 공부 시간을 정해서 지키려고 해.","나는 책상과 물건을 깔끔하게 정리하는 게 좋아.","나는 약속한 시간을 잘 지켜."]];
+var L=["전혀 아니야","조금 아니야","조금 그래","매우 그래"],ans=new Array(20),user=null,rep=null;
+function show(id){["s1","s2","s3"].forEach(function(s){$(s).hidden=s!==id});window.scrollTo(0,0)}
+function build(){var h="";for(var k=0;k<5;k++)for(var a=0;a<4;a++){var i=k*4+a;h+='<div class="q"><p>'+(i+1)+'. '+Q[a][k]+'</p><div class="o">'+L.map(function(t,v){return '<label><input type="radio" name="q'+i+'" value="'+(v+1)+'"><span>'+["😕","🙂","😀","🤩"][v]+'<br>'+t+'</span></label>'}).join("")+'</div></div>'}$("qs").innerHTML=h;ans=new Array(20);prog()}
+$("qs").onchange=function(e){var m=/^q(\d+)$/.exec(e.target.name);if(m){ans[+m[1]]=+e.target.value;prog()}};
+function prog(){var cnt=[0,0,0,0],all=0;ans.forEach(function(v,i){if(v){cnt[i%4]++;all++}});
+ $("chips").innerHTML=A.map(function(x,i){return '<span class="chip'+(cnt[i]===5?" d":"")+'">'+x.e+" "+x.n+" "+cnt[i]+"/5</span>"}).join("");
+ $("go").disabled=all<20;$("sm").textContent=all<20?"아직 답하지 않은 문항이 "+(20-all)+"개 있어요. 모두 답하면 결과를 볼 수 있어요.":"";}
+function radar(sc){function pt(i,k){var a=(-90+i*90)*Math.PI/180;return[(130+Math.cos(a)*85*k).toFixed(1),(130+Math.sin(a)*85*k).toFixed(1)]}
+ var g=[.25,.5,.75,1].map(function(k){return '<polygon points="'+[0,1,2,3].map(function(i){return pt(i,k).join(",")}).join(" ")+'" fill="none" stroke="#e3dcfa"/>'}).join("");
+ var d=sc.map(function(v,i){return pt(i,v/20).join(",")}).join(" ");
+ var l=A.map(function(x,i){var p=pt(i,1.28);return '<text x="'+p[0]+'" y="'+p[1]+'" text-anchor="middle" font-size="14" font-weight="700" fill="#27304d">'+x.e+x.n+'</text>'}).join("");
+ return '<svg viewBox="0 0 260 260" style="width:100%;max-width:300px;display:block;margin:auto">'+g+'<polygon points="'+d+'" fill="rgba(124,92,240,.3)" stroke="#7c5cf0" stroke-width="3"/>'+l+'</svg>';}
+function report(name,sc,main){var mx=Math.max.apply(null,sc),mn=Math.min.apply(null,sc),top=sc.indexOf(mx),low=sc.indexOf(mn);
+ var h='<h1>'+name+'의 활동성향 리포트</h1><div class="c">'+radar(sc)+'</div><div class="c"><b>점수 (각 5~20점)</b>'+A.map(function(x,i){return '<div class="bar"><span>'+x.e+" "+x.n+'</span><div class="t"><i style="width:'+sc[i]/20*100+'%;background:'+x.c+'"></i></div><b>'+sc[i]+'</b></div>'}).join("")+'</div>';
+ h+='<div class="c"><b>'+A[top].e+' 나의 주성향: '+main+'</b><p style="margin:6px 0">'+A[top].d+'</p><b>이렇게 해 보면 좋아요</b><ul style="margin:4px 0">'+A[top].t.map(function(t){return "<li>"+t+"</li>"}).join("")+'</ul>';
+ if(mx!==mn)h+='<b>조금 더 키워 보면 좋은 영역: '+A[low].e+' '+A[low].n+'</b><ul style="margin:4px 0"><li>'+A[low].t[0]+'</li></ul>';
+ return h+'<p class="s" style="margin:8px 0 0">흥미 경향을 알아보는 참고 자료예요. 정답이나 좋고 나쁨은 없어요.</p></div>';}
+$("lf").onsubmit=function(e){e.preventDefault();$("lm").textContent="확인 중...";run("login",$("nm").value,$("pw").value).then(function(r){user={n:r.name,p:$("pw").value};build();show("s2");$("lm").textContent=""}).catch(function(er){$("lm").textContent=er.message})};
+$("go").onclick=function(){$("go").disabled=true;$("sm").textContent="저장 중...";run("submitSurvey",user.n,user.p,ans).then(function(r){rep=r;$("rep").innerHTML=report(user.n,r.scores,r.main);show("s3")}).catch(function(er){$("sm").textContent=er.message;prog()})};
+$("pdf").onclick=function(){window.print()};$("again").onclick=function(){$("pw").value="";user=null;show("s1")};
+</script></body></html>

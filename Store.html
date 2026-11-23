@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"><head><base target="_top"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>디지털 학급 보상상점</title>
+<style>
+:root{--ink:#3a2a14;--ac:#f08a1c;--soft:#fff1de;--ok:#1f9d6b;--no:#d6455d;--line:#f1dfc3}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:#fff9ef;line-height:1.6}
+.w{max-width:720px;margin:0 auto;padding:16px 14px 60px}h1{font-size:1.5rem;margin:0}.s{color:#8b7a5e;font-size:.9rem}
+.c{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+input,select{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;width:100%;min-width:0}label{display:grid;gap:4px;font-weight:700;margin-bottom:10px}
+button{font:inherit;cursor:pointer}.b{border:0;background:var(--ac);color:#fff;border-radius:12px;padding:9px 18px;font-weight:700}.b.g{background:var(--soft);color:var(--ink)}.b.x{background:#ffe8ec;color:var(--no)}.b:disabled{opacity:.4;cursor:not-allowed}
+.m{min-height:1.4em;font-weight:700;font-size:.9rem;color:var(--no)}.m.ok{color:var(--ok)}
+.hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hd h1{flex:1}.pt{background:var(--ac);color:#fff;border-radius:99px;padding:4px 16px;font-weight:800}
+.tabs{display:flex;gap:6px;margin:10px 0}.tabs button{flex:1;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px;font-weight:700;color:var(--ink)}.tabs button.on{border-color:var(--ac);background:var(--soft)}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}.it{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px}.it h3{margin:0}.it .p{font-weight:800;color:var(--ac)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+.st-대기{color:#c77a00}.st-승인,.st-완료{color:var(--ok)}.st-거절{color:var(--no)}
+.pin{letter-spacing:.4em;text-align:center;font-size:1.2rem}
+</style></head><body><div class="w">
+<section id="s1"><h1>🏪 디지털 학급 보상상점</h1><p class="s">칭찬 포인트를 모아 원하는 보상을 골라 보세요.</p>
+ <form class="c" id="lf"><label>내 이름<select id="who"></select></label><label>PIN (숫자 4자리)<input id="pin" class="pin" type="password" inputmode="numeric" maxlength="4" pattern="\d{4}" required autocomplete="off"></label><button class="b">입장하기</button><p class="m" id="lm" role="status"></p></form>
+ <p><button class="b g" id="tm">👩‍🏫 교사 모드</button></p></section>
+<section id="s2" hidden>
+ <div class="hd"><h1 id="hn"></h1><span class="pt" id="hp"></span><button class="b g" id="lo">나가기</button></div>
+ <div class="tabs"><button class="on" id="a1">🎁 상점</button><button id="a2">👤 마이페이지</button></div>
+ <p class="m" id="sm" role="status"></p>
+ <div id="p1" class="g"></div>
+ <div id="p2" hidden><div class="c"><b>내 구매 내역</b><table id="mh" style="margin-top:6px"></table></div>
+  <form class="c" id="pf"><b>PIN 바꾸기</b><label>지금 PIN<input id="op" class="pin" type="password" inputmode="numeric" maxlength="4" required></label><label>새 PIN (숫자 4자리)<input id="np" class="pin" type="password" inputmode="numeric" maxlength="4" required></label><button class="b">바꾸기</button><p class="m" id="pm"></p></form></div>
+</section>
+<section id="s3" hidden>
+ <div class="hd"><h1>👩‍🏫 교사 모드</h1><button class="b g" id="tl">나가기</button></div><p class="m" id="tmsg" role="status"></p>
+ <div class="c"><b>구매 신청 (승인 대기)</b><table id="tp" style="margin-top:6px"></table></div>
+ <div class="c"><b>학생 포인트</b> <span class="s">(+는 지급, −는 차감)</span><table id="ts" style="margin-top:6px"></table></div>
+ <div class="c"><b>최근 내역</b><table id="tr" style="margin-top:6px"></table></div>
+</section></div>
+<script>
+function run(fn){var a=[].slice.call(arguments,1);return new Promise(function(ok,no){google.script.run.withSuccessHandler(ok).withFailureHandler(function(e){no(new Error(e&&e.message||e))})[fn].apply(null,a)})}
+var $=function(i){return document.getElementById(i)},U=null,TP="";
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function show(id){["s1","s2","s3"].forEach(function(s){$(s).hidden=s!==id});window.scrollTo(0,0)}
+function msg(el,t,ok){$(el).textContent=t||"";$(el).className="m"+(ok?" ok":"")}
+run("getStudentList").then(function(L){$("who").innerHTML=L.map(function(s){return '<option value="'+esc(s.id)+'">'+esc(s.name)+'</option>'}).join("")||"<option>등록된 학생이 없어요</option>"}).catch(function(e){msg("lm",e.message)});
+$("lf").onsubmit=function(e){e.preventDefault();msg("lm","확인 중...",1);run("login",$("who").value,$("pin").value).then(function(r){U={id:r.id,pin:$("pin").value,name:r.name};$("pin").value="";msg("lm","");enter(r.points)}).catch(function(er){msg("lm",er.message)})};
+function enter(p){$("hn").textContent="🏪 "+U.name+"님";$("hp").textContent="⭐ "+p+"점";show("s2");tabS(1);shop()}
+$("lo").onclick=function(){U=null;show("s1")};
+function tabS(n){$("p1").hidden=n!==1;$("p2").hidden=n!==2;$("a1").className=n===1?"on":"";$("a2").className=n===2?"on":"";if(n===2)me()}
+$("a1").onclick=function(){tabS(1);shop()};$("a2").onclick=function(){tabS(2)};
+var pts=0;
+function shop(){Promise.all([run("getItems"),run("getMe",U.id,U.pin)]).then(function(r){pts=r[1].points;$("hp").textContent="⭐ "+pts+"점";
+ $("p1").innerHTML=r[0].map(function(i){var no=i.stock<1||pts<i.price;return '<div class="it"><h3>🎁 '+esc(i.name)+'</h3><p class="s" style="margin:2px 0">'+esc(i.desc)+'</p><p style="margin:4px 0"><span class="p">⭐ '+i.price+'점</span> · 재고 '+i.stock+'개</p><button class="b" data-i="'+esc(i.id)+'" data-n="'+esc(i.name)+'" data-p="'+i.price+'" '+(no?"disabled":"")+'>'+(i.stock<1?"품절":pts<i.price?"포인트 부족":"구매하기")+'</button></div>'}).join("")||'<div class="c s">등록된 상품이 없어요.</div>'}).catch(function(e){msg("sm",e.message)})}
+$("p1").onclick=function(e){var b=e.target.closest("button[data-i]");if(!b||!confirm(b.dataset.n+"을(를) "+b.dataset.p+"점에 구매할까요?"))return;b.disabled=true;
+ run("buy",U.id,U.pin,b.dataset.i).then(function(r){msg("sm","구매 신청 완료! 선생님이 승인하면 사용할 수 있어요.",1);shop()}).catch(function(er){msg("sm",er.message);shop()})};
+function hist(el,H,teacher){$(el).innerHTML=(H.length?H.map(function(h){return "<tr><td>"+esc(h.at)+"</td>"+(teacher?"<td>"+esc(h.name)+"</td>":"")+"<td>"+esc(h.item)+"</td><td>"+(h.cost<0?"+"+(-h.cost):"-"+h.cost)+'</td><td class="st-'+esc(h.status)+'">'+esc(h.status)+"</td></tr>"}).join(""):'<tr><td class="s">내역이 없어요.</td></tr>')}
+function me(){run("getMe",U.id,U.pin).then(function(r){hist("mh",r.history,false)}).catch(function(e){msg("sm",e.message)})}
+$("pf").onsubmit=function(e){e.preventDefault();run("changePin",U.id,$("op").value,$("np").value).then(function(){U.pin=$("np").value;$("pf").reset();msg("pm","PIN을 바꿨어요. 다음 로그인부터 새 PIN을 써요.",1)}).catch(function(er){msg("pm",er.message)})};
+// ---- 교사 ----
+$("tm").onclick=function(){var p=prompt("교사 암호를 입력해 주세요.");if(!p)return;run("teacherCheck",p).then(function(){TP=p;show("s3");tov()}).catch(function(e){msg("lm",e.message)})};
+$("tl").onclick=function(){TP="";show("s1")};
+function tov(){run("tOverview",TP).then(function(d){
+ $("tp").innerHTML=d.pending.length?d.pending.map(function(h){return "<tr><td>"+esc(h.at)+"</td><td>"+esc(h.name)+"</td><td>"+esc(h.item)+" (−"+h.cost+")</td><td><button class='b' data-h='"+esc(h.id)+"' data-ok='1'>승인</button> <button class='b x' data-h='"+esc(h.id)+"'>거절</button></td></tr>"}).join(""):'<tr><td class="s">대기 중인 신청이 없어요.</td></tr>';
+ $("ts").innerHTML=d.students.map(function(s){return "<tr><td>"+esc(s.name)+"</td><td><b>⭐ "+s.points+"</b></td><td><input type='number' value='1' style='width:64px' aria-label='"+esc(s.name)+" 점수'> <button class='b g' data-s='"+esc(s.id)+"' data-d='1'>＋</button> <button class='b g' data-s='"+esc(s.id)+"' data-d='-1'>－</button></td></tr>"}).join("");
+ hist("tr",d.recent,true)}).catch(function(e){msg("tmsg",e.message)})}
+$("tp").onclick=function(e){var b=e.target.closest("button[data-h]");if(!b)return;run("tDecide",TP,b.dataset.h,!!b.dataset.ok).then(tov).catch(function(er){msg("tmsg",er.message)})};
+$("ts").onclick=function(e){var b=e.target.closest("button[data-s]");if(!b)return;var v=parseInt(b.parentNode.querySelector("input").value,10)||0;
+ run("tAdjust",TP,b.dataset.s,v*(+b.dataset.d),"").then(tov).catch(function(er){msg("tmsg",er.message)})};
+</script></body></html>
